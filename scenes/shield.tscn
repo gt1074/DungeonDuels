@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://dwva1r77jvxkr"]
+
+[ext_resource type="Texture2D" uid="uid://f6qnpojrdflv" path="res://assets/brackeys_platformer_assets/sprites/Shield.png" id="1_vuocu"]
+
+[node name="Shield" type="Area2D" unique_id=74675171]
+visible = false
+collision_layer = 4
+collision_mask = 2
+monitoring = false
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2091620483]
+texture = ExtResource("1_vuocu")
+offset = Vector2(-5, 12)
+flip_h = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=2022860140]
+position = Vector2(14, 0)
+scale = Vector2(0.76000243, 1.6252608)
+polygon = PackedVector2Array(-9.210497, -9.844574, -2.631569, -9.844574, -2.631569, -9.229288, -1.3157845, -9.229288, -1.3157845, -8.614002, 1.3157845, -8.614002, 1.3157845, -7.3834305, 2.6315727, -7.3834305, 2.6315727, -6.1528587, 3.9473572, -6.1528587, 3.9473572, -4.922287, 5.2631416, -4.922287, 5.2631416, 4.922287, 3.9473572, 4.922287, 3.9473572, 6.1528587, 2.6315727, 6.1528587, 2.6315727, 7.3834305, 1.3157845, 7.3834305, 1.3157845, 8.614002, -1.3157845, 8.614002, -1.3157845, 9.229288, -2.631569, 9.229288, -2.631569, 9.844574, -9.210497, 9.844574)

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cd1tepweky82l"]
+
+[ext_resource type="Script" uid="uid://d1grf6bdgf1e1" path="res://scripts/Bullet.cs" id="1_mkf8s"]
+
+[node name="Bullet" type="Area2D" unique_id=1510630161]
+collision_mask = 2
+script = ExtResource("1_mkf8s")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

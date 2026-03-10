@@ -1,0 +1,123 @@
+[gd_scene format=4 uid="uid://ipajp0vdfsck"]
+
+[ext_resource type="PackedScene" uid="uid://dux6teoy2hqj" path="res://scenes/Player.tscn" id="1_yqjtg"]
+[ext_resource type="Texture2D" uid="uid://bhykessftq25q" path="res://assets/brackeys_platformer_assets/sprites/atlas.png" id="2_lnu2h"]
+[ext_resource type="Script" uid="uid://cluoq5hck4f3n" path="res://scripts/bat.gd" id="4_iywne"]
+[ext_resource type="PackedScene" uid="uid://dwva1r77jvxkr" path="res://scenes/shield.tscn" id="4_p57ef"]
+[ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_p57ef"]
+[ext_resource type="Script" uid="uid://br3ctk6jekssw" path="res://scripts/shield.gd" id="5_u5sy4"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lbhrr"]
+texture = ExtResource("2_lnu2h")
+texture_region_size = Vector2i(20, 20)
+1:2/0 = 0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+2:2/0 = 0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+3:2/0 = 0
+3:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+0:3/0 = 0
+0:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+1:3/0 = 0
+2:3/0 = 0
+3:3/0 = 0
+3:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+0:4/0 = 0
+0:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+1:4/0 = 0
+2:4/0 = 0
+3:4/0 = 0
+3:4/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+0:5/0 = 0
+0:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+1:5/0 = 0
+1:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+2:5/0 = 0
+2:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+3:5/0 = 0
+3:5/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+0:2/0 = 0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-10, -10, 10, -10, 10, 10, -10, 10)
+
+[sub_resource type="TileSet" id="TileSet_iywne"]
+tile_size = Vector2i(20, 20)
+physics_layer_0/collision_layer = 2
+sources/0 = SubResource("TileSetAtlasSource_lbhrr")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
+atlas = ExtResource("2_lnu2h")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
+atlas = ExtResource("2_lnu2h")
+region = Rect2(40, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gee14"]
+atlas = ExtResource("2_lnu2h")
+region = Rect2(20, 20, 20, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_0tnpc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p57ef")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5sy4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p57ef")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gee14")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vtaks"]
+radius = 3.0
+
+[node name="Game" type="Node2D" unique_id=1329128313]
+position = Vector2(145, 82)
+
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=422948942]
+position = Vector2(-4, -41)
+tile_map_data = PackedByteArray("AAD5//7/AAAAAAIAAAD6//7/AAABAAIAAAD7//7/AAACAAIAAAD8//7/AAABAAIAAAD9//7/AAACAAIAAAD+//7/AAABAAIAAAD///7/AAACAAIAAAAAAP7/AAABAAIAAAABAP7/AAACAAIAAAACAP7/AAABAAIAAAADAP7/AAACAAIAAAAEAP7/AAABAAIAAAAFAP7/AAACAAIAAAAGAP7/AAADAAIAAAAGAP//AAADAAMAAAAGAAAAAAADAAQAAAAGAAEAAAADAAMAAAAGAAIAAAADAAQAAAAGAAMAAAADAAMAAAAGAAQAAAADAAQAAAAGAAUAAAADAAUAAAAEAAUAAAABAAUAAAAFAAUAAAACAAUAAAACAAUAAAABAAUAAAADAAUAAAACAAUAAAAAAAUAAAABAAUAAAABAAUAAAACAAUAAAD+/wUAAAABAAUAAAD//wUAAAACAAUAAAD8/wUAAAABAAUAAAD9/wUAAAACAAUAAAD6/wUAAAABAAUAAAD7/wUAAAACAAUAAAD5/wUAAAAAAAUAAAD5/wMAAAAAAAMAAAD5/wEAAAAAAAMAAAD5/wIAAAAAAAQAAAD5////AAAAAAMAAAD5/wAAAAAAAAQAAAD6////AAABAAMAAAD7////AAABAAMAAAD8////AAACAAMAAAADAP//AAACAAMAAAAFAP//AAABAAMAAAAEAP//AAABAAMAAAACAP//AAABAAMAAAABAP//AAABAAMAAAAAAP//AAABAAMAAAD/////AAABAAMAAAD+////AAABAAMAAAD9////AAABAAMAAAD6/wAAAAACAAQAAAD7/wAAAAABAAQAAAD8/wAAAAABAAQAAAD8/wEAAAACAAQAAAD7/wEAAAABAAQAAAD6/wEAAAABAAQAAAD6/wIAAAABAAQAAAD7/wIAAAABAAQAAAD9/wEAAAABAAQAAAD9/wAAAAABAAQAAAD9/wIAAAABAAQAAAD8/wIAAAABAAQAAAD8/wMAAAABAAQAAAD7/wMAAAABAAQAAAAAAAIAAAABAAQAAAADAAAAAAACAAQAAAD//wAAAAACAAQAAAADAAQAAAACAAQAAAD//wMAAAACAAQAAAAFAAIAAAACAAQAAAD9/wMAAAACAAQAAAD6/wMAAAABAAQAAAD6/wQAAAABAAQAAAD7/wQAAAACAAQAAAD8/wQAAAABAAQAAAD9/wQAAAABAAQAAAD+/wQAAAABAAQAAAD+/wMAAAABAAQAAAD+/wIAAAABAAQAAAD+/wEAAAABAAQAAAD+/wAAAAABAAQAAAD//wEAAAABAAQAAAD//wIAAAABAAQAAAAAAAEAAAABAAQAAAABAAEAAAABAAQAAAACAAEAAAABAAQAAAACAAAAAAABAAQAAAABAAAAAAABAAQAAAAAAAAAAAABAAQAAAABAAIAAAABAAQAAAABAAMAAAABAAQAAAABAAQAAAABAAQAAAAAAAQAAAABAAQAAAD//wQAAAABAAQAAAAAAAMAAAABAAQAAAACAAQAAAABAAQAAAACAAMAAAABAAQAAAACAAIAAAACAAQAAAADAAIAAAABAAQAAAADAAMAAAABAAQAAAAEAAMAAAABAAQAAAAEAAQAAAABAAQAAAAFAAQAAAABAAQAAAAFAAMAAAABAAQAAAAEAAIAAAABAAQAAAAEAAEAAAABAAQAAAADAAEAAAABAAQAAAAFAAEAAAABAAQAAAAFAAAAAAABAAQAAAAEAAAAAAABAAQAAAD5/wQAAAAAAAQAAAA=")
+tile_set = SubResource("TileSet_iywne")
+
+[node name="Player" parent="." unique_id=1725424852 instance=ExtResource("1_yqjtg")]
+z_index = 2
+position = Vector2(0, 1)
+collision_mask = 22
+
+[node name="Shield2" parent="Player" unique_id=74675171 instance=ExtResource("4_p57ef")]
+position = Vector2(0, -8)
+collision_layer = 32
+collision_mask = 16
+script = ExtResource("5_u5sy4")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1877596672]
+position = Vector2(-144, -81)
+anchor_mode = 0
+zoom = Vector2(4.115, 4.05)
+script = ExtResource("5_p57ef")
+
+[node name="Bat" type="Area2D" parent="." unique_id=616264029]
+collision_layer = 16
+collision_mask = 33
+script = ExtResource("4_iywne")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bat" unique_id=632422898]
+position = Vector2(-35, -11)
+sprite_frames = SubResource("SpriteFrames_0tnpc")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bat" unique_id=2084021891]
+position = Vector2(-36, -13)
+shape = SubResource("CircleShape2D_vtaks")
+
+[connection signal="area_entered" from="Bat" to="Bat" method="_on_area_entered"]
+[connection signal="body_entered" from="Bat" to="Bat" method="_on_body_entered"]
