@@ -5,7 +5,6 @@
 [ext_resource type="Script" uid="uid://cluoq5hck4f3n" path="res://scripts/bat.gd" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://dwva1r77jvxkr" path="res://scenes/shield.tscn" id="4_p57ef"]
 [ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_p57ef"]
-[ext_resource type="Script" uid="uid://br3ctk6jekssw" path="res://scripts/shield.gd" id="5_u5sy4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lbhrr"]
 texture = ExtResource("2_lnu2h")
@@ -92,11 +91,8 @@ z_index = 2
 position = Vector2(0, 1)
 collision_mask = 22
 
-[node name="Shield2" parent="Player" unique_id=74675171 instance=ExtResource("4_p57ef")]
+[node name="Shield" parent="Player" unique_id=74675171 instance=ExtResource("4_p57ef")]
 position = Vector2(0, -8)
-collision_layer = 32
-collision_mask = 16
-script = ExtResource("5_u5sy4")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1877596672]
 position = Vector2(-144, -81)
@@ -106,7 +102,7 @@ script = ExtResource("5_p57ef")
 
 [node name="Bat" type="Area2D" parent="." unique_id=616264029]
 collision_layer = 16
-collision_mask = 33
+collision_mask = 5
 script = ExtResource("4_iywne")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bat" unique_id=632422898]

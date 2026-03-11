@@ -11,7 +11,7 @@ const invincible_time = 3
 
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var shield: Area2D = $Shield2
+@onready var shield: Area2D = $Shield
 
 func _set_invincible(value):
 	if value: 

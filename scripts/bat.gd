@@ -1,6 +1,6 @@
 extends Area2D
 @onready var player: CharacterBody2D = $"../Player"
-@onready var shield_2: Area2D = $"../Player/Shield2"
+@onready var shield: Area2D = $"../Player/Shield"
 
 func _ready():
 	monitoring = true
@@ -12,5 +12,5 @@ func _on_body_entered(body: Node2D) -> void:
 
 func _on_area_entered(area: Area2D) -> void:
 	print("Area entered:", area.name, " groups:", area.get_groups())
-	if (area.name == "Shield2"):
+	if (area.name == "Shield"):
 		queue_free()
