@@ -1,6 +1,13 @@
 extends CharacterBody2D
 
+const BULLET = preload("res://scenes/bullet.tscn")
+
+var last_aim = Vector2.RIGHT
+const FIRE_RATE = 0.5
+var fire_timer = 0.0
+
 @onready var camera_2d: Camera2D = $"../Camera2D"
+@onready var hud = $"../HUD"
 
 const SPEED = 75.0
 var HEALTH = 5
@@ -16,18 +23,34 @@ const invincible_time = 3
 func _set_invincible(value):
 	if value: 
 		$InvincibilityTimer.start(invincible_time)
-
 	INVINCIBLE = value 
 
 func _ready() -> void:
 	HEALTH = 5
 	
 func _process(delta: float) -> void:
+	var aim = Input.get_vector("aim_left","aim_right","aim_up","aim_down")
+	
+	if aim.length() > 0.2:
+		last_aim = aim
+	
+	fire_timer -= delta
+	if Input.is_action_pressed("shoot") and fire_timer <= 0.0:
+		fire_timer = FIRE_RATE
+		shoot()
+	
 	if Input.is_action_just_pressed("shield_activate"):
 		shield.activate()
 		
 	if Input.is_action_just_released("shield_activate"):
 		shield.deactivate()
+
+func shoot():
+	var bullet = BULLET.instantiate()
+	get_tree().current_scene.add_child(bullet)
+	bullet.global_position = global_position + last_aim * 16
+	bullet.direction = last_aim.normalized()
+	bullet.shooter = "player"
 
 func _physics_process(delta: float) -> void:
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -51,11 +74,12 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
-func hit() -> void:
+func player_hit() -> void:
 	if not INVINCIBLE:
 		camera_2d.apply_noise_shake()
 		if HEALTH > 0:
 			HEALTH = HEALTH - 1
+			hud.update_hearts(HEALTH)
 			print("Knight got hit, remaining health is ", HEALTH)
 			animated_sprite.play("Hit")
 			self.INVINCIBLE = true

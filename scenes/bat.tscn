@@ -38,23 +38,29 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Bat" type="Node2D" unique_id=874291408]
+[sub_resource type="CircleShape2D" id="CircleShape2D_vtaks"]
+radius = 3.0
 
-[node name="Bat" type="Area2D" parent="." unique_id=1225530322]
-position = Vector2(-77, -18)
-collision_layer = 16
-collision_mask = 5
+[node name="Bat" type="Area2D" unique_id=1181093003 groups=["enemy"]]
+collision_layer = 2
+collision_mask = 13
 script = ExtResource("1_cnldk")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bat" unique_id=1156882066]
-position = Vector2(-36, -13)
-shape = SubResource("CircleShape2D_ss3tx")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bat" unique_id=1367303228]
-position = Vector2(-35, -11)
-sprite_frames = SubResource("SpriteFrames_lv0ya")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=586438869]
+position = Vector2(0, -5)
+sprite_frames = SubResource("SpriteFrames_0tnpc")
 animation = &"idle"
 autoplay = "idle"
 
-[connection signal="area_entered" from="Bat" to="Bat" method="_on_area_entered"]
-[connection signal="body_entered" from="Bat" to="Bat" method="_on_body_entered"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=905278771]
+position = Vector2(-1, -7)
+shape = SubResource("CircleShape2D_vtaks")
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=788700188]
+
+[node name="Rotater" type="Node2D" parent="." unique_id=550550837]
+position = Vector2(-1, -7)
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
