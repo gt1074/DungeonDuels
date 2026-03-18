@@ -42,7 +42,8 @@ texture_region_size = Vector2i(20, 20)
 
 [sub_resource type="TileSet" id="TileSet_iywne"]
 tile_size = Vector2i(20, 20)
-physics_layer_0/collision_layer = 2
+physics_layer_0/collision_layer = 16
+physics_layer_0/collision_mask = 8
 sources/0 = SubResource("TileSetAtlasSource_lbhrr")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kvpfn"]
@@ -60,29 +61,49 @@ region = Rect2(18, 2, 5, 5)
 [node name="Game" type="Node2D" unique_id=1329128313]
 position = Vector2(145, 82)
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=422948942]
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=422948942 groups=["walls"]]
 position = Vector2(-4, -41)
 tile_map_data = PackedByteArray("AAD5//7/AAAAAAIAAAD6//7/AAABAAIAAAD7//7/AAACAAIAAAD8//7/AAABAAIAAAD9//7/AAACAAIAAAD+//7/AAABAAIAAAD///7/AAACAAIAAAAAAP7/AAABAAIAAAABAP7/AAACAAIAAAACAP7/AAABAAIAAAADAP7/AAACAAIAAAAEAP7/AAABAAIAAAAFAP7/AAACAAIAAAAGAP7/AAADAAIAAAAGAP//AAADAAMAAAAGAAAAAAADAAQAAAAGAAEAAAADAAMAAAAGAAIAAAADAAQAAAAGAAMAAAADAAMAAAAGAAQAAAADAAQAAAAGAAUAAAADAAUAAAAEAAUAAAABAAUAAAAFAAUAAAACAAUAAAACAAUAAAABAAUAAAADAAUAAAACAAUAAAAAAAUAAAABAAUAAAABAAUAAAACAAUAAAD+/wUAAAABAAUAAAD//wUAAAACAAUAAAD8/wUAAAABAAUAAAD9/wUAAAACAAUAAAD6/wUAAAABAAUAAAD7/wUAAAACAAUAAAD5/wUAAAAAAAUAAAD5/wMAAAAAAAMAAAD5/wEAAAAAAAMAAAD5/wIAAAAAAAQAAAD5////AAAAAAMAAAD5/wAAAAAAAAQAAAD6////AAABAAMAAAD7////AAABAAMAAAD8////AAACAAMAAAADAP//AAACAAMAAAAFAP//AAABAAMAAAAEAP//AAABAAMAAAACAP//AAABAAMAAAABAP//AAABAAMAAAAAAP//AAABAAMAAAD/////AAABAAMAAAD+////AAABAAMAAAD9////AAABAAMAAAD6/wAAAAACAAQAAAD7/wAAAAABAAQAAAD8/wAAAAABAAQAAAD8/wEAAAACAAQAAAD7/wEAAAABAAQAAAD6/wEAAAABAAQAAAD6/wIAAAABAAQAAAD7/wIAAAABAAQAAAD9/wEAAAABAAQAAAD9/wAAAAABAAQAAAD9/wIAAAABAAQAAAD8/wIAAAABAAQAAAD8/wMAAAABAAQAAAD7/wMAAAABAAQAAAAAAAIAAAABAAQAAAADAAAAAAACAAQAAAD//wAAAAACAAQAAAADAAQAAAACAAQAAAD//wMAAAACAAQAAAAFAAIAAAACAAQAAAD9/wMAAAACAAQAAAD6/wMAAAABAAQAAAD6/wQAAAABAAQAAAD7/wQAAAACAAQAAAD8/wQAAAABAAQAAAD9/wQAAAABAAQAAAD+/wQAAAABAAQAAAD+/wMAAAABAAQAAAD+/wIAAAABAAQAAAD+/wEAAAABAAQAAAD+/wAAAAABAAQAAAD//wEAAAABAAQAAAD//wIAAAABAAQAAAAAAAEAAAABAAQAAAABAAEAAAABAAQAAAACAAEAAAABAAQAAAACAAAAAAABAAQAAAABAAAAAAABAAQAAAAAAAAAAAABAAQAAAABAAIAAAABAAQAAAABAAMAAAABAAQAAAABAAQAAAABAAQAAAAAAAQAAAABAAQAAAD//wQAAAABAAQAAAAAAAMAAAABAAQAAAACAAQAAAABAAQAAAACAAMAAAABAAQAAAACAAIAAAACAAQAAAADAAIAAAABAAQAAAADAAMAAAABAAQAAAAEAAMAAAABAAQAAAAEAAQAAAABAAQAAAAFAAQAAAABAAQAAAAFAAMAAAABAAQAAAAEAAIAAAABAAQAAAAEAAEAAAABAAQAAAADAAEAAAABAAQAAAAFAAEAAAABAAQAAAAFAAAAAAABAAQAAAAEAAAAAAABAAQAAAD5/wQAAAAAAAQAAAA=")
 tile_set = SubResource("TileSet_iywne")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1877596672]
-position = Vector2(-144, -81)
-anchor_mode = 0
-zoom = Vector2(4.115, 4.05)
-script = ExtResource("5_p57ef")
-
 [node name="Player" parent="." unique_id=1725424852 groups=["player"] instance=ExtResource("1_yqjtg")]
 z_index = 2
 position = Vector2(0, 1)
-collision_mask = 22
+collision_mask = 26
 
-[node name="Shield" parent="Player" unique_id=74675171 instance=ExtResource("4_p57ef")]
+[node name="Shield" parent="Player" unique_id=74675171 groups=["shield"] instance=ExtResource("4_p57ef")]
 position = Vector2(0, -8)
+collision_mask = 10
 
 [node name="Bat" parent="." unique_id=1181093003 instance=ExtResource("5_iywne")]
 position = Vector2(-61, -6)
 
+[node name="Bat" type="Area2D" parent="." unique_id=616264029 groups=["enemy"]]
+position = Vector2(-61, -6)
+collision_layer = 2
+collision_mask = 13
+script = ExtResource("4_iywne")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bat" unique_id=632422898]
+position = Vector2(0, -5)
+sprite_frames = SubResource("SpriteFrames_0tnpc")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bat" unique_id=2084021891]
+position = Vector2(-1, -7)
+shape = SubResource("CircleShape2D_vtaks")
+
+[node name="ShootTimer" type="Timer" parent="Bat" unique_id=1220797786]
+
+[node name="Rotater" type="Node2D" parent="Bat" unique_id=573830551]
+position = Vector2(-1, -7)
+
+[connection signal="area_entered" from="Bat" to="Bat" method="_on_area_entered"]
+[connection signal="body_entered" from="Bat" to="Bat" method="_on_body_entered"]
+[connection signal="timeout" from="Bat/ShootTimer" to="Bat" method="_on_shoot_timer_timeout"]
 [node name="HUD" parent="." unique_id=561323672 instance=ExtResource("6_gee14")]
+
 heart_full = SubResource("AtlasTexture_kvpfn")
 heart_half = SubResource("AtlasTexture_dinhu")
 heart_empty = SubResource("AtlasTexture_kvuet")

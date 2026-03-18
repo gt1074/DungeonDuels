@@ -1,9 +1,30 @@
 [gd_scene format=3 uid="uid://cd1tepweky82l"]
 
 [ext_resource type="Script" uid="uid://dg6igcijtknsn" path="res://scripts/bullet.gd" id="1_mkf8s"]
+[ext_resource type="Texture2D" uid="uid://de8chci0slcnf" path="res://assets/brackeys_platformer_assets/sprites/bullet.png" id="2_y25gk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_y25gk"]
+radius = 4.0
 
 [node name="Bullet" type="Area2D" unique_id=1510630161]
-collision_mask = 2
+collision_layer = 8
+collision_mask = 23
+monitoring = false
 script = ExtResource("1_mkf8s")
 
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1397832326]
+position = Vector2(-4.7683716e-07, -1.0000005)
+scale = Vector2(1.013889, 1.013889)
+texture = ExtResource("2_y25gk")
+
+[node name="KillTimer" type="Timer" parent="." unique_id=1106003237]
+wait_time = 10.0
+autostart = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1038727459]
+position = Vector2(0, -1)
+shape = SubResource("CircleShape2D_y25gk")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="KillTimer" to="." method="_on_kill_timer_timeout"]
