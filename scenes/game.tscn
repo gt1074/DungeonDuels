@@ -2,8 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://ipajp0vdfsck" path="res://scenes/player1_world.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://868e8ik4f22o" path="res://scenes/player2_world.tscn" id="2_yqjtg"]
-[ext_resource type="PackedScene" uid="uid://dux6teoy2hqj" path="res://scenes/Player.tscn" id="1_yqjtg"]
-[ext_resource type="Texture2D" uid="uid://bhykessftq25q" path="res://assets/brackeys_platformer_assets/sprites/atlas.png" id="2_lnu2h"]
 
 [node name="game" type="Control" unique_id=698839627]
 clip_contents = true

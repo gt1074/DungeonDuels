@@ -7,7 +7,6 @@ const FIRE_RATE = 0.5
 var fire_timer = 0.0
 
 @onready var camera_2d: Camera2D = $"../Camera2D"
-@onready var hud = $"../HUD"
 
 const SPEED = 75.0
 var HEALTH = 5
@@ -79,7 +78,6 @@ func player_hit() -> void:
 		camera_2d.apply_noise_shake()
 		if HEALTH > 0:
 			HEALTH = HEALTH - 1
-			hud.update_hearts(HEALTH)
 			print("Knight got hit, remaining health is ", HEALTH)
 			animated_sprite.play("Hit")
 			self.INVINCIBLE = true

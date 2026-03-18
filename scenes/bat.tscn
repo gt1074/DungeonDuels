@@ -48,7 +48,7 @@ script = ExtResource("1_cnldk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=586438869]
 position = Vector2(0, -5)
-sprite_frames = SubResource("SpriteFrames_0tnpc")
+sprite_frames = SubResource("SpriteFrames_lv0ya")
 animation = &"idle"
 autoplay = "idle"
 

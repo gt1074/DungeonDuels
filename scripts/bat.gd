@@ -1,6 +1,7 @@
 extends Area2D
-@onready var shield: Area2D = $"../../Player/Shield"
-@onready var player: CharacterBody2D = $"../../Player"
+# TODO: Figure out why they can't find eachother
+@onready var shield: Area2D = $"./Player/Shield"
+@onready var player: CharacterBody2D = $"./Player"
 
 @export var bullet_scene: PackedScene = preload("res://scenes/Bullet.tscn")
 @export var bullet_speed: float = 200
