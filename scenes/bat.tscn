@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://bb18jlx5lu7yj"]
+
+[ext_resource type="Script" uid="uid://cluoq5hck4f3n" path="res://scripts/bat.gd" id="1_cnldk"]
+[ext_resource type="Texture2D" uid="uid://bhykessftq25q" path="res://assets/brackeys_platformer_assets/sprites/atlas.png" id="2_48wkk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ss3tx"]
+radius = 3.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
+atlas = ExtResource("2_48wkk")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
+atlas = ExtResource("2_48wkk")
+region = Rect2(40, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gee14"]
+atlas = ExtResource("2_48wkk")
+region = Rect2(20, 20, 20, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lv0ya"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p57ef")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u5sy4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p57ef")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gee14")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}]
+
+[node name="Bat" type="Node2D" unique_id=874291408]
+
+[node name="Bat" type="Area2D" parent="." unique_id=1225530322]
+position = Vector2(-77, -18)
+collision_layer = 16
+collision_mask = 5
+script = ExtResource("1_cnldk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bat" unique_id=1156882066]
+position = Vector2(-36, -13)
+shape = SubResource("CircleShape2D_ss3tx")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Bat" unique_id=1367303228]
+position = Vector2(-35, -11)
+sprite_frames = SubResource("SpriteFrames_lv0ya")
+animation = &"idle"
+autoplay = "idle"
+
+[connection signal="area_entered" from="Bat" to="Bat" method="_on_area_entered"]
+[connection signal="body_entered" from="Bat" to="Bat" method="_on_body_entered"]

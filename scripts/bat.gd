@@ -1,6 +1,6 @@
 extends Area2D
-@onready var player: CharacterBody2D = $"../Player"
-@onready var shield: Area2D = $"../Player/Shield"
+@onready var shield: Area2D = $"../../Player/Shield"
+@onready var player: CharacterBody2D = $"../../Player"
 
 func _ready():
 	monitoring = true

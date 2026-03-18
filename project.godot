@@ -11,12 +11,14 @@ config_version=5
 [application]
 
 config/name="DungeonDuels"
-run/main_scene="uid://ipajp0vdfsck"
+run/main_scene="uid://dmftwo57c3005"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
+window/size/viewport_width=365
+window/size/viewport_height=202
 window/stretch/mode="viewport"
 
 [dotnet]
