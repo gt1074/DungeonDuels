@@ -1,6 +1,16 @@
 extends CharacterBody2D
 
+<<<<<<< Updated upstream
+=======
+const BULLET = preload("res://scenes/bullet.tscn")
+
+var last_aim = Vector2.RIGHT
+const FIRE_RATE = 0.5
+var fire_timer = 0.0
+
+>>>>>>> Stashed changes
 @onready var camera_2d: Camera2D = $"../Camera2D"
+@onready var hud = $"../HUD"
 
 const SPEED = 75.0
 var HEALTH = 5
@@ -23,6 +33,19 @@ func _ready() -> void:
 	HEALTH = 5
 	
 func _process(delta: float) -> void:
+<<<<<<< Updated upstream
+=======
+	var aim = Input.get_vector("aim_left","aim_right","aim_up","aim_down")
+	
+	if aim.length() > 0.2:
+		last_aim = aim
+	
+	fire_timer -= delta
+	if Input.is_action_pressed("shoot") and fire_timer <= 0.0:
+		fire_timer = FIRE_RATE
+		shoot()
+	
+>>>>>>> Stashed changes
 	if Input.is_action_just_pressed("shield_activate"):
 		shield.activate()
 		
@@ -56,6 +79,7 @@ func hit() -> void:
 		camera_2d.apply_noise_shake()
 		if HEALTH > 0:
 			HEALTH = HEALTH - 1
+			hud.update_hearts(HEALTH)
 			print("Knight got hit, remaining health is ", HEALTH)
 			animated_sprite.play("Hit")
 			self.INVINCIBLE = true

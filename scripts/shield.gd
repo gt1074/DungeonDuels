@@ -7,12 +7,21 @@ func _ready():
 	monitorable = false
 	visible = false
 	collision_polygon.disabled = true
+<<<<<<< Updated upstream
 	
+=======
+
+
+>>>>>>> Stashed changes
 func activate():
 	monitoring = true
 	monitorable = true
 	visible = true
 	collision_polygon.disabled = false
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 func deactivate():
 	monitoring = false
@@ -20,9 +29,23 @@ func deactivate():
 	visible = false
 	collision_polygon.disabled = true
 
+<<<<<<< Updated upstream
 func _process(delta: float) -> void:
 	if visible:
 		var joy_aim = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
 		if joy_aim.length() > 0.2:  # deadzone
 			last_aim = joy_aim
 		rotation = last_aim.angle()
+=======
+
+func _process(_delta):
+	if visible:
+		var aim = Input.get_vector("aim_left","aim_right","aim_up","aim_down")
+		if aim.length() > 0.2:
+			last_aim = aim
+		rotation = last_aim.angle()
+
+func _on_area_entered(area):
+	if area.is_in_group("enemy_bullet"):
+		area.queue_free()
+>>>>>>> Stashed changes

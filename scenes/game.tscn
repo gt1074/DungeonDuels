@@ -2,9 +2,11 @@
 
 [ext_resource type="PackedScene" uid="uid://dux6teoy2hqj" path="res://scenes/Player.tscn" id="1_yqjtg"]
 [ext_resource type="Texture2D" uid="uid://bhykessftq25q" path="res://assets/brackeys_platformer_assets/sprites/atlas.png" id="2_lnu2h"]
-[ext_resource type="Script" uid="uid://cluoq5hck4f3n" path="res://scripts/bat.gd" id="4_iywne"]
 [ext_resource type="PackedScene" uid="uid://dwva1r77jvxkr" path="res://scenes/shield.tscn" id="4_p57ef"]
+[ext_resource type="PackedScene" uid="uid://bb18jlx5lu7yj" path="res://scenes/bat.tscn" id="5_iywne"]
 [ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_p57ef"]
+[ext_resource type="PackedScene" uid="uid://d3jct2cpuluq3" path="res://scenes/hud.tscn" id="6_gee14"]
+[ext_resource type="Texture2D" uid="uid://cfa2mhl7bt7t8" path="res://assets/brackeys_platformer_assets/sprites/hearts.png" id="8_vtaks"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lbhrr"]
 texture = ExtResource("2_lnu2h")
@@ -43,40 +45,17 @@ tile_size = Vector2i(20, 20)
 physics_layer_0/collision_layer = 2
 sources/0 = SubResource("TileSetAtlasSource_lbhrr")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
-atlas = ExtResource("2_lnu2h")
-region = Rect2(20, 0, 20, 20)
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvpfn"]
+atlas = ExtResource("8_vtaks")
+region = Rect2(2, 2, 5, 5)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
-atlas = ExtResource("2_lnu2h")
-region = Rect2(40, 0, 20, 20)
+[sub_resource type="AtlasTexture" id="AtlasTexture_dinhu"]
+atlas = ExtResource("8_vtaks")
+region = Rect2(10, 2, 5, 5)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gee14"]
-atlas = ExtResource("2_lnu2h")
-region = Rect2(20, 20, 20, 20)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_0tnpc"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p57ef")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_u5sy4")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p57ef")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_gee14")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 5.0
-}]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_vtaks"]
-radius = 3.0
+[sub_resource type="AtlasTexture" id="AtlasTexture_kvuet"]
+atlas = ExtResource("8_vtaks")
+region = Rect2(18, 2, 5, 5)
 
 [node name="Game" type="Node2D" unique_id=1329128313]
 position = Vector2(145, 82)
@@ -86,7 +65,17 @@ position = Vector2(-4, -41)
 tile_map_data = PackedByteArray("AAD5//7/AAAAAAIAAAD6//7/AAABAAIAAAD7//7/AAACAAIAAAD8//7/AAABAAIAAAD9//7/AAACAAIAAAD+//7/AAABAAIAAAD///7/AAACAAIAAAAAAP7/AAABAAIAAAABAP7/AAACAAIAAAACAP7/AAABAAIAAAADAP7/AAACAAIAAAAEAP7/AAABAAIAAAAFAP7/AAACAAIAAAAGAP7/AAADAAIAAAAGAP//AAADAAMAAAAGAAAAAAADAAQAAAAGAAEAAAADAAMAAAAGAAIAAAADAAQAAAAGAAMAAAADAAMAAAAGAAQAAAADAAQAAAAGAAUAAAADAAUAAAAEAAUAAAABAAUAAAAFAAUAAAACAAUAAAACAAUAAAABAAUAAAADAAUAAAACAAUAAAAAAAUAAAABAAUAAAABAAUAAAACAAUAAAD+/wUAAAABAAUAAAD//wUAAAACAAUAAAD8/wUAAAABAAUAAAD9/wUAAAACAAUAAAD6/wUAAAABAAUAAAD7/wUAAAACAAUAAAD5/wUAAAAAAAUAAAD5/wMAAAAAAAMAAAD5/wEAAAAAAAMAAAD5/wIAAAAAAAQAAAD5////AAAAAAMAAAD5/wAAAAAAAAQAAAD6////AAABAAMAAAD7////AAABAAMAAAD8////AAACAAMAAAADAP//AAACAAMAAAAFAP//AAABAAMAAAAEAP//AAABAAMAAAACAP//AAABAAMAAAABAP//AAABAAMAAAAAAP//AAABAAMAAAD/////AAABAAMAAAD+////AAABAAMAAAD9////AAABAAMAAAD6/wAAAAACAAQAAAD7/wAAAAABAAQAAAD8/wAAAAABAAQAAAD8/wEAAAACAAQAAAD7/wEAAAABAAQAAAD6/wEAAAABAAQAAAD6/wIAAAABAAQAAAD7/wIAAAABAAQAAAD9/wEAAAABAAQAAAD9/wAAAAABAAQAAAD9/wIAAAABAAQAAAD8/wIAAAABAAQAAAD8/wMAAAABAAQAAAD7/wMAAAABAAQAAAAAAAIAAAABAAQAAAADAAAAAAACAAQAAAD//wAAAAACAAQAAAADAAQAAAACAAQAAAD//wMAAAACAAQAAAAFAAIAAAACAAQAAAD9/wMAAAACAAQAAAD6/wMAAAABAAQAAAD6/wQAAAABAAQAAAD7/wQAAAACAAQAAAD8/wQAAAABAAQAAAD9/wQAAAABAAQAAAD+/wQAAAABAAQAAAD+/wMAAAABAAQAAAD+/wIAAAABAAQAAAD+/wEAAAABAAQAAAD+/wAAAAABAAQAAAD//wEAAAABAAQAAAD//wIAAAABAAQAAAAAAAEAAAABAAQAAAABAAEAAAABAAQAAAACAAEAAAABAAQAAAACAAAAAAABAAQAAAABAAAAAAABAAQAAAAAAAAAAAABAAQAAAABAAIAAAABAAQAAAABAAMAAAABAAQAAAABAAQAAAABAAQAAAAAAAQAAAABAAQAAAD//wQAAAABAAQAAAAAAAMAAAABAAQAAAACAAQAAAABAAQAAAACAAMAAAABAAQAAAACAAIAAAACAAQAAAADAAIAAAABAAQAAAADAAMAAAABAAQAAAAEAAMAAAABAAQAAAAEAAQAAAABAAQAAAAFAAQAAAABAAQAAAAFAAMAAAABAAQAAAAEAAIAAAABAAQAAAAEAAEAAAABAAQAAAADAAEAAAABAAQAAAAFAAEAAAABAAQAAAAFAAAAAAABAAQAAAAEAAAAAAABAAQAAAD5/wQAAAAAAAQAAAA=")
 tile_set = SubResource("TileSet_iywne")
 
+<<<<<<< Updated upstream
 [node name="Player" parent="." unique_id=1725424852 instance=ExtResource("1_yqjtg")]
+=======
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1877596672]
+position = Vector2(-144, -81)
+anchor_mode = 0
+zoom = Vector2(4.115, 4.05)
+script = ExtResource("5_p57ef")
+
+[node name="Player" parent="." unique_id=1725424852 groups=["player"] instance=ExtResource("1_yqjtg")]
+>>>>>>> Stashed changes
 z_index = 2
 position = Vector2(0, 1)
 collision_mask = 22
@@ -94,6 +83,7 @@ collision_mask = 22
 [node name="Shield" parent="Player" unique_id=74675171 instance=ExtResource("4_p57ef")]
 position = Vector2(0, -8)
 
+<<<<<<< Updated upstream
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1877596672]
 position = Vector2(-144, -81)
 anchor_mode = 0
@@ -117,3 +107,12 @@ shape = SubResource("CircleShape2D_vtaks")
 
 [connection signal="area_entered" from="Bat" to="Bat" method="_on_area_entered"]
 [connection signal="body_entered" from="Bat" to="Bat" method="_on_body_entered"]
+=======
+[node name="Bat" parent="." unique_id=1181093003 instance=ExtResource("5_iywne")]
+position = Vector2(-61, -6)
+
+[node name="HUD" parent="." unique_id=561323672 instance=ExtResource("6_gee14")]
+heart_full = SubResource("AtlasTexture_kvpfn")
+heart_half = SubResource("AtlasTexture_dinhu")
+heart_empty = SubResource("AtlasTexture_kvuet")
+>>>>>>> Stashed changes

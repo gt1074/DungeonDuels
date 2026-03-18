@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://d3jct2cpuluq3"]
+
+[ext_resource type="Script" uid="uid://uuvetn6lnx8l" path="res://scripts/hud.gd" id="1_oo0fn"]
+[ext_resource type="Texture2D" uid="uid://cfa2mhl7bt7t8" path="res://assets/brackeys_platformer_assets/sprites/hearts.png" id="2_5ysmq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6fi6k"]
+atlas = ExtResource("2_5ysmq")
+region = Rect2(2, 2, 5, 5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uo2fv"]
+atlas = ExtResource("2_5ysmq")
+region = Rect2(10, 2, 5, 5)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_047uy"]
+atlas = ExtResource("2_5ysmq")
+region = Rect2(18, 2, 5, 5)
+
+[node name="HUD" type="CanvasLayer" unique_id=561323672]
+script = ExtResource("1_oo0fn")
+heart_full = SubResource("AtlasTexture_6fi6k")
+heart_half = SubResource("AtlasTexture_uo2fv")
+heart_empty = SubResource("AtlasTexture_047uy")
+
+[node name="Hearts" type="HBoxContainer" parent="." unique_id=1754961342]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 60.0
+offset_bottom = 60.0
+scale = Vector2(8, 8)
