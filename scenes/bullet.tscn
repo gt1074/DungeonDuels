@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cd1tepweky82l"]
 
-[ext_resource type="Script" uid="uid://d1grf6bdgf1e1" path="res://scripts/Bullet.cs" id="1_mkf8s"]
+[ext_resource type="Script" uid="uid://dg6igcijtknsn" path="res://scripts/bullet.gd" id="1_mkf8s"]
 
 [node name="Bullet" type="Area2D" unique_id=1510630161]
 collision_mask = 2

@@ -1,10 +1,6 @@
 extends Area2D
-<<<<<<< Updated upstream
-@onready var player: CharacterBody2D = $"../Player"
-@onready var shield: Area2D = $"../Player/Shield"
-=======
 
-@export var bullet_scene: PackedScene = preload("res://scenes/Bullet.tscn")
+@export var bullet_scene: PackedScene = preload("res://scenes/bullet.tscn")
 @export var bullet_speed: float = 200
 @export var shoot_interval: float = 0.2
 
@@ -20,7 +16,6 @@ var current_pattern_index = 0
 func bat_hit():
 	HEALTH -= 1
 	print("Bat hit! Remaining health:", HEALTH)
-	# Play hit animation if present
 	change_pattern()
 	if HEALTH <= 0:
 		print("Bat died!")
@@ -28,24 +23,10 @@ func bat_hit():
 
 func change_pattern():
 	current_pattern_index = (current_pattern_index + 1) % patterns.size()
->>>>>>> Stashed changes
 
 func _ready():
 	monitoring = true
 	visible = true
-<<<<<<< Updated upstream
-
-func _on_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D:
-		body.hit()
-
-func _on_area_entered(area: Area2D) -> void:
-	print("Area entered:", area.name, " groups:", area.get_groups())
-	if (area.name == "Shield"):
-		queue_free()
-=======
-	
-	# Start the shooting timer
 	shoot_timer.wait_time = shoot_interval
 	shoot_timer.start()
 
@@ -86,7 +67,6 @@ func _shoot_spiral():
 	spiral_angle += deg_to_rad(15)
 
 func _shoot_line():
-	# Shoot straight ahead in a line
 	spawn_bullet(Vector2.RIGHT)
 
 func spawn_bullet(dir: Vector2):
@@ -101,11 +81,10 @@ func _on_shoot_timer_timeout():
 	shoot_pattern()
 
 func _on_body_entered(body: Node2D):
-	if body.is_in_group("player") and body.has_method("hit"):
+	if body.is_in_group("player") and body.has_method("player_hit"):
 		body.player_hit()
 
 func _on_area_entered(area: Area2D):
 	if area.has_method("bat_hit") and area.shooter == "player":
 		area.bat_hit()
 		area.queue_free()
->>>>>>> Stashed changes
