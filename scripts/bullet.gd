@@ -14,7 +14,6 @@ func _on_kill_timer_timeout():
 	queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
-	print("Bullet hit: ", body.name, " groups: ", body.get_groups())
 	if shooter == "enemy":
 		if body.is_in_group("player") and body.has_method("player_hit"):
 			body.player_hit()

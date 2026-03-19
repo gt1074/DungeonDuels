@@ -95,7 +95,6 @@ func _on_body_entered(body: Node2D):
 		body.player_hit()
 
 func _on_area_entered(area: Area2D):
-	if area.has_node("") == false:  # it's a bullet
-		if "shooter" in area and area.shooter == "player":
-			bat_hit()
-			area.queue_free()
+	if "shooter" in area and area.shooter == "player":
+		bat_hit()
+		area.queue_free()
