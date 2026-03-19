@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://br3ctk6jekssw" path="res://scripts/shield.gd" id="1_ohv3a"]
 [ext_resource type="Texture2D" uid="uid://f6qnpojrdflv" path="res://assets/brackeys_platformer_assets/sprites/Shield.png" id="1_vuocu"]
 
-[node name="Shield" type="Area2D" unique_id=74675171]
+[node name="Shield" type="Area2D" unique_id=74675171 groups=["shield"]]
 collision_layer = 4
 collision_mask = 2
 monitoring = false

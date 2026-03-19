@@ -46,7 +46,7 @@ func _process(delta: float) -> void:
 
 func shoot():
 	var bullet = BULLET.instantiate()
-	get_tree().current_scene.add_child(bullet)
+	get_parent().add_child(bullet)
 	bullet.global_position = global_position + last_aim * 16
 	bullet.direction = last_aim.normalized()
 	bullet.shooter = "player"
