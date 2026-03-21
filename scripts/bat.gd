@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var bullet_scene: PackedScene = preload("res://scenes/Bullet.tscn")
+@export var bullet_scene: PackedScene = preload("res://scenes/bullet.tscn")
 @export var bullet_speed: float = 200
 @export var shoot_interval: float = 0.2
 
@@ -85,7 +85,7 @@ func _on_shoot_timer_timeout():
 	shoot_pattern()
 
 func _on_body_entered(body: Node2D):
-	if body.is_in_group("player") and body.has_method("hit"):
+	if body.is_in_group("player") and body.has_method("player_hit"):
 		body.player_hit()
 
 func _on_area_entered(area: Area2D):
