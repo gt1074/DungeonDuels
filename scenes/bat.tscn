@@ -3,6 +3,9 @@
 [ext_resource type="Script" uid="uid://cluoq5hck4f3n" path="res://scripts/bat.gd" id="1_cnldk"]
 [ext_resource type="Texture2D" uid="uid://bhykessftq25q" path="res://assets/brackeys_platformer_assets/sprites/atlas.png" id="2_48wkk"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_ss3tx"]
+radius = 3.0
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
 atlas = ExtResource("2_48wkk")
 region = Rect2(20, 0, 20, 20)
@@ -15,7 +18,7 @@ region = Rect2(40, 0, 20, 20)
 atlas = ExtResource("2_48wkk")
 region = Rect2(20, 20, 20, 20)
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_0tnpc"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_lv0ya"]
 animations = [{
 "frames": [{
 "duration": 1.0,
@@ -45,7 +48,7 @@ script = ExtResource("1_cnldk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=586438869]
 position = Vector2(0, -5)
-sprite_frames = SubResource("SpriteFrames_0tnpc")
+sprite_frames = SubResource("SpriteFrames_lv0ya")
 animation = &"idle"
 autoplay = "idle"
 

@@ -44,7 +44,7 @@ func _process(delta: float) -> void:
 
 func shoot():
 	var bullet = BULLET.instantiate()
-	get_tree().current_scene.add_child(bullet)
+	get_parent().add_child(bullet)
 	bullet.global_position = global_position + last_aim * 16
 	bullet.direction = last_aim.normalized()
 	bullet.shooter = "player"
@@ -76,7 +76,6 @@ func player_hit() -> void:
 		camera_2d.apply_noise_shake()
 		if HEALTH > 0:
 			HEALTH = HEALTH - 1
-			hud.update_hearts(HEALTH)
 			print("Knight got hit, remaining health is ", HEALTH)
 			animated_sprite.play("Hit")
 			self.INVINCIBLE = true

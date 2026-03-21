@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://q2utvlmllbtn" path="res://scripts/player.gd" id="1_3li8b"]
 [ext_resource type="Texture2D" uid="uid://bfh2lscwaj5ec" path="res://assets/brackeys_platformer_assets/sprites/knight.png" id="1_p0vlq"]
+[ext_resource type="PackedScene" uid="uid://dwva1r77jvxkr" path="res://scenes/shield.tscn" id="3_mdl7e"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_70d11"]
 atlas = ExtResource("1_p0vlq")
@@ -286,13 +287,13 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_cw2d6"]
 radius = 5.0
 
-[node name="player" type="CharacterBody2D" unique_id=1725424852]
-collison_layer = 1
+[node name="player" type="CharacterBody2D" unique_id=1725424852 groups=["player"]]
 collision_mask = 10
 motion_mode = 1
 script = ExtResource("1_3li8b")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=966591007]
+texture_filter = 1
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_70d11")
 animation = &"Death"
@@ -303,5 +304,9 @@ position = Vector2(0, -8)
 shape = SubResource("CircleShape2D_cw2d6")
 
 [node name="InvincibilityTimer" type="Timer" parent="." unique_id=1240282435]
+
+[node name="Shield" parent="." unique_id=74675171 instance=ExtResource("3_mdl7e")]
+texture_filter = 1
+position = Vector2(0, -8)
 
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]

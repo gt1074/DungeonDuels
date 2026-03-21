@@ -1,5 +1,11 @@
 extends Area2D
+## TODO: Figure out why they can't find eachother
+## bat and player are siblings under player1_world
+# 
+#@onready var shield: Area2D = $"./Player/Shield"
+#@onready var player: CharacterBody2D = $"./Player"
 
+# this shit needs to be lowercased! bullet.tscn
 @export var bullet_scene: PackedScene = preload("res://scenes/bullet.tscn")
 @export var bullet_speed: float = 200
 @export var shoot_interval: float = 0.2
@@ -75,7 +81,7 @@ func _shoot_line():
 
 func spawn_bullet(dir: Vector2):
 	var bullet = bullet_scene.instantiate()
-	get_tree().current_scene.add_child(bullet)
+	get_parent().add_child(bullet)
 	bullet.global_position = global_position
 	bullet.direction = dir.normalized()
 	bullet.speed = bullet_speed
@@ -89,6 +95,6 @@ func _on_body_entered(body: Node2D):
 		body.player_hit()
 
 func _on_area_entered(area: Area2D):
-	if area.has_method("bat_hit") and area.shooter == "player":
-		area.bat_hit()
+	if "shooter" in area and area.shooter == "player":
+		bat_hit()
 		area.queue_free()
