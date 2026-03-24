@@ -12,7 +12,6 @@ var INVINCIBLE = false:
 const invincible_time = 3
 
 @onready var camera_2d: Camera2D = $"../Camera2D"
-@onready var hud = $"../HUD"
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var shield: Area2D = $Shield
