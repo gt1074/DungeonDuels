@@ -22,7 +22,7 @@ func _process(_delta: float) -> void:
 
 	if p1:
 		draw_hearts(p1_hearts, p1.HEALTH, 5)
-		p1_kills_label.text = "K:" + str(0)
+		p1_kills_label.text = "K:" + str(p1.KILLS)
 	else:
 		draw_hearts(p1_hearts, 0, 5)
 		p1_kills_label.text = "K:-"

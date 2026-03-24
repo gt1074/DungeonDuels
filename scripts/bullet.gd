@@ -23,7 +23,8 @@ func _on_body_entered(body: Node2D) -> void:
 
 	elif shooter == "player":
 		if body.is_in_group("enemy") and body.has_method("bat_hit"):
-			body.bat_hit()
+			var player = get_node_or_null("/root/game/HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport/Player1_World/Player")
+			body.bat_hit(player)
 			queue_free()
 		elif body.is_in_group("walls"):
 			queue_free()
@@ -37,5 +38,6 @@ func _on_area_entered(area: Area2D) -> void:
 
 	if shooter == "player":
 		if area.is_in_group("enemy") and area.has_method("bat_hit"):
-			area.bat_hit()
+			var player = get_node_or_null("/root/game/HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport/Player1_World/Player")
+			area.bat_hit(player)
 			queue_free()

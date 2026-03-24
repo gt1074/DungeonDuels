@@ -7,6 +7,7 @@ var fire_timer = 0.0
 
 const SPEED = 75.0
 var HEALTH = 5
+var KILLS = 0
 var INVINCIBLE = false:
 	set = _set_invincible 
 const invincible_time = 3
