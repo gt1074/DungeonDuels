@@ -32,6 +32,8 @@ func _on_body_entered(body: Node2D) -> void:
 func _on_area_entered(area: Area2D) -> void:
 	# Only hit shields or specific targets
 	if shooter == "enemy" and area.is_in_group("shield"):
+		if area.has_method("take_damage"):
+			area.take_damage(1)
 		queue_free()
 	elif area.is_in_group("walls"):
 		queue_free()
