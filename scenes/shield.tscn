@@ -22,4 +22,11 @@ polygon = PackedVector2Array(-9.210497, -9.844574, -2.631569, -9.844574, -2.6315
 [node name="CooldownTimer" type="Timer" parent="." unique_id=390419961]
 one_shot = true
 
+[node name="RechargeTimer" type="Timer" parent="." unique_id=1951357767]
+
+[node name="RechargeDelayTimer" type="Timer" parent="." unique_id=338639418]
+one_shot = true
+
 [connection signal="timeout" from="CooldownTimer" to="." method="_on_cooldown_timer_timeout"]
+[connection signal="timeout" from="RechargeTimer" to="." method="_on_recharge_timer_timeout"]
+[connection signal="timeout" from="RechargeDelayTimer" to="." method="_on_recharge_delay_timer_timeout"]

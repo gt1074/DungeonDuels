@@ -15,7 +15,7 @@ const invincible_time = 3
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var shield: Area2D = $Shield
+@onready var shield: Shield = $Shield
 
 func _set_invincible(value):
 	if value: 
@@ -36,10 +36,9 @@ func _process(delta: float) -> void:
 		fire_timer = FIRE_RATE
 		shoot()
 	
-	if Input.is_action_just_pressed("shield_activate"):
+	if Input.is_action_pressed("shield_activate") and not shield.is_broken and not shield.on_cooldown:
 		shield.activate()
-		
-	if Input.is_action_just_released("shield_activate"):
+	else:
 		shield.deactivate()
 
 func shoot():
