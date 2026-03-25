@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://de8chci0slcnf"
-path="res://.godot/imported/bullet.png-72ec7c4314c5a59bc79b154273a9b5ee.ctex"
+uid="uid://csee55q62yfle"
+path="res://.godot/imported/enemy_bullet.png-9317b8d262bae6e3a450fe51b597ef56.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/brackeys_platformer_assets/sprites/bullet.png"
-dest_files=["res://.godot/imported/bullet.png-72ec7c4314c5a59bc79b154273a9b5ee.ctex"]
+source_file="res://assets/brackeys_platformer_assets/sprites/enemy_bullet.png"
+dest_files=["res://.godot/imported/enemy_bullet.png-9317b8d262bae6e3a450fe51b597ef56.ctex"]
 
 [params]
 

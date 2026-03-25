@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dfbd1ebf8giyp"]
+
+[ext_resource type="Script" uid="uid://cb02wwh1yquhj" path="res://scripts/enemy_bullet.gd" id="1_qx7rs"]
+[ext_resource type="Texture2D" uid="uid://csee55q62yfle" path="res://assets/brackeys_platformer_assets/sprites/enemy_bullet.png" id="2_38r62"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gl7bs"]
+radius = 4.0
+
+[node name="Enemy_Bullet" type="Area2D" unique_id=740296172]
+script = ExtResource("1_qx7rs")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1781189086]
+texture = ExtResource("2_38r62")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1400289193]
+shape = SubResource("CircleShape2D_gl7bs")
+
+[node name="KillTimer" type="Timer" parent="." unique_id=795306751]
+wait_time = 10.0
+autostart = true

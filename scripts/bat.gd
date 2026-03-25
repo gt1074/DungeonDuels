@@ -1,22 +1,31 @@
-extends Area2D
+extends CharacterBody2D
 ## TODO: Figure out why they can't find eachother
 ## bat and player are siblings under player1_world
 # 
 #@onready var shield: Area2D = $"./Player/Shield"
 #@onready var player: CharacterBody2D = $"./Player"
-
+# direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
 # this shit needs to be lowercased! bullet.tscn
-@export var bullet_scene: PackedScene = preload("res://scenes/bullet.tscn")
-@export var bullet_speed: float = 200
-@export var shoot_interval: float = 0.2
+@export var bullet_scene: PackedScene = preload("res://scenes/enemy_bullet.tscn")
+@export var bullet_speed: float = 100
+@export var shoot_interval: float = 1
 
+@onready var player: CharacterBody2D = get_parent().get_node("player")
 @onready var shoot_timer = $ShootTimer
+@onready var burst_timer = $BurstTimer
 @onready var rotater: Node2D = $Rotater
+
+const BURST_AMOUNT = 3
+const BURST_INTERVAL = 0.15
+var burst_count = 0
+
+var last_direction = Vector2.RIGHT
 
 var HEALTH = 5
 var spiral_angle: float = 0.0
-
-var patterns = ["circle", "fan", "spiral", "line"]
+var SPEED = 5.0
+#var patterns = ["circle", "fan", "spiral", "line"]
+var patterns = ["triple"]
 var current_pattern_index = 0
 
 func bat_hit():
@@ -32,17 +41,25 @@ func change_pattern():
 	current_pattern_index = (current_pattern_index + 1) % patterns.size()
 
 func _ready():
-	monitoring = true
 	visible = true
 	
 	# Start the shooting timer
 	shoot_timer.wait_time = shoot_interval
 	shoot_timer.start()
+	
+	burst_timer.wait_time = BURST_INTERVAL
+	burst_timer.one_shot = false
+	burst_timer.timeout.connect(_on_burst_timer_timeout)
 
 func _process(delta):
 	const ROTATION_SPEED = 90
 	rotater.rotation_degrees = fmod(rotater.rotation_degrees + ROTATION_SPEED * delta, 360)
 
+func _physics_process(delta: float) -> void:
+	var direction = (player.global_position-global_position).normalized()
+	velocity = lerp(velocity, direction * SPEED, 8.5*delta)
+	move_and_slide()
+	
 func shoot_pattern():
 	match patterns[current_pattern_index]:
 		"circle":
@@ -53,6 +70,8 @@ func shoot_pattern():
 			_shoot_spiral()
 		"line":
 			_shoot_line()
+		"triple":
+			_shoot_triple()
 
 func _shoot_circle():
 	var count = 8
@@ -75,6 +94,18 @@ func _shoot_spiral():
 		spawn_bullet(Vector2.RIGHT.rotated(spiral_angle + i * angle_step))
 	spiral_angle += deg_to_rad(15)
 
+func _shoot_triple():
+	burst_count = 0
+	burst_timer.start()
+	
+func _on_burst_timer_timeout():
+	if burst_count == 0:
+		last_direction = (player.global_position - global_position).normalized()
+	spawn_bullet(last_direction)
+	burst_count += 1
+	if burst_count >= BURST_AMOUNT:
+		burst_timer.stop()
+		
 func _shoot_line():
 	# Shoot straight ahead in a line
 	spawn_bullet(Vector2.RIGHT)

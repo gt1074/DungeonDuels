@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const BULLET = preload("res://scenes/bullet.tscn")
+const BULLET = preload("res://scenes/player_bullet.tscn")
 
 var last_aim = Vector2.RIGHT
 const FIRE_RATE = 0.5
@@ -17,7 +17,7 @@ const invincible_time = 3
 
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
-@onready var shield: Area2D = $Shield
+@onready var shield: Area2D = $shield
 
 func _set_invincible(value):
 	if value: 
