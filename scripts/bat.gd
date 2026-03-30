@@ -128,7 +128,7 @@ func spawn_bullet(dir: Vector2):
 	bullet.global_position = global_position
 	bullet.direction = dir.normalized()
 	bullet.speed = bullet_speed
-	#bullet.shooter = "enemy"
+	#bullet.shooter = "enemy" #causing dumb errors
 
 func _on_shoot_timer_timeout():
 	shoot_pattern()
@@ -137,6 +137,7 @@ func _on_body_entered(body: Node2D):
 	if body.is_in_group("player") and body.has_method("player_hit"):
 		body.player_hit()
 
+#causing dumb errors
 #func _on_area_entered(area: Area2D):
 #	if "shooter" in area and area.shooter == "player":
 #		bat_hit()
