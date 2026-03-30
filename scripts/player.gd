@@ -26,6 +26,9 @@ func _set_invincible(value):
 
 func _ready() -> void:
 	HEALTH = 5
+
+	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+	safe_margin = 0.08
 	
 func _process(delta: float) -> void:
 	var aim = Input.get_vector("aim_left","aim_right","aim_up","aim_down")
@@ -49,9 +52,9 @@ func shoot():
 	get_parent().add_child(bullet)
 	bullet.global_position = global_position + last_aim * 16
 	bullet.direction = last_aim.normalized()
-	bullet.shooter = "player"
+	#bullet.shooter = "player"
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	var facing = Input.get_axis("move_left", "move_right")
 	var animation_state = 0
@@ -72,6 +75,15 @@ func _physics_process(delta: float) -> void:
 			animated_sprite.play("idle")
 	
 	move_and_slide()
+
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		var collider = collision.get_collider()
+	
+		if collider.is_in_group("enemy"):
+			# Push the bat in the direction the player is moving
+			if collider is CharacterBody2D:
+				collider.velocity += velocity * 0.6
 
 func player_hit() -> void:
 	if not INVINCIBLE:

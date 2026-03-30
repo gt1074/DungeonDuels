@@ -51,13 +51,25 @@ func _ready():
 	burst_timer.one_shot = false
 	burst_timer.timeout.connect(_on_burst_timer_timeout)
 
+	add_to_group("enemy")
+	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
+	safe_margin = 0.08
+
 func _process(delta):
 	const ROTATION_SPEED = 90
 	rotater.rotation_degrees = fmod(rotater.rotation_degrees + ROTATION_SPEED * delta, 360)
 
 func _physics_process(delta: float) -> void:
 	var direction = (player.global_position-global_position).normalized()
-	velocity = lerp(velocity, direction * SPEED, 8.5*delta)
+	velocity = velocity.move_toward(direction * SPEED, 200 * delta)
+	
+	#stop pushing when colliding vertically
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		if collision.get_collider().is_in_group("player"):
+			# Remove vertical push if colliding from top/bottom
+			if abs(collision.get_normal().y) > 0.7:
+				velocity.y = 0
 	move_and_slide()
 	
 func shoot_pattern():
@@ -116,7 +128,7 @@ func spawn_bullet(dir: Vector2):
 	bullet.global_position = global_position
 	bullet.direction = dir.normalized()
 	bullet.speed = bullet_speed
-	bullet.shooter = "enemy"
+	#bullet.shooter = "enemy"
 
 func _on_shoot_timer_timeout():
 	shoot_pattern()
@@ -125,7 +137,7 @@ func _on_body_entered(body: Node2D):
 	if body.is_in_group("player") and body.has_method("player_hit"):
 		body.player_hit()
 
-func _on_area_entered(area: Area2D):
-	if "shooter" in area and area.shooter == "player":
-		bat_hit()
-		area.queue_free()
+#func _on_area_entered(area: Area2D):
+#	if "shooter" in area and area.shooter == "player":
+#		bat_hit()
+#		area.queue_free()
