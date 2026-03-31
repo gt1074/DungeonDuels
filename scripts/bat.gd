@@ -116,7 +116,6 @@ func spawn_bullet(dir: Vector2):
 	bullet.global_position = global_position
 	bullet.direction = dir.normalized()
 	bullet.speed = bullet_speed
-	bullet.shooter = "enemy"
 
 func _on_shoot_timer_timeout():
 	shoot_pattern()
