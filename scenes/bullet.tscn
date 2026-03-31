@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://cd1tepweky82l"]
+[gd_scene format=3 uid="uid://da4oj6tcgucxl"]
 
-[ext_resource type="Script" uid="uid://dg6igcijtknsn" path="res://scripts/bullet.gd" id="1_mkf8s"]
-[ext_resource type="Texture2D" uid="uid://de8chci0slcnf" path="res://assets/brackeys_platformer_assets/sprites/bullet.png" id="2_y25gk"]
+[ext_resource type="Script" path="res://scripts/bullet.gd" id="1_mkf8s"]
+[ext_resource type="Texture2D" path="res://assets/brackeys_platformer_assets/sprites/bullet.png" id="2_y25gk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y25gk"]
 radius = 4.0
