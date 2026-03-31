@@ -3,9 +3,6 @@
 [ext_resource type="Script" uid="uid://cluoq5hck4f3n" path="res://scripts/bat.gd" id="1_cnldk"]
 [ext_resource type="Texture2D" uid="uid://bhykessftq25q" path="res://assets/brackeys_platformer_assets/sprites/atlas.png" id="2_48wkk"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ss3tx"]
-radius = 3.0
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
 atlas = ExtResource("2_48wkk")
 region = Rect2(20, 0, 20, 20)
@@ -41,7 +38,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_vtaks"]
 radius = 3.0
 
-[node name="Bat" type="Area2D" unique_id=1181093003 groups=["enemy"]]
+[node name="Bat" type="CharacterBody2D" unique_id=1577304110 groups=["enemy"]]
 collision_layer = 2
 collision_mask = 13
 script = ExtResource("1_cnldk")
@@ -61,6 +58,6 @@ shape = SubResource("CircleShape2D_vtaks")
 [node name="Rotater" type="Node2D" parent="." unique_id=550550837]
 position = Vector2(-1, -7)
 
-[connection signal="area_entered" from="." to="." method="_on_area_entered"]
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[node name="BurstTimer" type="Timer" parent="." unique_id=1010548930]
+
 [connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
