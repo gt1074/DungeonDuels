@@ -6,15 +6,14 @@ var last_aim = Vector2.RIGHT
 const FIRE_RATE = 0.5
 var fire_timer = 0.0
 
-@onready var camera_2d: Camera2D = $"../Camera2D"
-
 const SPEED = 75.0
 var HEALTH = 5
+var KILLS = 0
 var INVINCIBLE = false:
 	set = _set_invincible 
-	
 const invincible_time = 3
 
+@onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var shield: Area2D = $shield
@@ -38,10 +37,9 @@ func _process(delta: float) -> void:
 		fire_timer = FIRE_RATE
 		shoot()
 	
-	if Input.is_action_just_pressed("shield_activate"):
+	if Input.is_action_pressed("shield_activate") and not shield.is_broken and not shield.on_cooldown:
 		shield.activate()
-		
-	if Input.is_action_just_released("shield_activate"):
+	else:
 		shield.deactivate()
 
 func shoot():

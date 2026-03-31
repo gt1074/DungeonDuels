@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dmftwo57c3005"]
 
-[ext_resource type="PackedScene" uid="uid://ipajp0vdfsck" path="res://scenes/player1_world.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://h8gr5xyecue0" path="res://scenes/player1_world.tscn" id="1_uwrxv"]
+[ext_resource type="PackedScene" uid="uid://d3jct2cpuluq3" path="res://scenes/hud.tscn" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://868e8ik4f22o" path="res://scenes/player2_world.tscn" id="2_yqjtg"]
 
 [node name="game" type="Control" unique_id=698839627]
@@ -21,47 +22,44 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="Control" type="Control" parent="HBoxContainer" unique_id=1690056014]
+[node name="LeftPanel" type="Control" parent="HBoxContainer" unique_id=1690056014]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer/Control" unique_id=559915280]
+[node name="LeftSubViewportContainer" type="SubViewportContainer" parent="HBoxContainer/LeftPanel" unique_id=559915280]
 texture_filter = 1
 layout_mode = 0
 offset_right = 160.0
 offset_bottom = 202.0
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="HBoxContainer/Control/SubViewportContainer" unique_id=1965513758]
+[node name="LeftSubViewport" type="SubViewport" parent="HBoxContainer/LeftPanel/LeftSubViewportContainer" unique_id=1965513758]
 handle_input_locally = false
 size = Vector2i(160, 202)
 render_target_update_mode = 4
 
-[node name="Player1_World" parent="HBoxContainer/Control/SubViewportContainer/SubViewport" unique_id=1329128313 instance=ExtResource("1_uwrxv")]
+[node name="Player1_World" parent="HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport" unique_id=1329128313 instance=ExtResource("1_uwrxv")]
 
-[node name="Control3" type="Control" parent="HBoxContainer" unique_id=1172999611]
-custom_minimum_size = Vector2(37, 0)
+[node name="CenterPanel" type="CenterContainer" parent="HBoxContainer" unique_id=1529843548]
+custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="HBoxContainer/Control3" unique_id=1486986803]
-z_index = 1
-layout_mode = 0
-offset_right = 37.0
-offset_bottom = 202.0
+[node name="HUD" parent="HBoxContainer/CenterPanel" unique_id=2123703365 instance=ExtResource("2_lnu2h")]
+layout_mode = 2
 
-[node name="Control2" type="Control" parent="HBoxContainer" unique_id=1879872553]
+[node name="RightPanel" type="Control" parent="HBoxContainer" unique_id=1879872553]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer/Control2" unique_id=499114406]
+[node name="RightSubViewportContainer" type="SubViewportContainer" parent="HBoxContainer/RightPanel" unique_id=499114406]
 layout_mode = 0
 offset_right = 160.0
 offset_bottom = 202.0
 stretch = true
 
-[node name="SubViewport" type="SubViewport" parent="HBoxContainer/Control2/SubViewportContainer" unique_id=1931096643]
+[node name="RightSubViewport" type="SubViewport" parent="HBoxContainer/RightPanel/RightSubViewportContainer" unique_id=1931096643]
 handle_input_locally = false
 size = Vector2i(160, 202)
 render_target_update_mode = 4
 
-[node name="Player2_world" parent="HBoxContainer/Control2/SubViewportContainer/SubViewport" unique_id=1970326021 instance=ExtResource("2_yqjtg")]
+[node name="Player2_world" parent="HBoxContainer/RightPanel/RightSubViewportContainer/RightSubViewport" unique_id=1970326021 instance=ExtResource("2_yqjtg")]

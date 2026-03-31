@@ -28,13 +28,14 @@ var SPEED = 5.0
 var patterns = ["triple"]
 var current_pattern_index = 0
 
-func bat_hit():
+func bat_hit(attacker = null):
 	HEALTH -= 1
-	print("Bat hit! Remaining health:", HEALTH)
 	# Play hit animation if present
 	change_pattern()
 	if HEALTH <= 0:
 		print("Bat died!")
+		if attacker != null:
+			attacker.KILLS += 1
 		queue_free()
 
 func change_pattern():
@@ -125,6 +126,4 @@ func _on_body_entered(body: Node2D):
 		body.player_hit()
 
 func _on_area_entered(area: Area2D):
-	if "shooter" in area and area.shooter == "player":
-		bat_hit()
-		area.queue_free()
+	pass		# bat_hit was being called in bullet.gd AND bat.gd

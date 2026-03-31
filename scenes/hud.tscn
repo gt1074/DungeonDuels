@@ -1,29 +1,92 @@
 [gd_scene format=3 uid="uid://d3jct2cpuluq3"]
 
 [ext_resource type="Script" uid="uid://uuvetn6lnx8l" path="res://scripts/hud.gd" id="1_oo0fn"]
-[ext_resource type="Texture2D" uid="uid://cfa2mhl7bt7t8" path="res://assets/brackeys_platformer_assets/sprites/hearts.png" id="2_5ysmq"]
+[ext_resource type="Texture2D" uid="uid://cfa2mhl7bt7t8" path="res://assets/brackeys_platformer_assets/sprites/hearts.png" id="2_oo0fn"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_6fi6k"]
-atlas = ExtResource("2_5ysmq")
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ysmq"]
+atlas = ExtResource("2_oo0fn")
 region = Rect2(2, 2, 5, 5)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uo2fv"]
-atlas = ExtResource("2_5ysmq")
-region = Rect2(10, 2, 5, 5)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_047uy"]
-atlas = ExtResource("2_5ysmq")
+[sub_resource type="AtlasTexture" id="AtlasTexture_6fi6k"]
+atlas = ExtResource("2_oo0fn")
 region = Rect2(18, 2, 5, 5)
 
-[node name="HUD" type="CanvasLayer" unique_id=561323672]
+[node name="HUD" type="Control" unique_id=2123703365]
+custom_minimum_size = Vector2(44, 100)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 50.0
+offset_bottom = 100.0
 script = ExtResource("1_oo0fn")
-heart_full = SubResource("AtlasTexture_6fi6k")
-heart_half = SubResource("AtlasTexture_uo2fv")
-heart_empty = SubResource("AtlasTexture_047uy")
+full_heart = SubResource("AtlasTexture_5ysmq")
+empty_heart = SubResource("AtlasTexture_6fi6k")
 
-[node name="Hearts" type="HBoxContainer" parent="." unique_id=1754961342]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 60.0
-offset_bottom = 60.0
-scale = Vector2(8, 8)
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=690626912]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="P1Center" type="CenterContainer" parent="VBoxContainer" unique_id=865647830]
+layout_mode = 2
+
+[node name="P1VBox" type="VBoxContainer" parent="VBoxContainer/P1Center" unique_id=1915585110]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="P1TitleLabel" type="Label" parent="VBoxContainer/P1Center/P1VBox" unique_id=697616754]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.37900856, 0.5726988, 1, 1)
+horizontal_alignment = 1
+
+[node name="P1Hearts" type="HBoxContainer" parent="VBoxContainer/P1Center/P1VBox" unique_id=1754961342]
+layout_mode = 2
+
+[node name="P1KillsLabel" type="Label" parent="VBoxContainer/P1Center/P1VBox" unique_id=1103908447]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.38039216, 0.57254905, 1, 1)
+theme_override_font_sizes/font_size = 16
+text = "P1"
+horizontal_alignment = 1
+
+[node name="P1ShieldLabel" type="Label" parent="VBoxContainer/P1Center/P1VBox" unique_id=1930363095]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.38039216, 0.57254905, 1, 1)
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
+
+[node name="DividerCenter" type="CenterContainer" parent="VBoxContainer" unique_id=799718420]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="DividerLabel" type="Label" parent="VBoxContainer/DividerCenter" unique_id=1237068489]
+layout_mode = 2
+
+[node name="P2Center" type="CenterContainer" parent="VBoxContainer" unique_id=691477352]
+layout_mode = 2
+
+[node name="P2VBox" type="VBoxContainer" parent="VBoxContainer/P2Center" unique_id=102490965]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="P2TitleLabel" type="Label" parent="VBoxContainer/P2Center/P2VBox" unique_id=529028306]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.29374546, 0.2310673, 1)
+horizontal_alignment = 1
+
+[node name="P2Hearts" type="HBoxContainer" parent="VBoxContainer/P2Center/P2VBox" unique_id=1619356422]
+layout_mode = 2
+
+[node name="P2KillsLabel" type="Label" parent="VBoxContainer/P2Center/P2VBox" unique_id=1113628165]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.29411766, 0.23137255, 1)
+text = "P2"
+horizontal_alignment = 1
+
+[node name="P2ShieldLabel" type="Label" parent="VBoxContainer/P2Center/P2VBox" unique_id=2134630851]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.29411766, 0.23137255, 1)
+theme_override_font_sizes/font_size = 13
+horizontal_alignment = 1
