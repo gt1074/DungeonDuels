@@ -16,8 +16,8 @@ extends Control
 @onready var p2_shield_label = $VBoxContainer/P2Center/P2VBox/P2ShieldLabel
 
 func _process(_delta: float) -> void:
-	var p1 = get_node_or_null("/root/game/HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport/Player1_World/Player")
-	var p1_shield = get_node_or_null("/root/game/HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport/Player1_World/Player/Shield")
+	var p1 = get_node_or_null("/root/game/HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport/Player1_World/player")
+	var p1_shield = get_node_or_null("/root/game/HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport/Player1_World/player/shield")
 	
 	p1_title_label.text = "P-1"
 	divider_label.text = "====="

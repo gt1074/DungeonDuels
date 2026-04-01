@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://cd1tepweky82l"]
+[gd_scene format=3 uid="uid://da4oj6tcgucxl"]
 
 [ext_resource type="Script" path="res://scripts/player_bullet.gd" id="1_46jqs"]
 [ext_resource type="Texture2D" uid="uid://de8chci0slcnf" path="res://assets/brackeys_platformer_assets/sprites/player_bullet.png" id="2_0cue5"]
