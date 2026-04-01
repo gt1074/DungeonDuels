@@ -14,6 +14,7 @@ func _on_kill_timer_timeout():
 	queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
+	print(body.get_groups())
 	if body.is_in_group("player") and body.has_method("player_hit"):
 		body.player_hit()
 		queue_free()

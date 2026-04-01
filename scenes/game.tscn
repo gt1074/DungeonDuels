@@ -45,6 +45,7 @@ custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 
 [node name="HUD" parent="HBoxContainer/CenterPanel" unique_id=2123703365 instance=ExtResource("2_lnu2h")]
+texture_filter = 1
 layout_mode = 2
 
 [node name="RightPanel" type="Control" parent="HBoxContainer" unique_id=1879872553]
