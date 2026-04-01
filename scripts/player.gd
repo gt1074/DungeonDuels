@@ -85,7 +85,7 @@ func _physics_process(_delta: float) -> void:
 func player_hit() -> void:
 	if not INVINCIBLE:
 		camera_2d.apply_noise_shake()
-		if HEALTH > 0:
+		if HEALTH > 1:
 			HEALTH = HEALTH - 1
 			print("Knight got hit, remaining health is ", HEALTH)
 			animated_sprite.play("Hit")
