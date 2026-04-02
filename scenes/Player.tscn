@@ -163,7 +163,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bruh7")
 }],
-"loop": true,
+"loop": false,
 "name": &"Death",
 "speed": 7.0
 }, {
@@ -309,12 +309,17 @@ shape = SubResource("CircleShape2D_cw2d6")
 texture_filter = 1
 position = Vector2(0, -8)
 
-[node name="AimIndicator" type="Node2D" parent="."]
+[node name="AimIndicator" type="Node2D" parent="." unique_id=1097842791]
 position = Vector2(0, -8)
 
-[node name="Line2D" type="Line2D" parent="AimIndicator"]
+[node name="Line2D" type="Line2D" parent="AimIndicator" unique_id=843047980]
 points = PackedVector2Array(4, 0, 14, 0)
 width = 1.0
 default_color = Color(0.38039216, 0.57254905, 1, 1)
 
+[node name="RespawnTimer" type="Timer" parent="." unique_id=587926073]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]

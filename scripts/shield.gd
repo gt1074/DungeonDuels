@@ -117,5 +117,19 @@ func _process(_delta):
 			last_aim = aim
 		rotation = last_aim.angle()
 
+func pause_regen() -> void:
+	cooldown_timer.stop()
+	recharge_timer.stop()
+	recharge_delay_timer.stop()
+
+func reset() -> void:
+	cooldown_timer.stop()
+	recharge_timer.stop()
+	recharge_delay_timer.stop()
+	is_broken = false
+	on_cooldown = false
+	deactivate()
+	health = MAX_HEALTH
+
 func _on_area_entered(area):
 	pass
