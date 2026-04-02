@@ -309,4 +309,12 @@ shape = SubResource("CircleShape2D_cw2d6")
 texture_filter = 1
 position = Vector2(0, -8)
 
+[node name="AimIndicator" type="Node2D" parent="."]
+position = Vector2(0, -8)
+
+[node name="Line2D" type="Line2D" parent="AimIndicator"]
+points = PackedVector2Array(4, 0, 14, 0)
+width = 1.0
+default_color = Color(0.38039216, 0.57254905, 1, 1)
+
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]

@@ -25,6 +25,7 @@ var invincible: bool = false:
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var shield: Area2D = $Shield
+@onready var aim_indicator: Node2D = $AimIndicator
 
 func _set_invincible(value: bool) -> void:
 	if value:
@@ -42,12 +43,16 @@ func _process(delta: float) -> void:
 	if aim.length() > 0.2:
 		last_aim = aim
 
+	aim_indicator.rotation = last_aim.angle()
+
+	var shield_pressed = Input.is_action_pressed("shield_activate")
+
 	fire_timer -= delta
-	if Input.is_action_pressed("shoot") and fire_timer <= 0.0:
+	if Input.is_action_pressed("shoot") and not shield_pressed and fire_timer <= 0.0:
 		fire_timer = FIRE_RATE
 		shoot()
 
-	if Input.is_action_pressed("shield_activate") and not shield.is_broken and not shield.on_cooldown:
+	if shield_pressed and not shield.is_broken and not shield.on_cooldown:
 		shield.activate()
 	else:
 		shield.deactivate()
@@ -55,7 +60,7 @@ func _process(delta: float) -> void:
 func shoot() -> void:
 	var bullet = BULLET.instantiate()
 	get_parent().add_child(bullet)
-	bullet.global_position = global_position + last_aim * 16
+	bullet.global_position = global_position + Vector2(0, -8) + last_aim * 10
 	bullet.direction = last_aim.normalized()
 
 func _physics_process(_delta: float) -> void:
