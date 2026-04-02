@@ -41,6 +41,7 @@ render_target_update_mode = 4
 [node name="Player1_World" parent="HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport" unique_id=1329128313 instance=ExtResource("1_uwrxv")]
 
 [node name="CenterPanel" type="CenterContainer" parent="HBoxContainer" unique_id=1529843548]
+texture_filter = 1
 custom_minimum_size = Vector2(44, 0)
 layout_mode = 2
 
