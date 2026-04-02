@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://d3jct2cpuluq3" path="res://scenes/hud.tscn" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://868e8ik4f22o" path="res://scenes/player2_world.tscn" id="2_yqjtg"]
 
-[node name="game" type="Control" unique_id=698839627]
+[node name="Game" type="Control" unique_id=698839627]
 clip_contents = true
 layout_mode = 3
 anchors_preset = 15
@@ -63,4 +63,4 @@ handle_input_locally = false
 size = Vector2i(160, 202)
 render_target_update_mode = 4
 
-[node name="Player2_world" parent="HBoxContainer/RightPanel/RightSubViewportContainer/RightSubViewport" unique_id=1970326021 instance=ExtResource("2_yqjtg")]
+[node name="Player2_World" parent="HBoxContainer/RightPanel/RightSubViewportContainer/RightSubViewport" unique_id=1970326021 instance=ExtResource("2_yqjtg")]

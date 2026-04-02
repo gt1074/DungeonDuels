@@ -13,7 +13,12 @@ var last_aim = Vector2.RIGHT
 @export var recharge_interval := 0.3
 @export var recharge_delay := 1.2
 
-var health := 10
+signal shield_changed(health: int)
+
+var health := 10:
+	set(value):
+		health = value
+		shield_changed.emit(health)
 var is_broken := false
 var on_cooldown := false
 var is_active := false

@@ -1,20 +1,19 @@
 extends Area2D
 
-var speed = 200
-var direction = Vector2.RIGHT
+var speed: float = 200
+var direction: Vector2 = Vector2.RIGHT
 @onready var kill_timer: Timer = $KillTimer
 
-func _ready():
+func _ready() -> void:
 	monitoring = true
 
-func _process(delta):
+func _process(delta: float) -> void:
 	global_position += direction * speed * delta
 
-func _on_kill_timer_timeout():
+func _on_kill_timer_timeout() -> void:
 	queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
-	print(body.get_groups())
 	if body.is_in_group("player") and body.has_method("player_hit"):
 		body.player_hit()
 		queue_free()
@@ -22,7 +21,6 @@ func _on_body_entered(body: Node2D) -> void:
 		queue_free()
 
 func _on_area_entered(area: Area2D) -> void:
-	# Only hit shields or specific targets
 	if area.is_in_group("shield"):
 		if area.is_active:
 			area.take_damage(1)
