@@ -52,9 +52,10 @@ func _process(delta: float) -> void:
 
 	var aim = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
 	if aim.length() > 0.2:
-		last_aim = aim
+		last_aim = aim.normalized()
 
 	aim_indicator.rotation = last_aim.angle()
+	shield.set_aim_direction(last_aim)
 
 	var shield_pressed = Input.is_action_pressed("shield_activate")
 

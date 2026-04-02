@@ -6,7 +6,7 @@ extends Area2D
 @onready var recharge_timer: Timer = $RechargeTimer
 @onready var recharge_delay_timer: Timer = $RechargeDelayTimer
 
-var last_aim = Vector2.RIGHT
+var aim_direction := Vector2.RIGHT
 
 @export var MAX_HEALTH := 10
 @export var cooldown_time := 2.2
@@ -39,6 +39,10 @@ func _ready():
 	recharge_delay_timer.wait_time = recharge_delay
 	recharge_delay_timer.one_shot = true
 
+func set_aim_direction(new_direction: Vector2) -> void:
+	if new_direction.length() > 0.2:
+		aim_direction = new_direction.normalized()
+
 func activate():
 	if is_broken or on_cooldown or is_active:
 		return
@@ -51,6 +55,7 @@ func activate():
 	monitorable = true
 	visible = true
 	collision_polygon.disabled = false
+	rotation = aim_direction.angle()
 
 func deactivate():
 	if not is_active:
@@ -112,10 +117,7 @@ func _on_recharge_timer_timeout() -> void:
 
 func _process(_delta):
 	if is_active:
-		var aim = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
-		if aim.length() > 0.2:
-			last_aim = aim
-		rotation = last_aim.angle()
+		rotation = aim_direction.angle()
 
 func pause_regen() -> void:
 	cooldown_timer.stop()
