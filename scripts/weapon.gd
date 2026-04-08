@@ -1,6 +1,6 @@
 extends Node2D
 class_name Weapon
-
+#checking to see if the correct stuff is used for commits
 @export var fire_rate: float = 0.2
 
 var last_fire_time: float = 0.0
