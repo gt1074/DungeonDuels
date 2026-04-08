@@ -15,6 +15,8 @@ extends Control
 
 var p1: CharacterBody2D = null
 var p1_shield = null
+var p2: CharacterBody2D = null
+var p2_shield = null
 
 func _ready() -> void:
 	p1_title_label.text = "P-1"
@@ -26,6 +28,8 @@ func _ready() -> void:
 
 	p1 = get_node_or_null("/root/Game/HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport/Player1_World/Player")
 	p1_shield = get_node_or_null("/root/Game/HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport/Player1_World/Player/Shield")
+	p2 = get_node_or_null("/root/Game/HBoxContainer/RightPanel/RightSubViewportContainer/RightSubViewport/Player2_World/Player")
+	p2_shield = get_node_or_null("/root/Game/HBoxContainer/RightPanel/RightSubViewportContainer/RightSubViewport/Player2_World/Player/Shield")
 
 	if p1:
 		p1.stats_changed.connect(_on_p1_stats_changed)
@@ -40,10 +44,18 @@ func _ready() -> void:
 	else:
 		p1_shield_label.text = "S:-"
 
-	# P2 placeholder until P2 is built
-	draw_hearts(p2_hearts, 0, 5)
-	p2_kills_label.text = "K:-"
-	p2_shield_label.text = "S:-"
+	if p2:
+		p2.stats_changed.connect(_on_p2_stats_changed)
+		_on_p2_stats_changed(p2.health, p2.kills)
+	else:
+		draw_hearts(p2_hearts, 0, 5)
+		p2_kills_label.text = "K:-"
+
+	if p2_shield:
+		p2_shield.shield_changed.connect(_on_p2_shield_changed)
+		_on_p2_shield_changed(p2_shield.health)
+	else:
+		p2_shield_label.text = "S:-"
 
 func _on_p1_stats_changed(health: int, kills: int) -> void:
 	draw_hearts(p1_hearts, health, 5)
@@ -51,6 +63,13 @@ func _on_p1_stats_changed(health: int, kills: int) -> void:
 
 func _on_p1_shield_changed(shield_health: int) -> void:
 	p1_shield_label.text = "S:" + str(shield_health)
+
+func _on_p2_stats_changed(health: int, kills: int) -> void:
+	draw_hearts(p2_hearts, health, 5)
+	p2_kills_label.text = "K:" + str(kills)
+
+func _on_p2_shield_changed(shield_health: int) -> void:
+	p2_shield_label.text = "S:" + str(shield_health)
 
 func draw_hearts(container: HBoxContainer, health: int, max_health: int) -> void:
 	for child in container.get_children():

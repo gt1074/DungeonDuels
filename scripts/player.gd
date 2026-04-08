@@ -4,6 +4,9 @@ enum State {ALIVE, DEAD}
 
 const BULLET = preload("res://scenes/player_bullet.tscn")
 
+# Set to "p2_" for the second player so it reads p2_move_left, p2_shoot, etc.
+@export var action_prefix: String = ""
+
 var last_aim = Vector2.RIGHT
 const SPEED = 75.0
 const INVINCIBLE_TIME = 3
@@ -49,20 +52,20 @@ func _ready() -> void:
 	safe_margin = 0.08
 	equip_weapon(preload("res://scenes/weapon.tscn"))
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_dead:
 		return
 
-	var aim = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down")
+	var aim = Input.get_vector(action_prefix + "aim_left", action_prefix + "aim_right", action_prefix + "aim_up", action_prefix + "aim_down")
 	if aim.length() > 0.2:
 		last_aim = aim.normalized()
 
 	aim_indicator.rotation = last_aim.angle()
 	shield.set_aim_direction(last_aim)
 
-	var shield_pressed = Input.is_action_pressed("shield_activate")
+	var shield_pressed = Input.is_action_pressed(action_prefix + "shield_activate")
 
-	if Input.is_action_pressed("shoot") and not shield_pressed:
+	if Input.is_action_pressed(action_prefix + "shoot") and not shield_pressed:
 		if current_weapon:
 			current_weapon.try_fire(last_aim)
 
@@ -75,8 +78,8 @@ func _physics_process(_delta: float) -> void:
 	if is_dead:
 		return
 
-	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	var facing = Input.get_axis("move_left", "move_right")
+	var direction = Input.get_vector(action_prefix + "move_left", action_prefix + "move_right", action_prefix + "move_up", action_prefix + "move_down")
+	var facing = Input.get_axis(action_prefix + "move_left", action_prefix + "move_right")
 	var animation_state = 0
 	if direction != Vector2.ZERO:
 		animation_state = 1

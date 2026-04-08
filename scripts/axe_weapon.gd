@@ -19,8 +19,6 @@ func _ready() -> void:
 
 	self.fire_rate = 0.3
 
-	print("Axe ready")
-
 func fire(_direction: Vector2) -> void:
 	if swinging:
 		return
@@ -31,7 +29,7 @@ func start_swing() -> void:
 	swinging = true
 	hitbox.monitoring = true
 
-	# lock starting rotation (IMPORTANT)
+	# lock starting rotation
 	base_rotation = rotation
 
 	var tween = create_tween()
@@ -55,5 +53,4 @@ func _on_hitbox_body_entered(body: Node) -> void:
 	already_hit.append(body)
 
 	if body.is_in_group("enemy"):
-		print("AXE HIT:", body.name)
-		body.bat_hit(1)
+		body.take_damage(2, get_parent().get_node_or_null("Player"))

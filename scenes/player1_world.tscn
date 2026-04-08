@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_t8f3a"]
 [ext_resource type="PackedScene" uid="uid://b8d6tc3bvc7o4" path="res://scenes/bow_weapon.tscn" id="6_6231f"]
 [ext_resource type="PackedScene" uid="uid://dghmosax5phen" path="res://scenes/axe_weapon.tscn" id="6_24278"]
+[ext_resource type="PackedScene" path="res://scenes/health_pickup.tscn" id="6_qbblp"]
+[ext_resource type="PackedScene" path="res://scenes/slime.tscn" id="6_slime"]
 
 [node name="Player1_World" type="Node2D" unique_id=1329128313]
 
@@ -19,6 +21,7 @@ collision_mask = 54
 
 [node name="Bat" parent="." unique_id=874291408 instance=ExtResource("4_6231f")]
 position = Vector2(90, 152)
+collision_mask = 29
 
 [node name="WeaponPickupBow" parent="." unique_id=258617366 instance=ExtResource("5_fiank")]
 texture_filter = 1
@@ -27,10 +30,16 @@ weapon_scene = ExtResource("6_6231f")
 
 [node name="WeaponPickupAxe" parent="." unique_id=1464458769 instance=ExtResource("5_fiank")]
 texture_filter = 1
-position = Vector2(113, 83)
+position = Vector2(32, 79)
 weapon_scene = ExtResource("6_24278")
+
+[node name="Slime" parent="." unique_id=312847651 instance=ExtResource("6_slime")]
+position = Vector2(120, 80)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1408824195]
 scale = Vector2(5.6611986, 2.423195)
 anchor_mode = 0
 script = ExtResource("5_t8f3a")
+
+[node name="HealthPickup" parent="." unique_id=1804486309 instance=ExtResource("6_qbblp")]
+position = Vector2(38, 104)

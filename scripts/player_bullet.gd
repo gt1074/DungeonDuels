@@ -39,10 +39,8 @@ func _on_kill_timer_timeout() -> void:
 	queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
-	print("Bullet body_entered:", body.name, " groups:", body.get_groups())
-	if body.is_in_group("enemy"):
-		if body.has_method("bat_hit"):
-			body.bat_hit(damage)
+	if body.is_in_group("enemy") and body.has_method("take_damage"):
+		body.take_damage(get_parent().get_node_or_null("Player"))
 		queue_free()
 	elif body.is_in_group("walls"):
 		queue_free()
@@ -51,7 +49,6 @@ func _on_area_entered(area: Area2D) -> void:
 	print("Bullet area_entered:", area.name, " groups:", area.get_groups())
 	if area.is_in_group("walls"):
 		queue_free()
-	elif area.is_in_group("enemy"):
-		if area.has_method("bat_hit"):
-			area.bat_hit(damage)
+	elif area.is_in_group("enemy") and area.has_method("take_damage"):
+		area.take_damage()
 		queue_free()
