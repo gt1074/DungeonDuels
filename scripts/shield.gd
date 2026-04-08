@@ -8,10 +8,18 @@ extends Area2D
 
 var aim_direction := Vector2.RIGHT
 
+# Distance from the shield's scene-origin to the collision polygon centre (x in
+# shield-local space).  Used to compensate the shield's position when it scales
+# so the face stays at the same distance from the player regardless of health.
+const POLYGON_DISTANCE := 14.0
+
+# Captured from the scene in _ready() so we never hardcode the offset.
+var _base_position := Vector2.ZERO
+
 @export var MAX_HEALTH := 10
 @export var cooldown_time := 2.2
 @export var recharge_interval := 0.3
-@export var recharge_delay := 1.2
+@export var recharge_delay := 0.5
 
 signal shield_changed(health: int)
 
@@ -19,11 +27,13 @@ var health := 10:
 	set(value):
 		health = value
 		shield_changed.emit(health)
+		_update_size()
 var is_broken := false
 var on_cooldown := false
 var is_active := false
 
 func _ready():
+	_base_position = position  # capture from scene; works for any player offset
 	monitoring = false
 	monitorable = false
 	visible = false
@@ -42,6 +52,13 @@ func _ready():
 func set_aim_direction(new_direction: Vector2) -> void:
 	if new_direction.length() > 0.2:
 		aim_direction = new_direction.normalized()
+
+# Scales the shield arc (and its collider) along the aim-perpendicular axis so
+# that lower health means a narrower blocking range.  Only scale.y is touched;
+# scale.x is left at 1.0 so the shield stays at the same distance from the player.
+func _update_size() -> void:
+	var t := clampf(float(health) / float(MAX_HEALTH), 0.0, 1.0)
+	scale = Vector2.ONE * lerpf(0.15, 1.0, t)
 
 func activate():
 	if is_broken or on_cooldown or is_active:
@@ -118,6 +135,9 @@ func _on_recharge_timer_timeout() -> void:
 func _process(_delta):
 	if is_active:
 		rotation = aim_direction.angle()
+	# Push the shield outward along the aim direction to compensate for scaling,
+	# keeping the shield face at POLYGON_DISTANCE from the player at all health values.
+	position = _base_position + aim_direction * POLYGON_DISTANCE * (1.0 - scale.x)
 
 func pause_regen() -> void:
 	cooldown_timer.stop()
