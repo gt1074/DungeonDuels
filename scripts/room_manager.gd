@@ -7,8 +7,8 @@ var current_def_index: int = -1
 var enemies_remaining: int = 0
 
 const ROOM_SCENE = preload("res://scenes/room.tscn")
-var ROOM_TYPES = [RoomDef1, RoomDef2, RoomDef3]
-
+var ROOM_TYPES = [RoomDef1, RoomDef2]
+# RoomDef2, RoomDef3
 func start(player_node: CharacterBody2D, world_node: Node):
 	player = player_node
 	world = world_node
@@ -36,6 +36,7 @@ func register_room(room: Node, spawn_pos: Vector2, enemy_count: int):
 	room.add_child(player)
 
 func on_enemy_died():
+	print("Enemy Died! There are ${enemies_remaining} left")
 	enemies_remaining -= 1
 	if enemies_remaining <= 0:
 		load_random_room()

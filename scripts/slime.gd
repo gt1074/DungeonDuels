@@ -13,6 +13,8 @@ const HOP_DURATION: float = 0.35   # seconds of active movement per hop
 const PAUSE_DURATION: float = 0.7  # seconds of rest between hops
 const SPEED: float = 45.0
 
+var room_manager: Node = null
+
 var health: int = 4
 var is_hopping: bool = false
 var is_shooting: bool = false
@@ -22,9 +24,14 @@ func take_damage(attacker = null) -> void:
 	if health <= 0:
 		if attacker != null:
 			attacker.kills += 1
-		queue_free()
+		dies()
 		return
 	_flash_hit()
+
+func dies():
+	if room_manager:
+		room_manager.on_enemy_died()
+	queue_free()
 
 func _flash_hit() -> void:
 	animated_sprite.modulate = Color(1, 0.2, 0.2)

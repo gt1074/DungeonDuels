@@ -12,14 +12,15 @@ func get_enemy_count() -> int:
 	return bat_spawns.size() + slime_spawns.size()
 
 func spawn_enemies(room: Node, manager: Node):
+	print("Manager is: ", manager)
 	for pos in bat_spawns:
 		var bat = BAT_SCENE.instantiate()
 		bat.global_position = pos
-		bat.died.connect(manager.on_enemy_died)
 		room.add_child(bat)
+		bat.room_manager = manager
 
 	for pos in slime_spawns:
 		var slime = SLIME_SCENE.instantiate()
 		slime.global_position = pos
-		slime.died.connect(manager.on_enemy_died)
 		room.add_child(slime)
+		slime.room_manager = manager

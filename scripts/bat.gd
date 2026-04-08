@@ -13,6 +13,8 @@ extends CharacterBody2D
 const BURST_AMOUNT = 3
 const BURST_INTERVAL = 0.15
 
+var room_manager: Node = null
+
 var burst_count = 0
 var last_direction = Vector2.RIGHT
 var health: int = 5
@@ -33,9 +35,14 @@ func take_damage(attacker = null) -> void:
 	if health <= 0:
 		if attacker != null:
 			attacker.kills += 1
-		queue_free()
+		dies()
 		return
 	_flash_hit()
+	
+func dies():
+	if room_manager:
+		room_manager.on_enemy_died()
+	queue_free()
 
 func change_pattern() -> void:
 	current_pattern_index = (current_pattern_index + 1) % patterns.size()
