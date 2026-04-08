@@ -3,6 +3,7 @@ extends CharacterBody2D
 @export var bullet_scene: PackedScene = preload("res://scenes/enemy_bullet.tscn")
 @export var bullet_speed: float = 100
 @export var shoot_interval: float = 1
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @onready var player: CharacterBody2D = get_parent().get_node("Player")
 @onready var shoot_timer = $ShootTimer
@@ -21,14 +22,20 @@ var patterns = ["triple"]
 #var patterns = ["circle", "fan", "spiral", "line"]
 var current_pattern_index = 0
 
-func take_damage(amount: int = 1,attacker = null) -> void:
-	health -= amount
-	change_pattern()
+func _flash_hit() -> void:
+	animated_sprite.modulate = Color(1, 0.2, 0.2)
+	await get_tree().create_timer(0.15).timeout
+	if is_instance_valid(self):
+		animated_sprite.modulate = Color(1, 1, 1)
+		
+func take_damage(attacker = null) -> void:
+	health -= 1
 	if health <= 0:
-		print("Bat died!")
 		if attacker != null and "kills" in attacker:
 			attacker.kills += 1
 		queue_free()
+		return
+	_flash_hit()
 
 func change_pattern() -> void:
 	current_pattern_index = (current_pattern_index + 1) % patterns.size()
