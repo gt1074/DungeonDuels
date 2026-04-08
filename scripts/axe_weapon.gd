@@ -10,10 +10,8 @@ var swing_amount := deg_to_rad(120) # arc size
 
 func _ready() -> void:
 	super ()
-	# Make sure hitbox is ready
 	hitbox.monitoring = false
 
-	# Prevent duplicate signal connections
 	if not hitbox.body_entered.is_connected(_on_hitbox_body_entered):
 		hitbox.body_entered.connect(_on_hitbox_body_entered)
 
@@ -29,12 +27,10 @@ func start_swing() -> void:
 	swinging = true
 	hitbox.monitoring = true
 
-	# lock starting rotation
 	base_rotation = rotation
 
 	var tween = create_tween()
 
-	# swing forward
 	tween.tween_property(self , "rotation", base_rotation + deg_to_rad(120), 0.12)
 
 	await get_tree().create_timer(0.2).timeout
