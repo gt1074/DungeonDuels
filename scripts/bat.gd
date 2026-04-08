@@ -21,7 +21,7 @@ var patterns = ["triple"]
 #var patterns = ["circle", "fan", "spiral", "line"]
 var current_pattern_index = 0
 
-func bat_hit(attacker = null) -> void:
+func take_damage(attacker = null) -> void:
 	health -= 1
 	change_pattern()
 	if health <= 0:
