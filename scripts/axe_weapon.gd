@@ -1,0 +1,59 @@
+extends Weapon
+
+@onready var hitbox: Area2D = $Hitbox
+
+var swinging := false
+var already_hit := []
+
+var base_rotation := 0.0
+var swing_amount := deg_to_rad(120) # arc size
+
+func _ready() -> void:
+	super ()
+	# Make sure hitbox is ready
+	hitbox.monitoring = false
+
+	# Prevent duplicate signal connections
+	if not hitbox.body_entered.is_connected(_on_hitbox_body_entered):
+		hitbox.body_entered.connect(_on_hitbox_body_entered)
+
+	self.fire_rate = 0.3
+
+	print("Axe ready")
+
+func fire(_direction: Vector2) -> void:
+	if swinging:
+		return
+
+	start_swing()
+
+func start_swing() -> void:
+	swinging = true
+	hitbox.monitoring = true
+
+	# lock starting rotation (IMPORTANT)
+	base_rotation = rotation
+
+	var tween = create_tween()
+
+	# swing forward
+	tween.tween_property(self , "rotation", base_rotation + deg_to_rad(120), 0.12)
+
+	await get_tree().create_timer(0.2).timeout
+	_finish_swing()
+
+func _finish_swing() -> void:
+	rotation = base_rotation
+	hitbox.monitoring = false
+	swinging = false
+	already_hit.clear()
+
+func _on_hitbox_body_entered(body: Node) -> void:
+	if body in already_hit:
+		return
+
+	already_hit.append(body)
+
+	if body.is_in_group("enemy"):
+		print("AXE HIT:", body.name)
+		body.bat_hit(1)

@@ -21,12 +21,12 @@ var patterns = ["triple"]
 #var patterns = ["circle", "fan", "spiral", "line"]
 var current_pattern_index = 0
 
-func bat_hit(attacker = null) -> void:
-	health -= 1
+func bat_hit(amount: int = 1,attacker = null) -> void:
+	health -= amount
 	change_pattern()
 	if health <= 0:
 		print("Bat died!")
-		if attacker != null:
+		if attacker != null and "kills" in attacker:
 			attacker.kills += 1
 		queue_free()
 
