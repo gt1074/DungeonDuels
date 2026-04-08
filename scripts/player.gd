@@ -50,7 +50,7 @@ func _ready() -> void:
 	health = MAX_HEALTH
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	safe_margin = 0.08
-	equip_weapon(preload("res://scenes/weapon.tscn"))
+	equip_weapon(preload("res://scenes/bow_weapon.tscn"))
 
 func _process(_delta: float) -> void:
 	if is_dead:
