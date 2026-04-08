@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://h8gr5xyecue0"]
 
 [ext_resource type="PackedScene" uid="uid://cp7ct7d3dc2l7" path="res://scenes/room1.tscn" id="2_qbblp"]
-[ext_resource type="PackedScene" uid="uid://dux6teoy2hqj" path="res://scenes/player.tscn" id="3_24278"]
+[ext_resource type="PackedScene" uid="uid://bkspfj7khngri" path="res://scenes/player.tscn" id="3_24278"]
 [ext_resource type="PackedScene" uid="uid://bb18jlx5lu7yj" path="res://scenes/bat.tscn" id="4_6231f"]
-[ext_resource type="PackedScene" uid="uid://dm3x7f9pqk2n1" path="res://scenes/slime.tscn" id="6_slime"]
 [ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_t8f3a"]
+[ext_resource type="PackedScene" path="res://scenes/health_pickup.tscn" id="6_qbblp"]
+[ext_resource type="PackedScene" uid="uid://dm3x7gapqk2n1" path="res://scenes/slime.tscn" id="6_slime"]
 
 [node name="Player1_World" type="Node2D" unique_id=1329128313]
 
@@ -25,3 +26,6 @@ position = Vector2(120, 80)
 scale = Vector2(5.6611986, 2.423195)
 anchor_mode = 0
 script = ExtResource("5_t8f3a")
+
+[node name="HealthPickup" parent="." unique_id=1804486309 instance=ExtResource("6_qbblp")]
+position = Vector2(38, 104)

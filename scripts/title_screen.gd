@@ -10,8 +10,6 @@ var selected: int = 0   # 0 = PLAY, 1 = QUIT
 var _stick_moved := false
 
 func _ready() -> void:
-	play_btn.pressed.connect(_on_play_button_pressed)
-	quit_btn.pressed.connect(_on_quit_button_pressed)
 	_refresh_selection()
 
 func _refresh_selection() -> void:

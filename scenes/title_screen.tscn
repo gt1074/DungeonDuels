@@ -37,8 +37,8 @@ horizontal_alignment = 1
 
 [node name="PlayButton" type="Button" parent="VBoxContainer" unique_id=1543694076]
 layout_mode = 2
-focus_neighbor_bottom = NodePath("../QuitButton")
 focus_neighbor_top = NodePath("../QuitButton")
+focus_neighbor_bottom = NodePath("../QuitButton")
 theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 16
 text = "PLAY"
