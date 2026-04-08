@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dux6teoy2hqj"]
+[gd_scene format=3 uid="uid://bkspfj7khngri"]
 
 [ext_resource type="Script" uid="uid://q2utvlmllbtn" path="res://scripts/player.gd" id="1_qhqgy"]
 [ext_resource type="Texture2D" uid="uid://bfh2lscwaj5ec" path="res://assets/brackeys_platformer_assets/sprites/knight.png" id="2_dqkch"]
@@ -163,7 +163,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bruh7")
 }],
-"loop": true,
+"loop": false,
 "name": &"Death",
 "speed": 7.0
 }, {
@@ -287,7 +287,7 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_cw2d6"]
 radius = 5.0
 
-[node name="player" type="CharacterBody2D" unique_id=1725424852 groups=["player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1725424852 groups=["player"]]
 collision_mask = 10
 motion_mode = 1
 script = ExtResource("1_qhqgy")
@@ -305,8 +305,21 @@ shape = SubResource("CircleShape2D_cw2d6")
 
 [node name="InvincibilityTimer" type="Timer" parent="." unique_id=1240282435]
 
-[node name="shield" parent="." unique_id=74675171 instance=ExtResource("3_qlg0r")]
+[node name="Shield" parent="." unique_id=74675171 instance=ExtResource("3_qlg0r")]
 texture_filter = 1
 position = Vector2(0, -8)
 
+[node name="AimIndicator" type="Node2D" parent="." unique_id=1097842791]
+position = Vector2(0, -8)
+
+[node name="Line2D" type="Line2D" parent="AimIndicator" unique_id=843047980]
+points = PackedVector2Array(4, 0, 14, 0)
+width = 1.0
+default_color = Color(0.38039216, 0.57254905, 1, 1)
+
+[node name="RespawnTimer" type="Timer" parent="." unique_id=587926073]
+wait_time = 5.0
+one_shot = true
+
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]

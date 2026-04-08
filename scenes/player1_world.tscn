@@ -3,19 +3,23 @@
 [ext_resource type="PackedScene" uid="uid://cp7ct7d3dc2l7" path="res://scenes/room1.tscn" id="2_qbblp"]
 [ext_resource type="PackedScene" uid="uid://dux6teoy2hqj" path="res://scenes/player.tscn" id="3_24278"]
 [ext_resource type="PackedScene" uid="uid://bb18jlx5lu7yj" path="res://scenes/bat.tscn" id="4_6231f"]
+[ext_resource type="PackedScene" uid="uid://dm3x7f9pqk2n1" path="res://scenes/slime.tscn" id="6_slime"]
 [ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_t8f3a"]
 
 [node name="Player1_World" type="Node2D" unique_id=1329128313]
 
 [node name="Room" parent="." unique_id=471625330 instance=ExtResource("2_qbblp")]
 
-[node name="player" parent="." unique_id=1725424852 instance=ExtResource("3_24278")]
+[node name="Player" parent="." unique_id=1725424852 instance=ExtResource("3_24278")]
 z_index = 2
 position = Vector2(55, 55)
 collision_mask = 22
 
 [node name="Bat" parent="." unique_id=874291408 instance=ExtResource("4_6231f")]
 position = Vector2(90, 152)
+
+[node name="Slime" parent="." unique_id=312847651 instance=ExtResource("6_slime")]
+position = Vector2(120, 80)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1408824195]
 scale = Vector2(5.6611986, 2.423195)
