@@ -309,20 +309,19 @@ shape = SubResource("CircleShape2D_cw2d6")
 texture_filter = 1
 position = Vector2(0, -8)
 
-[node name="AimIndicator" type="Node2D" parent="." unique_id=1097842791]
+[node name="AimPivot" type="Node2D" parent="." unique_id=1097842791]
 position = Vector2(0, -8)
 
-[node name="Line2D" type="Line2D" parent="AimIndicator" unique_id=843047980]
+[node name="Line2D" type="Line2D" parent="AimPivot" unique_id=843047980]
 points = PackedVector2Array(4, 0, 14, 0)
 width = 1.0
 default_color = Color(0.38039216, 0.57254905, 1, 1)
 
+[node name="WeaponHolder" type="Node2D" parent="AimPivot" unique_id=309500106]
+
 [node name="RespawnTimer" type="Timer" parent="." unique_id=587926073]
 wait_time = 5.0
 one_shot = true
-
-[node name="WeaponHolder" type="Node2D" parent="." unique_id=309500106]
-position = Vector2(5, -8)
 
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]

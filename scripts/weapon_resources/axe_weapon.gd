@@ -49,4 +49,4 @@ func _on_hitbox_body_entered(body: Node) -> void:
 	already_hit.append(body)
 
 	if body.is_in_group("enemy"):
-		body.take_damage(2, get_parent().get_node_or_null("Player"))
+		body.take_damage(2, owner_player)

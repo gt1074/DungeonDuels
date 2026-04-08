@@ -6,6 +6,11 @@ class_name Weapon
 var last_fire_time: float = 0.0
 var active: bool = false
 
+# Set by the player immediately after equipping this weapon.
+# Gives every weapon a direct reference to its owner without
+# needing to traverse the scene hierarchy.
+var owner_player: CharacterBody2D = null
+
 func _ready() -> void:
 	active = true
 	last_fire_time = Time.get_ticks_msec() / 1000.0 - fire_rate

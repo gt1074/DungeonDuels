@@ -33,13 +33,13 @@ var invincible: bool = false:
 var current_weapon: Node2D = null
 var weapon_ready: bool = false
 
-@onready var weapon_holder: Node2D = $WeaponHolder
+@onready var aim_pivot: Node2D = $AimPivot
+@onready var weapon_holder: Node2D = $AimPivot/WeaponHolder
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var respawn_timer: Timer = $RespawnTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var shield: Area2D = $Shield
-@onready var aim_indicator: Node2D = $AimIndicator
 
 func _set_invincible(value: bool) -> void:
 	if value:
@@ -60,7 +60,7 @@ func _process(_delta: float) -> void:
 	if aim.length() > 0.2:
 		last_aim = aim.normalized()
 
-	aim_indicator.rotation = last_aim.angle()
+	aim_pivot.rotation = last_aim.angle()
 	shield.set_aim_direction(last_aim)
 
 	var shield_pressed = Input.is_action_pressed(action_prefix + "shield_activate")
@@ -109,6 +109,7 @@ func equip_weapon(weapon_scene: PackedScene) -> void:
 
 	current_weapon = weapon_scene.instantiate()
 	weapon_holder.add_child(current_weapon)
+	current_weapon.owner_player = self
 
 	await current_weapon.ready
 
@@ -135,7 +136,7 @@ func die() -> void:
 	invincible = false
 	shield.deactivate()
 	shield.pause_regen()
-	aim_indicator.visible = false
+	aim_pivot.visible = false
 	print("Knight Died!")
 	animated_sprite.play("Death")
 	respawn_timer.start()
@@ -159,7 +160,7 @@ func _finish_respawn() -> void:
 	health = MAX_HEALTH
 	kills = kills # re-emit signal to refresh HUD without resetting kills
 	shield.reset()
-	aim_indicator.visible = true
+	aim_pivot.visible = true
 	animated_sprite.play("idle")
 	print("Knight respawned!")
 
