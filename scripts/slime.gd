@@ -23,6 +23,14 @@ func take_damage(attacker = null) -> void:
 		if attacker != null:
 			attacker.kills += 1
 		queue_free()
+		return
+	_flash_hit()
+
+func _flash_hit() -> void:
+	animated_sprite.modulate = Color(1, 0.2, 0.2)
+	await get_tree().create_timer(0.15).timeout
+	if is_instance_valid(self):
+		animated_sprite.modulate = Color(1, 1, 1)
 
 func _ready() -> void:
 	add_to_group("enemy")
@@ -72,6 +80,10 @@ func _shoot_with_animation() -> void:
 	is_shooting = true
 	animated_sprite.play("shoot")
 	await animated_sprite.animation_finished
+	if not is_instance_valid(self):
+		return
+	# Hold mouth-open frame so the player can react before the bullet fires
+	await get_tree().create_timer(0.45).timeout
 	if not is_instance_valid(self):
 		return
 	var direction = (player.global_position - global_position).normalized()
