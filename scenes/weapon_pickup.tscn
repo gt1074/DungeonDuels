@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://db76jalv3wurj"]
+
+[ext_resource type="Script" uid="uid://daisfliwvfp0t" path="res://scripts/weapon_pickup.gd" id="1_8i8db"]
+[ext_resource type="Texture2D" uid="uid://dw8hifk10drpw" path="res://Chest.png" id="2_8i8db"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aoepw"]
+size = Vector2(14, 11)
+
+[node name="WeaponPickup" type="Area2D" unique_id=258617366]
+collision_layer = 32
+script = ExtResource("1_8i8db")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1050246686]
+position = Vector2(1, -0.5)
+shape = SubResource("RectangleShape2D_aoepw")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1785335239]
+texture_filter = 1
+position = Vector2(0.99999905, -2)
+scale = Vector2(0.60625, 0.54475)
+texture = ExtResource("2_8i8db")
+region_rect = Rect2(84.5, 106.845, 180, 281.25)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

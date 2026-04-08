@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-enum State { ALIVE, DEAD }
+enum State {ALIVE, DEAD}
 
 const BULLET = preload("res://scenes/player_bullet.tscn")
 
@@ -8,12 +8,10 @@ const BULLET = preload("res://scenes/player_bullet.tscn")
 @export var action_prefix: String = ""
 
 var last_aim = Vector2.RIGHT
-const FIRE_RATE = 0.5
 const SPEED = 75.0
 const INVINCIBLE_TIME = 3
 const MAX_HEALTH = 5
 
-var fire_timer = 0.0
 var state: State = State.ALIVE
 
 var is_dead: bool:
@@ -32,6 +30,10 @@ var kills: int = 0:
 var invincible: bool = false:
 	set = _set_invincible
 
+var current_weapon: Node2D = null
+var weapon_ready: bool = false
+
+@onready var weapon_holder: Node2D = $WeaponHolder
 @onready var camera_2d: Camera2D = $"../Camera2D"
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var respawn_timer: Timer = $RespawnTimer
@@ -48,8 +50,9 @@ func _ready() -> void:
 	health = MAX_HEALTH
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	safe_margin = 0.08
+	equip_weapon(preload("res://scenes/weapon.tscn"))
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if is_dead:
 		return
 
@@ -62,21 +65,14 @@ func _process(delta: float) -> void:
 
 	var shield_pressed = Input.is_action_pressed(action_prefix + "shield_activate")
 
-	fire_timer -= delta
-	if Input.is_action_pressed(action_prefix + "shoot") and not shield_pressed and fire_timer <= 0.0:
-		fire_timer = FIRE_RATE
-		shoot()
+	if Input.is_action_pressed(action_prefix + "shoot") and not shield_pressed:
+		if current_weapon:
+			current_weapon.try_fire(last_aim)
 
 	if shield_pressed and not shield.is_broken and not shield.on_cooldown:
 		shield.activate()
 	else:
 		shield.deactivate()
-
-func shoot() -> void:
-	var bullet = BULLET.instantiate()
-	get_parent().add_child(bullet)
-	bullet.global_position = global_position + Vector2(0, -8) + last_aim * 10
-	bullet.direction = last_aim.normalized()
 
 func _physics_process(_delta: float) -> void:
 	if is_dead:
@@ -103,6 +99,20 @@ func _physics_process(_delta: float) -> void:
 		var collider = collision.get_collider()
 		if collider.is_in_group("enemy") and collider is CharacterBody2D:
 			collider.velocity += velocity * 0.6
+
+func equip_weapon(weapon_scene: PackedScene) -> void:
+	weapon_ready = false
+
+	if current_weapon:
+		current_weapon.queue_free()
+		current_weapon = null
+
+	current_weapon = weapon_scene.instantiate()
+	weapon_holder.add_child(current_weapon)
+
+	await current_weapon.ready
+
+	weapon_ready = true
 
 func player_hit() -> void:
 	if invincible or is_dead:
@@ -147,7 +157,7 @@ func _play_getup_animation() -> void:
 func _finish_respawn() -> void:
 	state = State.ALIVE
 	health = MAX_HEALTH
-	kills = kills  # re-emit signal to refresh HUD without resetting kills
+	kills = kills # re-emit signal to refresh HUD without resetting kills
 	shield.reset()
 	aim_indicator.visible = true
 	animated_sprite.play("idle")

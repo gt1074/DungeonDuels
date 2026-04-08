@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dghmosax5phen"]
+
+[ext_resource type="Script" uid="uid://dmm7h8kbddpx7" path="res://scripts/weapon_resources/axe_weapon.gd" id="1_mut16"]
+[ext_resource type="Texture2D" uid="uid://f6e12pr7trx0" path="res://assets/brackeys_platformer_assets/sprites/exampleWeapons.png" id="2_d5jwy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fltbu"]
+size = Vector2(18, 24)
+
+[node name="AxeWeapon" type="Node2D" unique_id=26878245]
+script = ExtResource("1_mut16")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1336679569]
+texture_filter = 1
+position = Vector2(5.4999995, -4.25)
+scale = Vector2(0.09146341, 0.13532111)
+texture = ExtResource("2_d5jwy")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(98, 456.972, 164.25, 218.75403)
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=628109882]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=1964863718]
+texture_filter = 1
+position = Vector2(10, -10)
+shape = SubResource("RectangleShape2D_fltbu")
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

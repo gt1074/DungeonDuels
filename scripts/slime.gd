@@ -19,8 +19,8 @@ var health: int = 4
 var is_hopping: bool = false
 var is_shooting: bool = false
 
-func take_damage(attacker = null) -> void:
-	health -= 1
+func take_damage(amount: int = 1, attacker = null) -> void:
+	health -= amount
 	if health <= 0:
 		if attacker != null:
 			attacker.kills += 1

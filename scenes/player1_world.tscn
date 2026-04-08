@@ -3,7 +3,10 @@
 [ext_resource type="Script" uid="uid://cmki5teyn8yyf" path="res://scripts/world.gd" id="1_t8rks"]
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="3_24278"]
 [ext_resource type="PackedScene" uid="uid://dtc6ki22p0fdp" path="res://scenes/room_manager.tscn" id="4_f2ckb"]
+[ext_resource type="PackedScene" uid="uid://db76jalv3wurj" path="res://scenes/weapon_pickup.tscn" id="5_fiank"]
 [ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_t8f3a"]
+[ext_resource type="PackedScene" uid="uid://b8d6tc3bvc7o4" path="res://scenes/bow_weapon.tscn" id="6_6231f"]
+[ext_resource type="PackedScene" uid="uid://dghmosax5phen" path="res://scenes/axe_weapon.tscn" id="6_24278"]
 [ext_resource type="PackedScene" path="res://scenes/health_pickup.tscn" id="6_qbblp"]
 
 [node name="Player1_World" type="Node2D" unique_id=1329128313]

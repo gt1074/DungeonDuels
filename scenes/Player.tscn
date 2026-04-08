@@ -321,5 +321,8 @@ default_color = Color(0.38039216, 0.57254905, 1, 1)
 wait_time = 5.0
 one_shot = true
 
+[node name="WeaponHolder" type="Node2D" parent="." unique_id=309500106]
+position = Vector2(5, -8)
+
 [connection signal="timeout" from="InvincibilityTimer" to="." method="_on_invincibility_timer_timeout"]
 [connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]

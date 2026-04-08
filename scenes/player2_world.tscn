@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://dtc6ki22p0fdp" path="res://scenes/room_manager.tscn" id="2_88rie"]
 [ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="2_plyr"]
 [ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_cam"]
+[ext_resource type="PackedScene" uid="uid://b8d6tc3bvc7o4" path="res://scenes/bow_weapon.tscn" id="8_xhs3s"]
 
 [node name="Player2_World" type="Node2D" unique_id=1970326021]
 script = ExtResource("1_bx6ni")
@@ -20,3 +21,8 @@ action_prefix = "p2_"
 scale = Vector2(5.6611986, 2.423195)
 anchor_mode = 0
 script = ExtResource("5_cam")
+
+[node name="WeaponPickupBow" parent="." unique_id=715479385 instance=ExtResource("2_ss8c0")]
+texture_filter = 1
+position = Vector2(112, 54)
+weapon_scene = ExtResource("8_xhs3s")
