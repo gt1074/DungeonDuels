@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b8d6tc3bvc7o4"]
 
-[ext_resource type="Script" uid="uid://cjyaopp4q0e88" path="res://scripts/bow_weapon.gd" id="1_27dxc"]
+[ext_resource type="Script" uid="uid://cjyaopp4q0e88" path="res://scripts/weapon_resources/bow_weapon.gd" id="1_27dxc"]
 [ext_resource type="PackedScene" uid="uid://da4oj6tcgucxl" path="res://scenes/player_bullet.tscn" id="2_l1gu0"]
 [ext_resource type="Texture2D" uid="uid://f6e12pr7trx0" path="res://assets/brackeys_platformer_assets/sprites/exampleWeapons.png" id="2_yeein"]
 
