@@ -1,7 +1,28 @@
 [gd_scene format=3 uid="uid://868e8ik4f22o"]
 
 [ext_resource type="PackedScene" uid="uid://cp7ct7d3dc2l7" path="res://scenes/room1.tscn" id="1_8ulcl"]
+[ext_resource type="PackedScene" uid="uid://dux6teoy2hqj" path="res://scenes/player.tscn" id="2_plyr"]
+[ext_resource type="PackedScene" uid="uid://bb18jlx5lu7yj" path="res://scenes/bat.tscn" id="3_bat"]
+[ext_resource type="PackedScene" uid="uid://dm3x7f9pqk2n1" path="res://scenes/slime.tscn" id="4_slime"]
+[ext_resource type="Script" uid="uid://byc08px73w4v0" path="res://scripts/camera_2d.gd" id="5_cam"]
 
 [node name="Player2_World" type="Node2D" unique_id=1970326021]
 
 [node name="Room" parent="." unique_id=471625330 instance=ExtResource("1_8ulcl")]
+
+[node name="Player" parent="." unique_id=2845629104 instance=ExtResource("2_plyr")]
+z_index = 2
+position = Vector2(55, 55)
+collision_mask = 22
+action_prefix = "p2_"
+
+[node name="Bat" parent="." unique_id=2184739201 instance=ExtResource("3_bat")]
+position = Vector2(90, 152)
+
+[node name="Slime" parent="." unique_id=2947381056 instance=ExtResource("4_slime")]
+position = Vector2(120, 80)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=2038471920]
+scale = Vector2(5.6611986, 2.423195)
+anchor_mode = 0
+script = ExtResource("5_cam")
