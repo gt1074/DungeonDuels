@@ -28,8 +28,8 @@ func _flash_hit() -> void:
 	if is_instance_valid(self):
 		animated_sprite.modulate = Color(1, 1, 1)
 		
-func take_damage(attacker = null) -> void:
-	health -= 1
+func take_damage(amount: int = 1, attacker = null) -> void:
+	health -= amount
 	if health <= 0:
 		if attacker != null and "kills" in attacker:
 			attacker.kills += 1
