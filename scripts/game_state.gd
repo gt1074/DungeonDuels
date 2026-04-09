@@ -15,10 +15,12 @@ signal timer_expired                  # emitted once when time hits 0
 
 # ── Player stats (survive scene transitions) ──────────────────────────────────
 
-var p1_health: int = 5
-var p1_kills:  int = 0
-var p2_health: int = 5
-var p2_kills:  int = 0
+var p1_health:      int = 5
+var p1_max_health:  int = 5
+var p1_kills:       int = 0
+var p2_health:      int = 5
+var p2_max_health:  int = 5
+var p2_kills:       int = 0
 
 # ── Grace period ──────────────────────────────────────────────────────────────
 
@@ -75,7 +77,9 @@ func _run_grace_countdown() -> void:
 # ── Player stat persistence ───────────────────────────────────────────────────
 
 func save_player_stats(p1: CharacterBody2D, p2: CharacterBody2D) -> void:
-	p1_health = p1.health
-	p1_kills  = p1.kills
-	p2_health = p2.health
-	p2_kills  = p2.kills
+	p1_health     = p1.health
+	p1_max_health = p1.max_health
+	p1_kills      = p1.kills
+	p2_health     = p2.health
+	p2_max_health = p2.max_health
+	p2_kills      = p2.kills

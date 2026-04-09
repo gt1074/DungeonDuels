@@ -20,12 +20,14 @@ func _spawn_players() -> void:
 	p1.action_prefix = ""
 	world.add_child(p1)
 	p1.position = P1_SPAWN
-	p1.health   = GameState.p1_health
-	p1.kills    = GameState.p1_kills
+	p1.max_health = GameState.p1_max_health
+	p1.health     = GameState.p1_health
+	p1.kills      = GameState.p1_kills
 
 	var p2: CharacterBody2D = player_scene.instantiate()
 	p2.action_prefix = "p2_"
 	world.add_child(p2)
 	p2.position = P2_SPAWN
-	p2.health   = GameState.p2_health
-	p2.kills    = GameState.p2_kills
+	p2.max_health = GameState.p2_max_health
+	p2.health     = GameState.p2_health
+	p2.kills      = GameState.p2_kills

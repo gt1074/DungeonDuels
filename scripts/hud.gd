@@ -76,7 +76,7 @@ func _connect_players() -> void:
 func _connect_p1() -> void:
 	if p1:
 		p1.stats_changed.connect(_on_p1_stats_changed)
-		_on_p1_stats_changed(p1.health, p1.kills)
+		_on_p1_stats_changed(p1.health, p1.max_health, p1.kills)
 
 		p1_shield = p1.get_node_or_null("Shield")
 		if p1_shield:
@@ -93,7 +93,7 @@ func _connect_p1() -> void:
 func _connect_p2() -> void:
 	if p2:
 		p2.stats_changed.connect(_on_p2_stats_changed)
-		_on_p2_stats_changed(p2.health, p2.kills)
+		_on_p2_stats_changed(p2.health, p2.max_health, p2.kills)
 
 		p2_shield = p2.get_node_or_null("Shield")
 		if p2_shield:
@@ -109,15 +109,15 @@ func _connect_p2() -> void:
 
 # ── stat signal handlers ──────────────────────────────────────────────────────
 
-func _on_p1_stats_changed(health: int, kills: int) -> void:
-	draw_hearts(p1_hearts, health, 5)
+func _on_p1_stats_changed(health: int, max_health: int, kills: int) -> void:
+	draw_hearts(p1_hearts, health, max_health)
 	p1_kills_label.text = "K:" + str(kills)
 
 func _on_p1_shield_changed(shield_health: int) -> void:
 	p1_shield_label.text = "S:" + str(shield_health)
 
-func _on_p2_stats_changed(health: int, kills: int) -> void:
-	draw_hearts(p2_hearts, health, 5)
+func _on_p2_stats_changed(health: int, max_health: int, kills: int) -> void:
+	draw_hearts(p2_hearts, health, max_health)
 	p2_kills_label.text = "K:" + str(kills)
 
 func _on_p2_shield_changed(shield_health: int) -> void:

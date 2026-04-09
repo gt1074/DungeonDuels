@@ -8,7 +8,7 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player") and body.has_method("player_hit"):
 		# Only heal if not at max
-		if body.health < body.MAX_HEALTH:
-			body.health = mini(body.health + heal_amount, body.MAX_HEALTH)
+		if body.health < body.max_health:
+			body.health = mini(body.health + heal_amount, body.max_health)
 			print("Player healed! Health: ", body.health)
 			queue_free()

@@ -10,23 +10,24 @@ const BULLET = preload("res://scenes/player_bullet.tscn")
 var last_aim = Vector2.RIGHT
 const SPEED = 75.0
 const INVINCIBLE_TIME = 3
-const MAX_HEALTH = 5
+const STARTING_MAX_HEALTH = 5
+var max_health: int = STARTING_MAX_HEALTH
 
 var state: State = State.ALIVE
 
 var is_dead: bool:
 	get: return state == State.DEAD
 
-signal stats_changed(health: int, kills: int)
+signal stats_changed(health: int, max_health: int, kills: int)
 
-var health: int = MAX_HEALTH:
+var health: int = STARTING_MAX_HEALTH:
 	set(value):
 		health = value
-		stats_changed.emit(health, kills)
+		stats_changed.emit(health, max_health, kills)
 var kills: int = 0:
 	set(value):
 		kills = value
-		stats_changed.emit(health, kills)
+		stats_changed.emit(health, max_health, kills)
 var invincible: bool = false:
 	set = _set_invincible
 
@@ -50,7 +51,7 @@ func _set_invincible(value: bool) -> void:
 	invincible = value
 
 func _ready() -> void:
-	health = MAX_HEALTH
+	health = max_health
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	safe_margin = 0.08
 	equip_weapon(preload("res://scenes/bow_weapon.tscn"))
@@ -71,23 +72,20 @@ func _process(_delta: float) -> void:
 
 	var shield_pressed = Input.is_action_pressed(action_prefix + "shield_activate")
 
+	# Shield is always available (even during grace stun).
+	if shield_pressed and not shield.is_broken and not shield.on_cooldown:
+		shield.activate()
+	else:
+		shield.deactivate()
+
+	# Shooting is locked during the grace period only.
 	if not stunned:
 		if Input.is_action_pressed(action_prefix + "shoot") and not shield_pressed:
 			if current_weapon:
 				current_weapon.try_fire(last_aim)
 
-		if shield_pressed and not shield.is_broken and not shield.on_cooldown:
-			shield.activate()
-		else:
-			shield.deactivate()
-	else:
-		shield.deactivate()
-
 func _physics_process(_delta: float) -> void:
 	if is_dead:
-		return
-	if stunned:
-		velocity = Vector2.ZERO
 		return
 
 	var direction = Input.get_vector(action_prefix + "move_left", action_prefix + "move_right", action_prefix + "move_up", action_prefix + "move_down")
@@ -145,6 +143,8 @@ func player_hit(attacker = null) -> void:
 		invincible = true
 
 func die() -> void:
+	# Each death permanently lowers max health (floor of 1).
+	max_health = maxi(1, max_health - 1)
 	state = State.DEAD
 	velocity = Vector2.ZERO
 	invincibility_timer.stop()
@@ -172,7 +172,7 @@ func _play_getup_animation() -> void:
 
 func _finish_respawn() -> void:
 	state = State.ALIVE
-	health = MAX_HEALTH
+	health = max_health
 	kills = kills # re-emit signal to refresh HUD without resetting kills
 	shield.reset()
 	aim_pivot.visible = true
