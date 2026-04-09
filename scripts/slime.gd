@@ -59,6 +59,8 @@ func _start_pause() -> void:
 	hop_timer.start()
 
 func _physics_process(delta: float) -> void:
+	if GameState.is_grace:
+		return
 	if player.is_dead:
 		velocity = velocity.move_toward(Vector2.ZERO, 300 * delta)
 		move_and_slide()
@@ -79,7 +81,7 @@ func _on_hop_timer_timeout() -> void:
 		_start_hop()
 
 func _on_shoot_timer_timeout() -> void:
-	if player.is_dead or is_shooting:
+	if GameState.is_grace or player.is_dead or is_shooting:
 		return
 	_shoot_with_animation()
 
@@ -92,6 +94,11 @@ func _shoot_with_animation() -> void:
 	# Hold mouth-open frame so the player can react before the bullet fires
 	await get_tree().create_timer(0.45).timeout
 	if not is_instance_valid(self):
+		return
+	# Grace may have started mid-animation (e.g. final battle transition)
+	if GameState.is_grace:
+		animated_sprite.play("idle")
+		is_shooting = false
 		return
 	var direction = (player.global_position - global_position).normalized()
 	spawn_bullet(direction)

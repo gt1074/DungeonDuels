@@ -62,8 +62,22 @@ horizontal_alignment = 1
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="DividerLabel" type="Label" parent="VBoxContainer/DividerCenter" unique_id=1237068489]
+[node name="DividerVBox" type="VBoxContainer" parent="VBoxContainer/DividerCenter" unique_id=1237068489]
 layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="TimerLabel" type="Label" parent="VBoxContainer/DividerCenter/DividerVBox" unique_id=1237068490]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "60"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="VBoxContainer/DividerCenter/DividerVBox" unique_id=1237068491]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
 
 [node name="P2Center" type="CenterContainer" parent="VBoxContainer" unique_id=691477352]
 layout_mode = 2

@@ -18,8 +18,15 @@ func _on_kill_timer_timeout() -> void:
 	queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
+	if body == shooter:
+		return
 	if body.is_in_group("enemy") and body.has_method("take_damage"):
 		body.take_damage(damage, shooter)
+		queue_free()
+	elif GameState.phase == GameState.Phase.FINAL_BATTLE \
+			and body.is_in_group("player") \
+			and body.has_method("player_hit"):
+		body.player_hit(shooter)
 		queue_free()
 	elif body.is_in_group("walls"):
 		queue_free()

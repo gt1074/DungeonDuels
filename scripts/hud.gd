@@ -7,7 +7,8 @@ extends Control
 @onready var p1_hearts       = $VBoxContainer/P1Center/P1VBox/P1Hearts
 @onready var p1_kills_label  = $VBoxContainer/P1Center/P1VBox/P1KillsLabel
 @onready var p1_shield_label = $VBoxContainer/P1Center/P1VBox/P1ShieldLabel
-@onready var divider_label   = $VBoxContainer/DividerCenter/DividerLabel
+@onready var timer_label     = $VBoxContainer/DividerCenter/DividerVBox/TimerLabel
+@onready var status_label    = $VBoxContainer/DividerCenter/DividerVBox/StatusLabel
 @onready var p2_title_label  = $VBoxContainer/P2Center/P2VBox/P2TitleLabel
 @onready var p2_hearts       = $VBoxContainer/P2Center/P2VBox/P2Hearts
 @onready var p2_kills_label  = $VBoxContainer/P2Center/P2VBox/P2KillsLabel
@@ -21,15 +22,45 @@ var p2_shield               = null
 func _ready() -> void:
 	p1_title_label.text = "P-1"
 	p2_title_label.text = "P-2"
-	divider_label.text  = "====="
 
-	# Defer connection so SubViewport scenes are fully in the tree.
+	# Connect to GameState signals for timer and grace period
+	GameState.timer_tick.connect(_on_timer_tick)
+	GameState.timer_expired.connect(_on_timer_expired)
+	GameState.grace_tick.connect(_on_grace_tick)
+	GameState.grace_ended.connect(_on_grace_ended)
+	GameState.grace_cleared.connect(_on_grace_cleared)
+
+	# Show initial timer value; grace_tick will fill in the countdown immediately
+	timer_label.text  = str(int(GameState.MATCH_DURATION))
+	status_label.text = ""
+
 	_connect_players.call_deferred()
 
-# Resolves players via the "player" group rather than absolute node paths.
-# Absolute paths don't work reliably across SubViewport boundaries because
-# each SubViewport has its own Viewport root; group queries search the whole
-# SceneTree and are not affected by this limitation.
+# ── Timer / status display ────────────────────────────────────────────────────
+
+func _on_timer_tick(seconds_left: int) -> void:
+	timer_label.text = str(seconds_left)
+	# Turn red in the final 10 seconds
+	if seconds_left <= 10:
+		timer_label.add_theme_color_override("font_color", Color(1, 0.25, 0.25))
+	else:
+		timer_label.remove_theme_color_override("font_color")
+
+func _on_timer_expired() -> void:
+	timer_label.text  = "0"
+	status_label.text = "FINAL!"
+
+func _on_grace_tick(seconds_left: int) -> void:
+	status_label.text = str(seconds_left)
+
+func _on_grace_ended() -> void:
+	status_label.text = "BEGIN!"
+
+func _on_grace_cleared() -> void:
+	status_label.text = ""
+
+# ── Player connection ─────────────────────────────────────────────────────────
+
 func _connect_players() -> void:
 	await get_tree().process_frame
 
@@ -76,7 +107,7 @@ func _connect_p2() -> void:
 		p2_kills_label.text  = "K:-"
 		p2_shield_label.text = "S:-"
 
-# ── signal handlers ──────────────────────────────────────────────────────────
+# ── stat signal handlers ──────────────────────────────────────────────────────
 
 func _on_p1_stats_changed(health: int, kills: int) -> void:
 	draw_hearts(p1_hearts, health, 5)
@@ -92,7 +123,7 @@ func _on_p2_stats_changed(health: int, kills: int) -> void:
 func _on_p2_shield_changed(shield_health: int) -> void:
 	p2_shield_label.text = "S:" + str(shield_health)
 
-# ── helpers ──────────────────────────────────────────────────────────────────
+# ── helpers ───────────────────────────────────────────────────────────────────
 
 func draw_hearts(container: HBoxContainer, health: int, max_health: int) -> void:
 	for child in container.get_children():

@@ -3,8 +3,10 @@
 [ext_resource type="PackedScene" uid="uid://ipajp0vdfsck" path="res://scenes/player1_world.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://d3jct2cpuluq3" path="res://scenes/hud.tscn" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://868e8ik4f22o" path="res://scenes/player2_world.tscn" id="2_yqjtg"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="4_game1"]
 
 [node name="Game" type="Control" unique_id=698839627]
+script = ExtResource("4_game1")
 clip_contents = true
 layout_mode = 3
 anchors_preset = 15

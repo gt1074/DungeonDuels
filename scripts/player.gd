@@ -33,9 +33,12 @@ var invincible: bool = false:
 var current_weapon: Node2D = null
 var weapon_ready: bool = false
 
+# True during the opening grace period; blocks shooting and shield use.
+var stunned: bool = true
+
 @onready var aim_pivot: Node2D = $AimPivot
 @onready var weapon_holder: Node2D = $AimPivot/WeaponHolder
-@onready var camera_2d: Camera2D = $"../Camera2D"
+@onready var camera_2d: Camera2D = get_node_or_null("../Camera2D")
 @onready var invincibility_timer: Timer = $InvincibilityTimer
 @onready var respawn_timer: Timer = $RespawnTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -51,6 +54,9 @@ func _ready() -> void:
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	safe_margin = 0.08
 	equip_weapon(preload("res://scenes/bow_weapon.tscn"))
+	# Lift the stun when the grace period ends. ONE_SHOT so it auto-disconnects;
+	# fresh instances in the final battle will reconnect on their own _ready().
+	GameState.grace_ended.connect(func(): stunned = false, CONNECT_ONE_SHOT)
 
 func _process(_delta: float) -> void:
 	if is_dead:
@@ -65,17 +71,23 @@ func _process(_delta: float) -> void:
 
 	var shield_pressed = Input.is_action_pressed(action_prefix + "shield_activate")
 
-	if Input.is_action_pressed(action_prefix + "shoot") and not shield_pressed:
-		if current_weapon:
-			current_weapon.try_fire(last_aim)
+	if not stunned:
+		if Input.is_action_pressed(action_prefix + "shoot") and not shield_pressed:
+			if current_weapon:
+				current_weapon.try_fire(last_aim)
 
-	if shield_pressed and not shield.is_broken and not shield.on_cooldown:
-		shield.activate()
+		if shield_pressed and not shield.is_broken and not shield.on_cooldown:
+			shield.activate()
+		else:
+			shield.deactivate()
 	else:
 		shield.deactivate()
 
 func _physics_process(_delta: float) -> void:
 	if is_dead:
+		return
+	if stunned:
+		velocity = Vector2.ZERO
 		return
 
 	var direction = Input.get_vector(action_prefix + "move_left", action_prefix + "move_right", action_prefix + "move_up", action_prefix + "move_down")
@@ -115,14 +127,17 @@ func equip_weapon(weapon_scene: PackedScene) -> void:
 
 	weapon_ready = true
 
-func player_hit() -> void:
+func player_hit(attacker = null) -> void:
 	if invincible or is_dead:
 		return
 
-	camera_2d.apply_noise_shake()
+	if camera_2d:
+		camera_2d.apply_noise_shake()
 	health -= 1
 
 	if health <= 0:
+		if attacker != null and "kills" in attacker:
+			attacker.kills += 1
 		die()
 	else:
 		print("Knight got hit, remaining health is ", health)

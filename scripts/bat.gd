@@ -59,12 +59,14 @@ func _ready() -> void:
 	safe_margin = 0.08
 
 func _process(delta: float) -> void:
-	if player.is_dead:
+	if GameState.is_grace or player.is_dead:
 		return
 	const ROTATION_SPEED = 90
 	rotater.rotation_degrees = fmod(rotater.rotation_degrees + ROTATION_SPEED * delta, 360)
 
 func _physics_process(delta: float) -> void:
+	if GameState.is_grace:
+		return
 	if player.is_dead:
 		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		move_and_slide()
@@ -138,7 +140,7 @@ func spawn_bullet(dir: Vector2) -> void:
 	bullet.speed = bullet_speed
 
 func _on_shoot_timer_timeout() -> void:
-	if player.is_dead:
+	if GameState.is_grace or player.is_dead:
 		return
 	shoot_pattern()
 
