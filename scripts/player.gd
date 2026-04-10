@@ -19,6 +19,9 @@ var is_dead: bool:
 	get: return state == State.DEAD
 
 signal stats_changed(health: int, max_health: int, kills: int)
+# Emitted instead of starting the respawn timer when a player loses their
+# last heart during the final battle.  final_battle.gd listens to this.
+signal eliminated
 
 var health: int = STARTING_MAX_HEALTH:
 	set(value):
@@ -143,6 +146,13 @@ func player_hit(attacker = null) -> void:
 		invincible = true
 
 func die() -> void:
+	# Permanent elimination: final battle only, and only when the last heart
+	# is lost (max_health == 1 means there is nowhere left to fall).
+	var is_final_death := (
+		GameState.phase == GameState.Phase.FINAL_BATTLE
+		and max_health == 1
+	)
+
 	# Each death permanently lowers max health (floor of 1).
 	max_health = maxi(1, max_health - 1)
 	state = State.DEAD
@@ -154,7 +164,11 @@ func die() -> void:
 	aim_pivot.visible = false
 	print("Knight Died!")
 	animated_sprite.play("Death")
-	respawn_timer.start()
+
+	if is_final_death:
+		eliminated.emit()
+	else:
+		respawn_timer.start()
 
 func _play_getup_animation() -> void:
 	var frames = animated_sprite.sprite_frames
