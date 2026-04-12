@@ -10,7 +10,7 @@ const BULLET = preload("res://scenes/player_bullet.tscn")
 var last_aim = Vector2.RIGHT
 const SPEED = 75.0
 const INVINCIBLE_TIME = 3
-const STARTING_MAX_HEALTH = 5
+const STARTING_MAX_HEALTH = 3
 var max_health: int = STARTING_MAX_HEALTH
 
 var state: State = State.ALIVE
