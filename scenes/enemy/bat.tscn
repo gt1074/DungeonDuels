@@ -1,18 +1,18 @@
 [gd_scene format=3 uid="uid://bb18jlx5lu7yj"]
 
-[ext_resource type="Script" uid="uid://cluoq5hck4f3n" path="res://scripts/bat.gd" id="1_cnldk"]
-[ext_resource type="Texture2D" uid="uid://bhykessftq25q" path="res://assets/brackeys_platformer_assets/sprites/atlas.png" id="2_48wkk"]
+[ext_resource type="Script" uid="uid://cluoq5hck4f3n" path="res://scripts/enemy/bat.gd" id="1_2jyp7"]
+[ext_resource type="Texture2D" uid="uid://bhykessftq25q" path="res://assets/brackeys_platformer_assets/sprites/atlas.png" id="2_hp7h8"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p57ef"]
-atlas = ExtResource("2_48wkk")
+atlas = ExtResource("2_hp7h8")
 region = Rect2(20, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u5sy4"]
-atlas = ExtResource("2_48wkk")
+atlas = ExtResource("2_hp7h8")
 region = Rect2(40, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gee14"]
-atlas = ExtResource("2_48wkk")
+atlas = ExtResource("2_hp7h8")
 region = Rect2(20, 20, 20, 20)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_lv0ya"]
@@ -41,7 +41,7 @@ radius = 3.0
 [node name="Bat" type="CharacterBody2D" unique_id=1475629601 groups=["enemy"]]
 collision_layer = 2
 collision_mask = 15
-script = ExtResource("1_cnldk")
+script = ExtResource("1_2jyp7")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=586438869]
 texture_filter = 1

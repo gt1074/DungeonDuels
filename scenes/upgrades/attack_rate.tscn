@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://c2tl1vnw03jti"]
+
+[ext_resource type="Script" uid="uid://bbl1mgtsokqvl" path="res://scripts/upgrades/attack_rate.gd" id="1_f7w8h"]
+[ext_resource type="Texture2D" uid="uid://caxwmamevppob" path="res://assets/brackeys_platformer_assets/sprites/fruit.png" id="1_t164g"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f7w8h"]
+atlas = ExtResource("1_t164g")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_t164g"]
+radius = 4.0
+
+[node name="AttackRate" type="Area2D" unique_id=477662223]
+script = ExtResource("1_f7w8h")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=626326384]
+texture = SubResource("AtlasTexture_f7w8h")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1585281285]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_t164g")

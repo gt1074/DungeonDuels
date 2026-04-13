@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
-@export var bullet_scene: PackedScene = preload("res://scenes/enemy_bullet.tscn")
+@export var bullet_scene: PackedScene = preload("res://scenes/enemy/enemy_bullet.tscn")
 @export var bullet_speed: float = 120.0
 @export var shoot_interval: float = 2.5
 
-@onready var player: CharacterBody2D = get_parent().get_node("Player")
+@onready var player_instance: player = get_parent().get_node("Player")
 @onready var shoot_timer: Timer = $ShootTimer
 @onready var hop_timer: Timer = $HopTimer
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
@@ -61,13 +61,13 @@ func _start_pause() -> void:
 func _physics_process(delta: float) -> void:
 	if GameState.is_grace:
 		return
-	if player.is_dead:
+	if player_instance.is_dead:
 		velocity = velocity.move_toward(Vector2.ZERO, 300 * delta)
 		move_and_slide()
 		return
 
 	if is_hopping:
-		var direction = (player.global_position - global_position).normalized()
+		var direction = (player_instance.global_position - global_position).normalized()
 		velocity = velocity.move_toward(direction * SPEED, 300 * delta)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, 300 * delta)
@@ -81,7 +81,7 @@ func _on_hop_timer_timeout() -> void:
 		_start_hop()
 
 func _on_shoot_timer_timeout() -> void:
-	if GameState.is_grace or player.is_dead or is_shooting:
+	if GameState.is_grace or player_instance.is_dead or is_shooting:
 		return
 	_shoot_with_animation()
 
@@ -100,7 +100,7 @@ func _shoot_with_animation() -> void:
 		animated_sprite.play("idle")
 		is_shooting = false
 		return
-	var direction = (player.global_position - global_position).normalized()
+	var direction = (player_instance.global_position - global_position).normalized()
 	spawn_bullet(direction)
 	animated_sprite.play("idle")
 	is_shooting = false

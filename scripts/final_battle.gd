@@ -17,7 +17,7 @@ func _start_grace() -> void:
 	GameState.start_grace_period()
 
 func _spawn_players() -> void:
-	var player_scene := preload("res://scenes/Player.tscn")
+	var player_scene := preload("res://scenes/player/Player.tscn")
 
 	_p1 = player_scene.instantiate()
 	_p1.action_prefix = ""

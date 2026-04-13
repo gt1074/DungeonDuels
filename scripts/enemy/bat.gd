@@ -1,11 +1,11 @@
 extends CharacterBody2D
 
-@export var bullet_scene: PackedScene = preload("res://scenes/enemy_bullet.tscn")
+@export var bullet_scene: PackedScene = preload("res://scenes/enemy/enemy_bullet.tscn")
 @export var bullet_speed: float = 100
 @export var shoot_interval: float = 1
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
-@onready var player: CharacterBody2D = get_parent().get_node("Player")
+@onready var player_instance: player = get_parent().get_node("Player")
 @onready var shoot_timer = $ShootTimer
 @onready var burst_timer = $BurstTimer
 @onready var rotater: Node2D = $Rotater
@@ -59,7 +59,7 @@ func _ready() -> void:
 	safe_margin = 0.08
 
 func _process(delta: float) -> void:
-	if GameState.is_grace or player.is_dead:
+	if GameState.is_grace or player_instance.is_dead:
 		return
 	const ROTATION_SPEED = 90
 	rotater.rotation_degrees = fmod(rotater.rotation_degrees + ROTATION_SPEED * delta, 360)
@@ -67,12 +67,12 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if GameState.is_grace:
 		return
-	if player.is_dead:
+	if player_instance.is_dead:
 		velocity = velocity.move_toward(Vector2.ZERO, 200 * delta)
 		move_and_slide()
 		return
 
-	var direction = (player.global_position - global_position).normalized()
+	var direction = (player_instance.global_position - global_position).normalized()
 	velocity = velocity.move_toward(direction * speed, 200 * delta)
 
 	# Stop vertical push when colliding from top/bottom
@@ -123,7 +123,7 @@ func _shoot_triple() -> void:
 
 func _on_burst_timer_timeout() -> void:
 	if burst_count == 0:
-		last_direction = (player.global_position - global_position).normalized()
+		last_direction = (player_instance.global_position - global_position).normalized()
 	spawn_bullet(last_direction)
 	burst_count += 1
 	if burst_count >= BURST_AMOUNT:
@@ -140,7 +140,7 @@ func spawn_bullet(dir: Vector2) -> void:
 	bullet.speed = bullet_speed
 
 func _on_shoot_timer_timeout() -> void:
-	if GameState.is_grace or player.is_dead:
+	if GameState.is_grace or player_instance.is_dead:
 		return
 	shoot_pattern()
 

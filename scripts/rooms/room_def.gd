@@ -5,8 +5,8 @@ var player_spawn: Vector2 = Vector2(100, 100)
 var bat_spawns: Array[Vector2] = []
 var slime_spawns: Array[Vector2] = []
 
-const BAT_SCENE = preload("res://scenes/bat.tscn")
-const SLIME_SCENE = preload("res://scenes/slime.tscn")
+const BAT_SCENE = preload("res://scenes/enemy/bat.tscn")
+const SLIME_SCENE = preload("res://scenes/enemy/slime.tscn")
 
 func get_enemy_count() -> int:
 	return bat_spawns.size() + slime_spawns.size()

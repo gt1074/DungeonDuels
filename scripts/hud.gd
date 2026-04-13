@@ -64,11 +64,11 @@ func _on_grace_cleared() -> void:
 func _connect_players() -> void:
 	await get_tree().process_frame
 
-	for player in get_tree().get_nodes_in_group("player"):
-		if player.action_prefix == "":
-			p1 = player
-		elif player.action_prefix == "p2_":
-			p2 = player
+	for player_instance in get_tree().get_nodes_in_group("player"):
+		if player_instance.action_prefix == "":
+			p1 = player_instance
+		elif player_instance.action_prefix == "p2_":
+			p2 = player_instance
 
 	_connect_p1()
 	_connect_p2()

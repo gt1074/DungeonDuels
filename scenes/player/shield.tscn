@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://dwva1r77jvxkr"]
 
-[ext_resource type="Script" uid="uid://br3ctk6jekssw" path="res://scripts/shield.gd" id="1_ohv3a"]
-[ext_resource type="Texture2D" uid="uid://f6qnpojrdflv" path="res://assets/brackeys_platformer_assets/sprites/Shield.png" id="1_vuocu"]
+[ext_resource type="Script" uid="uid://br3ctk6jekssw" path="res://scripts/player/shield.gd" id="1_lsl6d"]
+[ext_resource type="Texture2D" uid="uid://f6qnpojrdflv" path="res://assets/brackeys_platformer_assets/sprites/Shield.png" id="2_m61gp"]
 
 [node name="Shield" type="Area2D" unique_id=74675171 groups=["shield"]]
 collision_layer = 4
 collision_mask = 2
 monitoring = false
-script = ExtResource("1_ohv3a")
+script = ExtResource("1_lsl6d")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=2091620483]
-texture = ExtResource("1_vuocu")
+texture = ExtResource("2_m61gp")
 offset = Vector2(-5, 12)
 flip_h = true
 

@@ -1,7 +1,8 @@
 extends Area2D
-
+class_name health_pickup
 @export var heal_amount: int = 1
 
+var description = "Heals 1 Health"
 func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 

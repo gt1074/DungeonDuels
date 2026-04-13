@@ -1,8 +1,9 @@
 extends CharacterBody2D
-
+class_name player
 enum State {ALIVE, DEAD}
 
-const BULLET = preload("res://scenes/player_bullet.tscn")
+const BULLET = preload("res://scenes/player/player_bullet.tscn")
+const SHIELD = preload("res://scenes/player/shield.tscn")
 
 # Set to "p2_" for the second player so it reads p2_move_left, p2_shoot, etc.
 @export var action_prefix: String = ""
@@ -57,7 +58,7 @@ func _ready() -> void:
 	health = max_health
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	safe_margin = 0.08
-	equip_weapon(preload("res://scenes/bow_weapon.tscn"))
+	equip_weapon(preload("res://scenes/weapons/bow_weapon.tscn"))
 	# Lift the stun when the grace period ends. ONE_SHOT so it auto-disconnects;
 	# fresh instances in the final battle will reconnect on their own _ready().
 	GameState.grace_ended.connect(func(): stunned = false, CONNECT_ONE_SHOT)

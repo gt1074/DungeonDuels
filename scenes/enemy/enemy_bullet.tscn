@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dfbd1ebf8giyp"]
 
-[ext_resource type="Script" uid="uid://cb02wwh1yquhj" path="res://scripts/enemy_bullet.gd" id="1_qx7rs"]
-[ext_resource type="Texture2D" uid="uid://csee55q62yfle" path="res://assets/brackeys_platformer_assets/sprites/enemy_bullet.png" id="2_38r62"]
+[ext_resource type="Script" uid="uid://cb02wwh1yquhj" path="res://scripts/enemy/enemy_bullet.gd" id="1_bkamy"]
+[ext_resource type="Texture2D" uid="uid://csee55q62yfle" path="res://assets/brackeys_platformer_assets/sprites/enemy_bullet.png" id="2_neolw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gl7bs"]
 radius = 4.0
@@ -10,10 +10,10 @@ radius = 4.0
 texture_filter = 1
 collision_layer = 8
 collision_mask = 23
-script = ExtResource("1_qx7rs")
+script = ExtResource("1_bkamy")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1781189086]
-texture = ExtResource("2_38r62")
+texture = ExtResource("2_neolw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1400289193]
 shape = SubResource("CircleShape2D_gl7bs")

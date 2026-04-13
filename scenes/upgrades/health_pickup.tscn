@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://health_pickup_001"]
+[gd_scene format=3 uid="uid://cgr5111asr070"]
 
-[ext_resource type="Script" path="res://scripts/health_pickup.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://dfqnwge1cqxcm" path="res://scripts/upgrades/health_pickup.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://caxwmamevppob" path="res://assets/brackeys_platformer_assets/sprites/fruit.png" id="2_fruit"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fruit"]
@@ -10,14 +10,13 @@ region = Rect2(0, 0, 16, 16)
 [sub_resource type="CircleShape2D" id="CircleShape2D_pickup"]
 radius = 6.0
 
-[node name="HealthPickup" type="Area2D"]
+[node name="HealthPickup" type="Area2D" unique_id=399575847]
 collision_layer = 0
-collision_mask = 1
 script = ExtResource("1_script")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=108504625]
 texture_filter = 1
 texture = SubResource("AtlasTexture_fruit")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=463871701]
 shape = SubResource("CircleShape2D_pickup")
