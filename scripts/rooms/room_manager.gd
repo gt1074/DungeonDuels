@@ -17,7 +17,7 @@ func start(player_node: CharacterBody2D, world_node: Node):
 func load_random_room():
 	var available = range(ROOM_TYPES.size()).filter(func(i): return i != current_def_index)
 	current_def_index = available[randi() % available.size()]
-
+	current_def_index = 2
 	var room = ROOM_SCENE.instantiate()
 	world.add_child(room)
 

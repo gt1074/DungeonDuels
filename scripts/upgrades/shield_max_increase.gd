@@ -1,10 +1,10 @@
-extends Area2D
+extends Upgrade
 class_name shield_max_increase
 
-@export var increase_amount = 3
+@export var increase_amount = 0.5
 
-var description = "Increases max shield health"
 func _ready() -> void:
+	self.description = "Increases max shield health"
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
@@ -13,4 +13,4 @@ func _on_body_entered(body: Node2D) -> void:
 		if shield != null:
 			print("Shield is null, why's that huh?")
 		else:
-			shield.MAX_HEALTH + 3
+			shield.cooldown_time = shield.cooldown_time

@@ -1,10 +1,10 @@
-extends Area2D
+extends Upgrade
 class_name attack_rate
 
 @export var speed_increase: int = 0.3
 
-var description = "Increases attack rate"
 func _ready() -> void:
+	self.description = "Increases attack rate"
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:

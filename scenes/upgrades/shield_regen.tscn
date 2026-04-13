@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://kq5hs5ei0ugv"]
+
+[ext_resource type="Texture2D" uid="uid://caxwmamevppob" path="res://assets/brackeys_platformer_assets/sprites/fruit.png" id="1_212ot"]
+[ext_resource type="Script" uid="uid://dbm1nq27fhha" path="res://scripts/upgrades/shield_regen.gd" id="1_aw6t5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aw6t5"]
+atlas = ExtResource("1_212ot")
+region = Rect2(0, 32, 16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_212ot"]
+radius = 5.0
+
+[node name="ShieldRegen" type="Area2D" unique_id=1196919209]
+script = ExtResource("1_aw6t5")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=460171324]
+texture = SubResource("AtlasTexture_aw6t5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=263762042]
+shape = SubResource("CircleShape2D_212ot")

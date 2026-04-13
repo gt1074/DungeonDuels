@@ -1,9 +1,9 @@
-extends Area2D
+extends Upgrade
 class_name health_pickup
 @export var heal_amount: int = 1
 
-var description = "Heals 1 Health"
 func _ready() -> void:
+	self.description = "Heals 1 Health"
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:
