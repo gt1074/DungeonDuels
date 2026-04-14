@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 @export var bullet_scene: PackedScene = preload("res://scenes/enemy/enemy_bullet.tscn")
-@export var bullet_speed: float = 220.0
-@export var shoot_interval: float = 0.8
+@export var bullet_speed: float = 100.0
+@export var shoot_interval: float = 0.5
 
 @onready var player_instance: player = get_parent().get_node("Player")
 @onready var shoot_timer: Timer = $ShootTimer
@@ -18,10 +18,15 @@ var health: int = 40
 var spiral_angle: float = 0.0
 var patterns = ["circle", "fan", "spiral"]
 
+@export var top_position: Vector2 = Vector2(80, 40)
+@export var bottom_position: Vector2 = Vector2(80, 160)
+@export var teleport_interval: float = 4.0
+var teleport_to_top: bool = false
+
 func _flash_hit() -> void:
 	animated_sprite.modulate = Color(1, 0.2, 0.2)
 	await get_tree().create_timer(0.15).timeout
-	if is_instance_valid(self):
+	if is_instance_valid(self ):
 		animated_sprite.modulate = Color(1, 1, 1)
 
 func take_damage(amount: int = 1, attacker = null) -> void:
@@ -46,6 +51,8 @@ func _ready() -> void:
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	safe_margin = 0.08
 	animated_sprite.play("idle")
+	teleport_to_top = false
+	start_teleport_cycle()
 
 func _process(_delta: float) -> void:
 	if GameState.is_grace or player_instance.is_dead:
@@ -56,6 +63,25 @@ func _physics_process(_delta: float) -> void:
 		return
 	if player_instance.is_dead:
 		return
+
+func start_teleport_cycle() -> void:
+	teleport_to_top = not teleport_to_top
+	set_teleport_position()
+	_teleport_loop()
+
+func _teleport_loop() -> void:
+	while is_instance_valid(self ):
+		await get_tree().create_timer(teleport_interval).timeout
+		if not is_instance_valid(self ) or GameState.is_grace:
+			continue
+		teleport_to_top = not teleport_to_top
+		set_teleport_position()
+
+func set_teleport_position() -> void:
+	if teleport_to_top:
+		global_position = top_position
+	else:
+		global_position = bottom_position
 
 func get_pattern() -> String:
 	var health_ratio = float(health) / 40.0
@@ -86,17 +112,18 @@ func _shoot_fan() -> void:
 	var count = 5
 	var spread = deg_to_rad(90)
 	var step = spread / float(count - 1)
-	var start_angle = -spread / 2
+	var start_angle = - spread / 2
 	for i in range(count):
 		spawn_bullet(aim_direction.rotated(start_angle + i * step))
 
 func _shoot_spiral() -> void:
 	var aim_direction = (player_instance.global_position - global_position).normalized()
-	var count = 6
+	var count = 10
 	var angle_step = 2.0 * PI / float(count)
 	for i in range(count):
-		spawn_bullet(aim_direction.rotated(spiral_angle + i * angle_step))
-	spiral_angle += deg_to_rad(15)
+		var dir = aim_direction.rotated(spiral_angle + i * angle_step)
+		spawn_bullet(dir)
+	spiral_angle += deg_to_rad(30)
 
 func spawn_bullet(dir: Vector2) -> void:
 	var bullet = bullet_scene.instantiate()
