@@ -5,9 +5,12 @@ var world: Node = null
 var current_room_node: Node = null
 var current_def_index: int = -1
 var enemies_remaining: int = 0
+var completed_rooms: int = 0
 
 const ROOM_SCENE = preload("res://scenes/rooms/room.tscn")
-var ROOM_TYPES = [RoomDef1, RoomDef2, RoomDef3]
+const NORMAL_ROOM_TYPES = [preload("res://scripts/rooms/room1.gd"), preload("res://scripts/rooms/room2.gd"), preload("res://scripts/rooms/room3.gd")]
+const BOSS_ROOM_TYPE = preload("res://scripts/rooms/room_boss.gd")
+const BOSS_ROOM_INTERVAL: int = 1
 
 func start(player_node: CharacterBody2D, world_node: Node):
 	player_instance = player_node
@@ -15,9 +18,15 @@ func start(player_node: CharacterBody2D, world_node: Node):
 	load_random_room()
 
 func load_random_room():
-	var available = range(ROOM_TYPES.size()).filter(func(i): return i != current_def_index)
-	current_def_index = available[randi() % available.size()]
-	current_def_index = 2
+	var definition
+	if completed_rooms >= BOSS_ROOM_INTERVAL:
+		current_def_index = -1
+		definition = BOSS_ROOM_TYPE.new()
+	else:
+		var available = range(NORMAL_ROOM_TYPES.size()).filter(func(i): return i != current_def_index)
+		current_def_index = available[randi() % available.size()]
+		definition = NORMAL_ROOM_TYPES[current_def_index].new()
+
 	var room = ROOM_SCENE.instantiate()
 	world.add_child(room)
 
@@ -25,9 +34,7 @@ func load_random_room():
 		current_room_node.queue_free()
 	current_room_node = room
 
-	var definition = ROOM_TYPES[current_def_index].new()
-	room.setup(definition, self)  
-
+	room.setup(definition, self )
 
 func register_room(room: Node, spawn_pos: Vector2, enemy_count: int):
 	enemies_remaining = enemy_count
@@ -40,4 +47,8 @@ func on_enemy_died():
 	print("Enemy Died! There are ${enemies_remaining} left")
 	enemies_remaining -= 1
 	if enemies_remaining <= 0:
-		load_random_room()
+		if current_def_index == -1:
+			completed_rooms = 0
+		else:
+			completed_rooms += 1
+		call_deferred("load_random_room")
