@@ -1,4 +1,4 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://bsw0kg07gk5tx"]
 
 [ext_resource type="Script" uid="uid://cmki5teyn8yyf" path="res://scripts/game/world.gd" id="1_bx6ni"]
 [ext_resource type="PackedScene" uid="uid://dtc6ki22p0fdp" path="res://scenes/rooms/room_manager.tscn" id="2_88rie"]

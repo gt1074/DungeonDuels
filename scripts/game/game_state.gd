@@ -7,7 +7,7 @@ var phase: Phase = Phase.DUNGEON
 
 # ── Match timer ───────────────────────────────────────────────────────────────
 
-const MATCH_DURATION := 33.0          # seconds before final battle begins
+const MATCH_DURATION := 63.0          # seconds before final battle begins
 var time_remaining: float = MATCH_DURATION
 
 signal timer_tick(seconds_left: int)  # emitted each whole-second change

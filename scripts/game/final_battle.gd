@@ -11,6 +11,8 @@ var _p2: CharacterBody2D = null
 func _ready() -> void:
 	GameState.phase = GameState.Phase.FINAL_BATTLE
 	_spawn_players()
+	var overlay := preload("res://scripts/ui/grace_overlay.gd").new()
+	add_child(overlay)
 	call_deferred("_start_grace")
 
 func _start_grace() -> void:
