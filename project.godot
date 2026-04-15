@@ -33,6 +33,12 @@ project/assembly_name="DungeonDuels"
 
 theme/default_font_multichannel_signed_distance_field=true
 
+[importer_defaults]
+
+font_data_dynamic={
+&"multichannel_signed_distance_field": true
+}
+
 [input]
 
 move_left={

@@ -16,7 +16,11 @@ const POLYGON_DISTANCE := 14.0
 # Captured from the scene in _ready() so we never hardcode the offset.
 var _base_position := Vector2.ZERO
 
-@export var MAX_HEALTH := 10
+@export var MAX_HEALTH := 10:
+	set(value):
+		MAX_HEALTH = value
+		health = value
+		
 @export var cooldown_time := 2.2
 @export var recharge_interval := 0.3
 @export var recharge_delay := 0.5
