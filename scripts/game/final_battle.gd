@@ -11,6 +11,8 @@ var _p2: CharacterBody2D = null
 func _ready() -> void:
 	GameState.phase = GameState.Phase.FINAL_BATTLE
 	_spawn_players()
+	var overlay := preload("res://scripts/ui/grace_overlay.gd").new()
+	add_child(overlay)
 	call_deferred("_start_grace")
 
 func _start_grace() -> void:
@@ -24,7 +26,7 @@ func _spawn_players() -> void:
 	world.add_child(_p1)
 	_p1.position = P1_SPAWN
 	_p1.max_health = GameState.p1_max_health
-	_p1.health     = GameState.p1_health
+	_p1.health     = GameState.p1_max_health  # always enter at full health
 	_p1.kills      = GameState.p1_kills
 	_p1.eliminated.connect(_on_player_eliminated.bind(_p1))
 
@@ -33,7 +35,7 @@ func _spawn_players() -> void:
 	world.add_child(_p2)
 	_p2.position = P2_SPAWN
 	_p2.max_health = GameState.p2_max_health
-	_p2.health     = GameState.p2_health
+	_p2.health     = GameState.p2_max_health  # always enter at full health
 	_p2.kills      = GameState.p2_kills
 	_p2.eliminated.connect(_on_player_eliminated.bind(_p2))
 
