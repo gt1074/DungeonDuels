@@ -39,6 +39,31 @@ func _spawn_players() -> void:
 	_p2.kills      = GameState.p2_kills
 	_p2.eliminated.connect(_on_player_eliminated.bind(_p2))
 
+	# player._ready() calls equip_weapon() which is async (awaits weapon.ready).
+	# Wait one frame so both weapons finish before we write to fire_rate.
+	await get_tree().process_frame
+
+	_p1.current_weapon.fire_rate = GameState.p1_fire_rate
+	_p2.current_weapon.fire_rate = GameState.p2_fire_rate
+
+	# Shield _ready() is synchronous so we can apply stats immediately.
+	# apply_stats() also updates the Timer wait_times so values take effect now.
+	var s1: Shield = _p1.get_node("Shield")
+	s1.apply_stats(
+		GameState.p1_shield_max_health,
+		GameState.p1_shield_cooldown_time,
+		GameState.p1_shield_recharge_interval,
+		GameState.p1_shield_recharge_delay
+	)
+
+	var s2: Shield = _p2.get_node("Shield")
+	s2.apply_stats(
+		GameState.p2_shield_max_health,
+		GameState.p2_shield_cooldown_time,
+		GameState.p2_shield_recharge_interval,
+		GameState.p2_shield_recharge_delay
+	)
+
 # Called when a player fires their 'eliminated' signal.
 # The loser's action_prefix tells us which player won.
 func _on_player_eliminated(loser: CharacterBody2D) -> void:
