@@ -7,6 +7,7 @@ var current_def_index: int = -1
 var enemies_remaining: int = 0
 var upgrade_1: Upgrade = null
 var upgrade_2: Upgrade = null
+var loading: bool = false
 
 const ROOM_SCENE = preload("res://scenes/rooms/room.tscn")
 #const UPGRADE_SCENES = [preload("res://scenes/upgrades/shield_regen.tscn"), preload("res://scenes/upgrades/shield_max_increase.tscn")]
@@ -81,6 +82,9 @@ func on_enemy_died():
 	print("Enemy Died! There are ${enemies_remaining} left")
 	enemies_remaining -= 1
 	if enemies_remaining <= 0:
-		await get_tree().create_timer(1).timeout
-		print("Load the upgrades!")
-		load_upgrades()
+		if loading == false:
+			loading = true
+			await get_tree().create_timer(1).timeout
+			print("Load the upgrades!")
+			load_upgrades()
+			loading = false

@@ -23,6 +23,7 @@ GameState="*res://scripts/game/game_state.gd"
 
 window/size/viewport_width=365
 window/size/viewport_height=202
+window/size/mode=3
 window/stretch/mode="canvas_items"
 
 [dotnet]
