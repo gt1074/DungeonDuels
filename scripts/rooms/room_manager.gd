@@ -11,8 +11,13 @@ var loading: bool = false
 
 const ROOM_SCENE = preload("res://scenes/rooms/room.tscn")
 #const UPGRADE_SCENES = [preload("res://scenes/upgrades/shield_regen.tscn"), preload("res://scenes/upgrades/shield_max_increase.tscn")]
-const UPGRADE_SCENES = [preload("res://scenes/upgrades/attack_rate.tscn"), preload("res://scenes/upgrades/health_pickup.tscn"),
-preload("res://scenes/upgrades/shield_regen.tscn"), preload("res://scenes/upgrades/shield_max_increase.tscn")]
+const UPGRADE_SCENES = [
+	preload("res://scenes/upgrades/attack_rate.tscn"),
+	preload("res://scenes/upgrades/health_pickup.tscn"),
+	preload("res://scenes/upgrades/max_health.tscn"),
+	preload("res://scenes/upgrades/shield_regen.tscn"),
+	preload("res://scenes/upgrades/shield_max_increase.tscn"),
+]
 var ROOM_TYPES = [RoomDef1, RoomDef2, RoomDef3]
 
 func start(player_node: CharacterBody2D, world_node: Node):
