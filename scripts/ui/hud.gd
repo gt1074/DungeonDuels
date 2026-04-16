@@ -23,14 +23,11 @@ func _ready() -> void:
 	p1_title_label.text = "P-1"
 	p2_title_label.text = "P-2"
 
-	# Connect to GameState signals for timer and grace period
+	# Connect to GameState signals for timer
 	GameState.timer_tick.connect(_on_timer_tick)
 	GameState.timer_expired.connect(_on_timer_expired)
-	GameState.grace_tick.connect(_on_grace_tick)
-	GameState.grace_ended.connect(_on_grace_ended)
-	GameState.grace_cleared.connect(_on_grace_cleared)
 
-	# Show initial timer value; grace_tick will fill in the countdown immediately
+	# Show initial timer value
 	timer_label.text  = str(int(GameState.MATCH_DURATION))
 	status_label.text = ""
 
@@ -49,15 +46,6 @@ func _on_timer_tick(seconds_left: int) -> void:
 func _on_timer_expired() -> void:
 	timer_label.text  = "0"
 	status_label.text = "FINAL!"
-
-func _on_grace_tick(seconds_left: int) -> void:
-	status_label.text = str(seconds_left)
-
-func _on_grace_ended() -> void:
-	status_label.text = "BEGIN!"
-
-func _on_grace_cleared() -> void:
-	status_label.text = ""
 
 # ── Player connection ─────────────────────────────────────────────────────────
 
