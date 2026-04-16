@@ -9,7 +9,7 @@ const SHIELD = preload("res://scenes/player/shield.tscn")
 @export var action_prefix: String = ""
 
 var last_aim = Vector2.RIGHT
-const SPEED = 75.0
+var speed: float = 75.0
 const INVINCIBLE_TIME = 3
 const STARTING_MAX_HEALTH = 3
 var max_health: int = STARTING_MAX_HEALTH:
@@ -102,7 +102,7 @@ func _physics_process(_delta: float) -> void:
 		animation_state = 1
 		direction = direction.normalized()
 		animated_sprite.flip_h = facing < 0
-		velocity = direction * SPEED
+		velocity = direction * speed
 	else:
 		velocity = Vector2.ZERO
 

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cwx53mqrmcvki"]
 
-[ext_resource type="Script" path="res://scripts/upgrades/max_health_pickup.gd" id="1_mhp"]
+[ext_resource type="Script" path="res://scripts/upgrades/health_max.gd" id="1_mhp"]
 [ext_resource type="Texture2D" uid="uid://caxwmamevppob" path="res://assets/brackeys_platformer_assets/sprites/fruit.png" id="2_fruit"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mh"]

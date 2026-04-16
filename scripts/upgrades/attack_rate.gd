@@ -3,6 +3,10 @@ class_name attack_rate
 
 @export var shot_wait_decrease: float = 0.1
 
+func is_available(p: CharacterBody2D) -> bool:
+	# fire_rate starts at 0.3 and drops by 0.1 per pickup; floor is 0.1 (3 pickups).
+	return p.current_weapon != null and p.current_weapon.fire_rate > 0.1
+
 func _ready() -> void:
 	self.description = "Attack\nSpeed"
 	body_entered.connect(_on_body_entered)

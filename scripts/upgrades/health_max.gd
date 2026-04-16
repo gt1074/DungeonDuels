@@ -1,11 +1,14 @@
 extends Upgrade
-class_name max_health_pickup
+class_name health_max
 
 ## Hard cap: players can never exceed this many hearts.
 const MAX_HEARTS: int = 5
 
+func is_available(p: CharacterBody2D) -> bool:
+	return p.max_health < MAX_HEARTS
+
 func _ready() -> void:
-	self.description = "+1 Max Health"
+	self.description = "+1 Max\nHealth"
 	body_entered.connect(_on_body_entered)
 
 func _on_body_entered(body: Node2D) -> void:

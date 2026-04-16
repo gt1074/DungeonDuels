@@ -13,10 +13,10 @@ const ROOM_SCENE = preload("res://scenes/rooms/room.tscn")
 #const UPGRADE_SCENES = [preload("res://scenes/upgrades/shield_regen.tscn"), preload("res://scenes/upgrades/shield_max_increase.tscn")]
 const UPGRADE_SCENES = [
 	preload("res://scenes/upgrades/attack_rate.tscn"),
-	preload("res://scenes/upgrades/health_pickup.tscn"),
-	preload("res://scenes/upgrades/max_health.tscn"),
+	preload("res://scenes/upgrades/speed_boost.tscn"),
+	preload("res://scenes/upgrades/health_max.tscn"),
 	preload("res://scenes/upgrades/shield_regen.tscn"),
-	preload("res://scenes/upgrades/shield_max_increase.tscn"),
+	preload("res://scenes/upgrades/shield_max.tscn"),
 ]
 var ROOM_TYPES = [RoomDef1, RoomDef2, RoomDef3]
 
@@ -41,22 +41,34 @@ func load_random_room():
 func load_upgrades():
 	var label_1: Label = current_room_node.get_node("CanvasLayer/Upgrade1_label")
 	var label_2: Label = current_room_node.get_node("CanvasLayer/Upgrade2_label")
-	
-	var upgrade_1_avail = range(UPGRADE_SCENES.size())
-	var upgrade_1_index = upgrade_1_avail[randi() % upgrade_1_avail.size()]
-	
-	var upgrade_2_avail = range(UPGRADE_SCENES.size()).filter(func(i): return i != upgrade_1_index)
-	var upgrade_2_index = upgrade_2_avail[randi() % upgrade_2_avail.size()]
-	
-	self.upgrade_1 = UPGRADE_SCENES[upgrade_1_index].instantiate()
+
+	# Build a filtered pool: instantiate each candidate and ask it whether it
+	# is still meaningful for this player. Discard any that say no.
+	var pool: Array[Upgrade] = []
+	for scene in UPGRADE_SCENES:
+		var candidate := scene.instantiate() as Upgrade
+		if candidate.is_available(player_instance):
+			pool.append(candidate)
+		else:
+			candidate.free()
+
+	if pool.size() < 2:
+		push_warning("RoomManager: fewer than 2 upgrades available — pool size: %d" % pool.size())
+
+	pool.shuffle()
+
+	self.upgrade_1 = pool[0]
 	upgrade_1.position = Vector2(50, 50)
 	upgrade_1.room_manager = self
-	
-	
-	self.upgrade_2 = UPGRADE_SCENES[upgrade_2_index].instantiate()
+
+	self.upgrade_2 = pool[1]
 	upgrade_2.position = Vector2(110, 50)
 	upgrade_2.room_manager = self
-	
+
+	# Free any extra candidates that didn't make the cut.
+	for i in range(2, pool.size()):
+		pool[i].free()
+
 	current_room_node.add_child(upgrade_1)
 	current_room_node.add_child(upgrade_2)
 	label_1.text = upgrade_1.description
