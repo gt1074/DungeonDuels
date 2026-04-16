@@ -111,6 +111,17 @@ func _on_p2_stats_changed(health: int, max_health: int, kills: int) -> void:
 func _on_p2_shield_changed(shield_health: int) -> void:
 	p2_shield_label.text = "S:" + str(shield_health)
 
+# ── Final-battle mode ─────────────────────────────────────────────────────────
+# Call this once after the HUD is ready to strip the timer from the display.
+# The final battle has no countdown, so the whole divider section is hidden.
+
+func hide_timer() -> void:
+	$VBoxContainer/DividerCenter.hide()
+	if GameState.timer_tick.is_connected(_on_timer_tick):
+		GameState.timer_tick.disconnect(_on_timer_tick)
+	if GameState.timer_expired.is_connected(_on_timer_expired):
+		GameState.timer_expired.disconnect(_on_timer_expired)
+
 # ── helpers ───────────────────────────────────────────────────────────────────
 
 func draw_hearts(container: HBoxContainer, health: int, max_health: int) -> void:

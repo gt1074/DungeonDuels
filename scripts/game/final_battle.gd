@@ -4,12 +4,17 @@ const P1_SPAWN := Vector2(80, 100)
 const P2_SPAWN := Vector2(220, 100)
 
 @onready var world: Node2D = $HBoxContainer/BattlePanel/SubViewportContainer/SubViewport/FinalBattleWorld
+@onready var _hud: Control  = $HBoxContainer/CenterPanel/HUD
 
 var _p1: CharacterBody2D = null
 var _p2: CharacterBody2D = null
 
+# Set to true once a winner is determined; enables the return-to-menu input.
+var _game_over: bool = false
+
 func _ready() -> void:
 	GameState.phase = GameState.Phase.FINAL_BATTLE
+	_hud.hide_timer()
 	_spawn_players()
 	var overlay := preload("res://scripts/ui/grace_overlay.gd").new()
 	add_child(overlay)
@@ -66,12 +71,15 @@ func _spawn_players() -> void:
 
 # Called when a player fires their 'eliminated' signal.
 # The loser's action_prefix tells us which player won.
+# The winner retains full input control while the overlay is shown.
 func _on_player_eliminated(loser: CharacterBody2D) -> void:
+	_game_over = true
 	var winner_label := "P2 Wins!" if loser.action_prefix == "" else "P1 Wins!"
 	_show_winner(winner_label)
 
 func _show_winner(text: String) -> void:
-	# Semi-transparent dark backdrop over the whole scene.
+	# Semi-transparent dark backdrop — MOUSE_FILTER_IGNORE keeps gamepad/keyboard
+	# events flowing through to the winner's CharacterBody2D unblocked.
 	var backdrop := ColorRect.new()
 	backdrop.color = Color(0.0, 0.0, 0.0, 0.6)
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -86,3 +94,34 @@ func _show_winner(text: String) -> void:
 	label.add_theme_font_size_override("font_size", 48)
 	label.add_theme_color_override("font_color", Color.WHITE)
 	add_child(label)
+
+	# Prompt shown at the bottom: both players see it, either can press Y / △.
+	var hint := Label.new()
+	hint.text = "Press  Y / △  to return to menu"
+	hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hint.vertical_alignment   = VERTICAL_ALIGNMENT_BOTTOM
+	hint.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	hint.offset_bottom = -8          # small breathing room from the edge
+	hint.add_theme_font_size_override("font_size", 10)
+	hint.add_theme_color_override("font_color", Color(1.0, 1.0, 0.5, 1.0))
+	add_child(hint)
+
+# ── Game-over input ───────────────────────────────────────────────────────────
+# Only active after _game_over is set.  Either player's Y / △ returns to the
+# title screen where they can choose Play (rematch) or Quit.
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _game_over:
+		return
+	var pressed_y: bool = (
+		event is InputEventJoypadButton
+		and event.pressed
+		and event.button_index == JOY_BUTTON_Y
+	)
+	var pressed_esc: bool = (
+		event is InputEventKey
+		and event.pressed
+		and event.keycode == KEY_ESCAPE
+	)
+	if pressed_y or pressed_esc:
+		get_tree().change_scene_to_file("res://scenes/ui/title_screen.tscn")
