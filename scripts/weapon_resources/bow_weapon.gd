@@ -14,7 +14,7 @@ func fire(direction: Vector2) -> void:
 	var bullet = bullet_scene.instantiate()
 	owner_player.get_parent().add_child(bullet)  # spawn into the World (SubViewport)
 
-	# muzzle.global_position is correct because AimPivot (grandparent) is already rotated
+	# muzzle.global_position is correct because AimPivot (grandparent) is already rotated.
 	bullet.global_position = muzzle.global_position
 	bullet.direction = direction.normalized()
 	bullet.shooter = owner_player

@@ -319,6 +319,7 @@ width = 1.0
 default_color = Color(0.38039216, 0.57254905, 1, 1)
 
 [node name="WeaponHolder" type="Node2D" parent="AimPivot" unique_id=309500106]
+position = Vector2(6, 0)
 
 [node name="RespawnTimer" type="Timer" parent="." unique_id=587926073]
 wait_time = 5.0

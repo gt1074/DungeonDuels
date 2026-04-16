@@ -16,4 +16,4 @@ region_enabled = true
 region_rect = Rect2(84.5, 109.832, 177.75, 274.5)
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=1473818630]
-position = Vector2(4, 0)
+position = Vector2(8, 0)

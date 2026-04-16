@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://de8chci0slcnf" path="res://assets/brackeys_platformer_assets/sprites/player_bullet.png" id="2_fgkn0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y25gk"]
-radius = 8.0
+radius = 4.0
 
 [node name="Bullet" type="Area2D" unique_id=1510630161]
 collision_layer = 8
