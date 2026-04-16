@@ -18,9 +18,11 @@ signal timer_expired                  # emitted once when time hits 0
 var p1_health:      int = 5
 var p1_max_health:  int = 5
 var p1_kills:       int = 0
+var p1_speed:       float = 75.0
 var p2_health:      int = 5
 var p2_max_health:  int = 5
 var p2_kills:       int = 0
+var p2_speed:       float = 75.0
 
 # ── Upgrade stats (weapon + shield, survive scene transitions) ────────────────
 # Defaults match bow_weapon.tscn and shield.tscn scene defaults.
@@ -95,9 +97,11 @@ func save_player_stats(p1: CharacterBody2D, p2: CharacterBody2D) -> void:
 	p1_health     = p1.health
 	p1_max_health = p1.max_health
 	p1_kills      = p1.kills
+	p1_speed      = p1.speed
 	p2_health     = p2.health
 	p2_max_health = p2.max_health
 	p2_kills      = p2.kills
+	p2_speed      = p2.speed
 
 	# Save weapon upgrade (fire_rate may have been reduced by attack-speed pickups)
 	if p1.current_weapon != null:

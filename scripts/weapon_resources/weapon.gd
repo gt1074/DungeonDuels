@@ -3,6 +3,10 @@ class_name Weapon
 #checking to see if the correct stuff is used for commits
 @export var fire_rate: float = 0.2
 
+# Tint applied to every bullet this weapon fires. White = no tint (default).
+# Set to a colour in final_battle.gd to distinguish P2's bullets.
+var bullet_color: Color = Color.WHITE
+
 var last_fire_time: float = 0.0
 var active: bool = false
 

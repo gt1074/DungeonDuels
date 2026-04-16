@@ -49,7 +49,10 @@ func _spawn_players() -> void:
 	await get_tree().process_frame
 
 	_p1.current_weapon.fire_rate = GameState.p1_fire_rate
-	_p2.current_weapon.fire_rate = GameState.p2_fire_rate
+	_p1.speed                    = GameState.p1_speed
+	_p2.current_weapon.fire_rate    = GameState.p2_fire_rate
+	_p2.current_weapon.bullet_color = Color(1.0, 0.25, 0.25)
+	_p2.speed                       = GameState.p2_speed
 
 	# Shield _ready() is synchronous so we can apply stats immediately.
 	# apply_stats() also updates the Timer wait_times so values take effect now.

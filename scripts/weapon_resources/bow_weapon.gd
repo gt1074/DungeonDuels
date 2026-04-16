@@ -16,5 +16,6 @@ func fire(direction: Vector2) -> void:
 
 	# muzzle.global_position is correct because AimPivot (grandparent) is already rotated.
 	bullet.global_position = muzzle.global_position
-	bullet.direction = direction.normalized()
-	bullet.shooter = owner_player
+	bullet.direction       = direction.normalized()
+	bullet.shooter         = owner_player
+	bullet.modulate        = bullet_color

@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://csee55q62yfle" path="res://assets/brackeys_platformer_assets/sprites/enemy_bullet.png" id="2_neolw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gl7bs"]
-radius = 4.0
+radius = 2.0
 
 [node name="EnemyBullet" type="Area2D" unique_id=740296172]
 texture_filter = 1
