@@ -1,0 +1,100 @@
+[gd_scene format=3 uid="uid://blmaqleq4ti02"]
+
+[ext_resource type="Script" uid="uid://ffkdxq8dpk22" path="res://scripts/enemy/boss_slime.gd" id="1_8jept"]
+[ext_resource type="Texture2D" uid="uid://bxuouykvjdaje" path="res://assets/brackeys_platformer_assets/sprites/slime_purple.png" id="2_cgwf5"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_528lt"]
+atlas = ExtResource("2_cgwf5")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jvd12"]
+atlas = ExtResource("2_cgwf5")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_usyc2"]
+atlas = ExtResource("2_cgwf5")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_eye2a"]
+atlas = ExtResource("2_cgwf5")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjsgn"]
+atlas = ExtResource("2_cgwf5")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c2vqq"]
+atlas = ExtResource("2_cgwf5")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7mw3"]
+atlas = ExtResource("2_cgwf5")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4h53f"]
+atlas = ExtResource("2_cgwf5")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_slime"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_528lt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jvd12")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_usyc2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_eye2a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjsgn")
+}],
+"loop": true,
+"name": &"new_animation",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c2vqq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7mw3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4h53f")
+}],
+"loop": false,
+"name": &"new_animation_1",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_slime"]
+radius = 5.0
+
+[node name="Slime" type="CharacterBody2D" unique_id=525107419 groups=["enemy"]]
+collision_layer = 2
+collision_mask = 15
+script = ExtResource("1_8jept")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=587083068]
+texture_filter = 1
+position = Vector2(0, -5)
+sprite_frames = SubResource("SpriteFrames_slime")
+animation = &"new_animation"
+autoplay = "new_animation"
+frame_progress = 0.1968879
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=558887130]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_slime")
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=1684358127]
+
+[node name="HopTimer" type="Timer" parent="." unique_id=495802294]
+
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="HopTimer" to="." method="_on_hop_timer_timeout"]
