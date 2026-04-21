@@ -15,12 +15,12 @@ var loading: bool = false
 # i.e. room sequence: normal(0), normal(1), boss(2), normal(3), normal(4), boss(5) …
 var rooms_completed: int = 0
 
-const ROOM_SCENE = preload("res://scenes/rooms/room.tscn")
+const ROOM_SCENE       = preload("res://scenes/rooms/room.tscn")
 const BulletUpgradeScript = preload("res://scripts/upgrades/bullet_upgrade.gd")
 
 # ── Room type pools ───────────────────────────────────────────────────────────
 var NORMAL_ROOM_TYPES: Array = [RoomDef2, RoomDef3]
-var BOSS_ROOM_TYPE = RoomDef1
+var BOSS_ROOM_TYPE            = RoomDef1
 
 # ── Stat upgrade pool ─────────────────────────────────────────────────────────
 const UPGRADE_SCENES = [
@@ -58,6 +58,8 @@ func on_upgrade_pickup(picked_upgrade: Upgrade) -> void:
 	_load_next_room.call_deferred()
 
 func on_enemy_died() -> void:
+	if enemies_remaining <= 0:
+		return
 	enemies_remaining -= 1
 	print("Enemy died! %d remaining" % enemies_remaining)
 	if enemies_remaining <= 0 and not loading:
@@ -67,6 +69,15 @@ func on_enemy_died() -> void:
 		# Was the room we just cleared a boss room?
 		var was_boss: bool = (rooms_completed % 3 == 2)
 		rooms_completed += 1
+
+		# Move the player to the centre of the room before upgrades appear so
+		# they can't accidentally walk into a pickup that spawns on top of them.
+		# Then wait two physics frames so the engine registers the new position
+		# before any pickup collision shape becomes active.
+		player_instance.global_position = Vector2(80, 105)
+		player_instance.velocity = Vector2.ZERO
+		await get_tree().physics_frame
+		await get_tree().physics_frame
 
 		_spawn_stat_upgrades()
 		if was_boss:
@@ -191,14 +202,14 @@ func _add_bullet_upgrade_label(text: String) -> void:
 	lbl.name = "Upgrade3_label"
 	lbl.text = text
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	# Position the label just above the pickup (pickup is at world y≈155,
-	# CanvasLayer coordinates match screen pixels at the default zoom).
-	lbl.offset_left   = 64.0
-	lbl.offset_top    = 158.0
-	lbl.offset_right  = 116.0
+	# Span the full room width (160 px) so centering works regardless of text length.
+	# Pickup sits at world y≈155; place label just below it in canvas space.
+	lbl.offset_left   = 0.0
+	lbl.offset_top    = 162.0
+	lbl.offset_right  = 160.0
 	lbl.offset_bottom = 178.0
 	lbl.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2))   # gold
-	lbl.add_theme_font_size_override("font_size", 9)
+	lbl.add_theme_font_size_override("font_size", 8)
 	if font_ref:
 		lbl.add_theme_font_override("font", font_ref)
 	canvas.add_child(lbl)
