@@ -7,15 +7,16 @@ var current_def_index: int = -1
 var enemies_remaining: int = 0
 var upgrade_1: Upgrade = null
 var upgrade_2: Upgrade = null
-var upgrade_3: Upgrade = null   # bullet upgrade slot
+var upgrade_3: Upgrade = null   # bullet upgrade — only present after a boss room
 var loading: bool = false
 
-# Counts every room cleared (normal + boss).
-# Pattern: normal, normal, boss, normal, normal, boss, …
-# A boss room is loaded when rooms_completed % 3 == 2  (rooms 2, 5, 8 … are boss rooms)
+# Tracks how many rooms have been completed so far (incremented on clear).
+# The NEXT room to load is a boss room when rooms_completed % 3 == 2 (0-based).
+# i.e. room sequence: normal(0), normal(1), boss(2), normal(3), normal(4), boss(5) …
 var rooms_completed: int = 0
 
 const ROOM_SCENE = preload("res://scenes/rooms/room.tscn")
+const BulletUpgradeScript = preload("res://scripts/upgrades/bullet_upgrade.gd")
 
 # ── Room type pools ───────────────────────────────────────────────────────────
 var NORMAL_ROOM_TYPES: Array = [RoomDef2, RoomDef3]
@@ -32,11 +33,11 @@ const UPGRADE_SCENES = [
 
 # ── Bullet upgrade pool ───────────────────────────────────────────────────────
 const BULLET_MODES: Array = [
-	["spread",   "Spread\nShot"],
-	["bounce",   "Bouncing\nBullets"],
-	["big",      "Big\nBullets"],
-	["tracking", "Tracking\nBullets"],
-	["cardinal", "Cardinal\nShot"],
+	["spread",   "Spread Shot"],
+	["bounce",   "Bouncing Bullets"],
+	["big",      "Big Bullets"],
+	["tracking", "Tracking Bullets"],
+	["cardinal", "Cardinal Shot"],
 ]
 
 # ── Public API ────────────────────────────────────────────────────────────────
@@ -57,20 +58,21 @@ func on_upgrade_pickup(picked_upgrade: Upgrade) -> void:
 	_load_next_room.call_deferred()
 
 func on_enemy_died() -> void:
-	print("Enemy died! %d remaining" % (enemies_remaining - 1))
 	enemies_remaining -= 1
+	print("Enemy died! %d remaining" % enemies_remaining)
 	if enemies_remaining <= 0 and not loading:
 		loading = true
 		await get_tree().create_timer(1.0).timeout
+
+		# Was the room we just cleared a boss room?
+		var was_boss: bool = (rooms_completed % 3 == 2)
 		rooms_completed += 1
-		# rooms_completed is now 1-based: boss on room 3, 6, 9 …
-		var just_finished_boss: bool = (rooms_completed % 3 == 0)
-		if just_finished_boss:
-			print("Boss cleared — showing upgrades")
-			load_upgrades()
-		else:
-			print("Normal room cleared — next room")
-			_load_next_room()
+
+		_spawn_stat_upgrades()
+		if was_boss:
+			print("Boss cleared — also spawning bullet upgrade")
+			_spawn_bullet_upgrade()
+
 		loading = false
 
 func register_room(room: Node, spawn_pos: Vector2, enemy_count: int) -> void:
@@ -83,9 +85,8 @@ func register_room(room: Node, spawn_pos: Vector2, enemy_count: int) -> void:
 # ── Room loading ──────────────────────────────────────────────────────────────
 
 func _load_next_room() -> void:
-	# rooms_completed hasn't been incremented yet for the room about to load.
-	# Next room is index rooms_completed (0-based).
-	# Boss rooms are at index 2, 5, 8 … i.e. (rooms_completed % 3 == 2).
+	# rooms_completed is already incremented, so it reflects how many are done.
+	# The room we're about to load sits at index rooms_completed (0-based).
 	var is_boss: bool = (rooms_completed % 3 == 2)
 	_load_room(is_boss)
 
@@ -102,8 +103,7 @@ func _load_room(is_boss: bool) -> void:
 		definition = BOSS_ROOM_TYPE.new()
 		print("Loading boss room")
 	else:
-		# Pick a normal room avoiding the last one used.
-		var last_type = _last_normal_type()
+		var last_type: Object = _last_normal_type()
 		var available: Array = NORMAL_ROOM_TYPES.filter(
 			func(t: Object) -> bool: return t != last_type
 		)
@@ -119,14 +119,12 @@ func _last_normal_type() -> Object:
 		return null
 	return NORMAL_ROOM_TYPES[current_def_index]
 
-# ── Upgrades (shown only after a boss room) ───────────────────────────────────
+# ── Stat upgrades (spawned after every room clear) ────────────────────────────
 
-func load_upgrades() -> void:
+func _spawn_stat_upgrades() -> void:
 	var label_1: Label = current_room_node.get_node("CanvasLayer/Upgrade1_label")
 	var label_2: Label = current_room_node.get_node("CanvasLayer/Upgrade2_label")
-	var label_3: Label = current_room_node.get_node_or_null("CanvasLayer/Upgrade3_label")
 
-	# ── 2 stat upgrades ───────────────────────────────────────────────────────
 	var stat_pool: Array[Upgrade] = []
 	for scene: PackedScene in UPGRADE_SCENES:
 		var candidate := scene.instantiate() as Upgrade
@@ -151,7 +149,14 @@ func load_upgrades() -> void:
 	for i in range(2, stat_pool.size()):
 		stat_pool[i].free()
 
-	# ── 1 bullet upgrade ──────────────────────────────────────────────────────
+	current_room_node.add_child(upgrade_1)
+	current_room_node.add_child(upgrade_2)
+	label_1.text = upgrade_1.description
+	label_2.text = upgrade_2.description
+
+# ── Bullet upgrade (spawned only after a boss room clear) ─────────────────────
+
+func _spawn_bullet_upgrade() -> void:
 	var current_mode: String = ""
 	if player_instance.current_weapon != null and "bullet_mode" in player_instance.current_weapon:
 		current_mode = player_instance.current_weapon.bullet_mode
@@ -163,23 +168,47 @@ func load_upgrades() -> void:
 	var chosen: Array = bullet_pool[0]
 
 	upgrade_3 = _make_bullet_upgrade(chosen[0], chosen[1])
-	upgrade_3.position     = Vector2(80, 80)
+	# Place at the bottom-centre of the room world space.
+	# The room viewport is 160×202; bottom area is around y=155.
+	upgrade_3.position     = Vector2(80, 155)
 	upgrade_3.room_manager = self
-
-	current_room_node.add_child(upgrade_1)
-	current_room_node.add_child(upgrade_2)
 	current_room_node.add_child(upgrade_3)
-	label_1.text = upgrade_1.description
-	label_2.text = upgrade_2.description
-	if label_3:
-		label_3.text = upgrade_3.description
+
+	# Build a label for it on the CanvasLayer so it matches the stat upgrade labels.
+	_add_bullet_upgrade_label(chosen[1])
+
+func _add_bullet_upgrade_label(text: String) -> void:
+	var canvas: CanvasLayer = current_room_node.get_node("CanvasLayer")
+
+	# Re-use the same font the other labels use if it's accessible; otherwise
+	# the default font is fine — Label renders without a custom font too.
+	var font_ref: FontFile = null
+	var existing: Label = current_room_node.get_node_or_null("CanvasLayer/Upgrade1_label")
+	if existing:
+		font_ref = existing.get_theme_font("font") as FontFile
+
+	var lbl := Label.new()
+	lbl.name = "Upgrade3_label"
+	lbl.text = text
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	# Position the label just above the pickup (pickup is at world y≈155,
+	# CanvasLayer coordinates match screen pixels at the default zoom).
+	lbl.offset_left   = 64.0
+	lbl.offset_top    = 158.0
+	lbl.offset_right  = 116.0
+	lbl.offset_bottom = 178.0
+	lbl.add_theme_color_override("font_color", Color(1.0, 0.9, 0.2))   # gold
+	lbl.add_theme_font_size_override("font_size", 9)
+	if font_ref:
+		lbl.add_theme_font_override("font", font_ref)
+	canvas.add_child(lbl)
 
 # ── Bullet upgrade factory ────────────────────────────────────────────────────
 
-func _make_bullet_upgrade(mode: String, label: String) -> BulletUpgrade:
-	var u := BulletUpgrade.new()
-	u.bullet_mode  = mode
-	u.display_name = label
+func _make_bullet_upgrade(mode: String, label: String) -> Upgrade:
+	var u: Upgrade = BulletUpgradeScript.new()
+	u.set("bullet_mode", mode)
+	u.set("display_name", label)
 	u.description  = label
 
 	var shape_node := CollisionShape2D.new()
@@ -188,9 +217,9 @@ func _make_bullet_upgrade(mode: String, label: String) -> BulletUpgrade:
 	shape_node.shape = circle
 	u.add_child(shape_node)
 
-	var sprite      := Sprite2D.new()
-	sprite.texture   = _diamond_texture()
-	sprite.modulate  = _mode_color(mode)
+	var sprite     := Sprite2D.new()
+	sprite.texture  = _diamond_texture()
+	sprite.modulate = _mode_color(mode)
 	u.add_child(sprite)
 
 	u.collision_layer = 2
