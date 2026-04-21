@@ -7,11 +7,11 @@ var phase: Phase = Phase.DUNGEON
 
 # ── Match timer ───────────────────────────────────────────────────────────────
 
-const MATCH_DURATION := 63.0          # seconds before final battle begins
+const MATCH_DURATION := 63.0
 var time_remaining: float = MATCH_DURATION
 
-signal timer_tick(seconds_left: int)  # emitted each whole-second change
-signal timer_expired                  # emitted once when time hits 0
+signal timer_tick(seconds_left: int)
+signal timer_expired
 
 # ── Player stats (survive scene transitions) ──────────────────────────────────
 
@@ -24,16 +24,17 @@ var p2_max_health:  int = 5
 var p2_kills:       int = 0
 var p2_speed:       float = 75.0
 
-# ── Upgrade stats (weapon + shield, survive scene transitions) ────────────────
-# Defaults match bow_weapon.tscn and shield.tscn scene defaults.
+# ── Upgrade stats (weapon + shield + bullet mode) ─────────────────────────────
 
 var p1_fire_rate:               float = 0.3
+var p1_bullet_mode:             String = ""
 var p1_shield_max_health:       int   = 10
 var p1_shield_cooldown_time:    float = 2.2
 var p1_shield_recharge_interval:float = 0.3
 var p1_shield_recharge_delay:   float = 0.5
 
 var p2_fire_rate:               float = 0.3
+var p2_bullet_mode:             String = ""
 var p2_shield_max_health:       int   = 10
 var p2_shield_cooldown_time:    float = 2.2
 var p2_shield_recharge_interval:float = 0.3
@@ -41,15 +42,14 @@ var p2_shield_recharge_delay:   float = 0.5
 
 # ── Grace period ──────────────────────────────────────────────────────────────
 
-const GRACE_DURATION := 3.0           # countdown length in seconds
+const GRACE_DURATION := 3.0
+var is_grace: bool = true
 
-var is_grace: bool = true             # true while countdown is running
+signal grace_tick(seconds_left: int)
+signal grace_ended
+signal grace_cleared
 
-signal grace_tick(seconds_left: int)  # emits 3, 2, 1 — drives HUD countdown
-signal grace_ended                    # un-stuns players and enemies
-signal grace_cleared                  # "BEGIN!" has shown; clear the HUD label
-
-# ── Timer logic (driven by the active game scene) ─────────────────────────────
+# ── Timer logic ───────────────────────────────────────────────────────────────
 
 var _timer_active := false
 var _last_whole_second: int = -1
@@ -74,9 +74,6 @@ func tick(delta: float) -> void:
 		timer_tick.emit(whole)
 
 # ── Grace period logic ────────────────────────────────────────────────────────
-# Call this at the start of any phase that needs a freeze countdown.
-# Drives the 3-2-1 countdown, then emits grace_ended (un-stuns everything),
-# then after a short pause emits grace_cleared (HUD wipes the "BEGIN!" label).
 
 func start_grace_period() -> void:
 	is_grace = true
@@ -103,13 +100,13 @@ func save_player_stats(p1: CharacterBody2D, p2: CharacterBody2D) -> void:
 	p2_kills      = p2.kills
 	p2_speed      = p2.speed
 
-	# Save weapon upgrade (fire_rate may have been reduced by attack-speed pickups)
 	if p1.current_weapon != null:
-		p1_fire_rate = p1.current_weapon.fire_rate
+		p1_fire_rate   = p1.current_weapon.fire_rate
+		p1_bullet_mode = p1.current_weapon.bullet_mode if "bullet_mode" in p1.current_weapon else ""
 	if p2.current_weapon != null:
-		p2_fire_rate = p2.current_weapon.fire_rate
+		p2_fire_rate   = p2.current_weapon.fire_rate
+		p2_bullet_mode = p2.current_weapon.bullet_mode if "bullet_mode" in p2.current_weapon else ""
 
-	# Save shield upgrades (MAX_HEALTH and regen timers may have been improved)
 	var s1: Shield = p1.get_node_or_null("Shield")
 	if s1 != null:
 		p1_shield_max_health        = s1.MAX_HEALTH

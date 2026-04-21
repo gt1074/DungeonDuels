@@ -1,15 +1,6 @@
 extends CharacterBody2D
 class_name BossSlime
 
-# Elite slime boss. Reuses the purple slime sprite scaled up 2x for a menacing
-# silhouette, and blends slime hop-movement with bat-style ring bullets.
-# Contact damage is handled the same way as a normal slime (via _on_body_entered).
-#
-# Two-phase fight:
-#   Phase 1 (HP > 50%): slow hops, telegraphed 8-bullet ring shots. Stationary threat.
-#   Phase 2 (HP <= 50%, "enraged"): red tint, faster hops, swaps ring for an aimed
-#     triple-shot burst (bat-style, locked-aim-on-first-shot). Closes ground fast.
-
 @export var bullet_scene: PackedScene = preload("res://scenes/enemy/enemy_bullet.tscn")
 @export var bullet_speed: float = 100.0
 
@@ -18,29 +9,28 @@ class_name BossSlime
 @onready var hop_timer: Timer = $HopTimer
 @onready var shoot_timer: Timer = $ShootTimer
 
-# Tuning knobs ----------------------------------------------------------------
 const MAX_HEALTH: int  = 20
 
-# Phase 1
 const P1_SPEED: float           = 35.0
 const P1_HOP_DURATION: float    = 0.5
 const P1_PAUSE_DURATION: float  = 0.9
 const P1_SHOOT_INTERVAL: float  = 2.2
 
-# Phase 2 (enraged, triggered at <= 50% HP)
 const P2_SPEED: float           = 50.0
 const P2_HOP_DURATION: float    = 0.45
 const P2_PAUSE_DURATION: float  = 0.55
 const P2_SHOOT_INTERVAL: float  = 1.6
 const ENRAGED_TINT := Color(1.0, 0.45, 0.45)
 
-# Ring-shot (phase 1)
 const TELEGRAPH_TIME: float    = 0.5
 const RING_BULLET_COUNT: int   = 8
 
-# Triple-shot (phase 2, same cadence as bat.gd)
 const BURST_AMOUNT: int        = 3
 const BURST_INTERVAL: float    = 0.15
+
+# Animation names as they exist in boss_slime.tscn
+const ANIM_IDLE  := &"new_animation"
+const ANIM_SHOOT := &"new_animation_1"
 
 var room_manager: Node = null
 var health: int = MAX_HEALTH
@@ -48,13 +38,10 @@ var is_hopping: bool = false
 var is_shooting: bool = false
 var is_enraged: bool = false
 
-# Damage flash ----------------------------------------------------------------
-
 func _flash_hit() -> void:
 	animated_sprite.modulate = Color(1, 0.2, 0.2)
 	await get_tree().create_timer(0.12).timeout
 	if is_instance_valid(self):
-		# Return to the tint appropriate for the current phase.
 		animated_sprite.modulate = ENRAGED_TINT if is_enraged else Color.WHITE
 
 func take_damage(amount: int = 1, attacker = null) -> void:
@@ -64,11 +51,8 @@ func take_damage(amount: int = 1, attacker = null) -> void:
 			attacker.kills += 1
 		dies()
 		return
-
-	# Trigger phase 2 the first time we drop to or below half HP.
 	if not is_enraged and health <= MAX_HEALTH / 2:
 		_enter_phase_2()
-
 	_flash_hit()
 
 func dies() -> void:
@@ -76,35 +60,25 @@ func dies() -> void:
 		room_manager.on_enemy_died()
 	queue_free()
 
-# Phase transition ------------------------------------------------------------
-
 func _enter_phase_2() -> void:
 	is_enraged = true
 	animated_sprite.modulate = ENRAGED_TINT
-
-	# Tighten shoot cadence. Hop cadence updates naturally on the next timeout.
 	shoot_timer.wait_time = P2_SHOOT_INTERVAL
-
-	# Dramatic beat: shake the player's camera to sell the transition.
 	if player_instance and player_instance.camera_2d:
 		player_instance.camera_2d.apply_noise_shake()
-
-# Lifecycle -------------------------------------------------------------------
 
 func _ready() -> void:
 	add_to_group("enemy")
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	safe_margin = 0.08
-	scale = Vector2(2.0, 2.0)  # visually (and in collision) 2x the normal slime
+	scale = Vector2(2.0, 2.0)
 
-	animated_sprite.play("idle")
+	animated_sprite.play(ANIM_IDLE)
 
 	shoot_timer.wait_time = P1_SHOOT_INTERVAL
 	shoot_timer.start()
 
 	_start_pause()
-
-# Movement — slime-style hop/pause cycle --------------------------------------
 
 func _current_speed() -> float:
 	return P2_SPEED if is_enraged else P1_SPEED
@@ -141,8 +115,6 @@ func _on_hop_timer_timeout() -> void:
 	else:
 		_start_hop()
 
-# Attacks ---------------------------------------------------------------------
-
 func _on_shoot_timer_timeout() -> void:
 	if GameState.is_grace or player_instance.is_dead or is_shooting:
 		return
@@ -151,11 +123,8 @@ func _on_shoot_timer_timeout() -> void:
 	else:
 		_attack_ring()
 
-# Phase 1: telegraphed 8-bullet ring shot.
 func _attack_ring() -> void:
 	is_shooting = true
-
-	# Telegraph: hold still and flash bright so the player has a beat to react.
 	for i in 3:
 		if not is_instance_valid(self):
 			return
@@ -176,12 +145,9 @@ func _attack_ring() -> void:
 
 	is_shooting = false
 
-# Phase 2: aimed triple-shot burst. Aim direction locks on the first bullet
-# so a strafing player can dodge the back half of the burst — matches bat.gd.
 func _attack_triple() -> void:
 	is_shooting = true
 	var locked_direction := (player_instance.global_position - global_position).normalized()
-
 	for i in range(BURST_AMOUNT):
 		if not is_instance_valid(self):
 			return
@@ -191,7 +157,6 @@ func _attack_triple() -> void:
 		spawn_bullet(locked_direction)
 		if i < BURST_AMOUNT - 1:
 			await get_tree().create_timer(BURST_INTERVAL).timeout
-
 	is_shooting = false
 
 func spawn_bullet(dir: Vector2) -> void:
@@ -200,8 +165,6 @@ func spawn_bullet(dir: Vector2) -> void:
 	bullet.global_position = global_position
 	bullet.direction = dir.normalized()
 	bullet.speed = bullet_speed
-
-# Contact damage --------------------------------------------------------------
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("player") and body.has_method("player_hit"):

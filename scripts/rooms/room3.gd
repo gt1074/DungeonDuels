@@ -6,3 +6,4 @@ func _init():
 	bat_spawns = []
 	slime_spawns = [Vector2(40, 160), Vector2(40, 40), Vector2(40, 105), Vector2(120, 105), 
 	Vector2(120, 160), Vector2(120, 40)]
+	boss_spawns = []
