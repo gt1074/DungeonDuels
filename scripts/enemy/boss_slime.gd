@@ -16,7 +16,7 @@ const P1_HOP_DURATION: float    = 0.5
 const P1_PAUSE_DURATION: float  = 0.9
 const P1_SHOOT_INTERVAL: float  = 2.2
 
-const P2_SPEED: float           = 50.0
+const P2_SPEED: float           = 100.0
 const P2_HOP_DURATION: float    = 0.45
 const P2_PAUSE_DURATION: float  = 0.55
 const P2_SHOOT_INTERVAL: float  = 1.6
