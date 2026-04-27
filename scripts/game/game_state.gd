@@ -40,6 +40,14 @@ var p2_shield_cooldown_time:    float = 2.2
 var p2_shield_recharge_interval:float = 0.3
 var p2_shield_recharge_delay:   float = 0.5
 
+# ── Opponent event ticker ─────────────────────────────────────────────────────
+# Emitted by either RoomManager when something noteworthy happens.
+# from_prefix: "" for P1, "p2_" for P2. The HUD shows it on the OTHER side.
+signal opponent_event(from_prefix: String, message: String)
+
+func notify_opponent(from_prefix: String, message: String) -> void:
+	opponent_event.emit(from_prefix, message)
+
 # ── Grace period ──────────────────────────────────────────────────────────────
 
 const GRACE_DURATION := 3.0

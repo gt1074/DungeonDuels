@@ -49,6 +49,12 @@ func start(player_node: CharacterBody2D, world_node: Node) -> void:
 
 func on_upgrade_pickup(picked_upgrade: Upgrade) -> void:
 	print("Item picked up")
+
+	# Bullet upgrades are the high-impact pickups — let the other side know
+	if picked_upgrade is BulletUpgrade:
+		var label: String = (picked_upgrade as BulletUpgrade).display_name
+		GameState.notify_opponent(player_instance.action_prefix, "Opponent Got " + label)
+
 	for u: Upgrade in [upgrade_1, upgrade_2, upgrade_3]:
 		if u != picked_upgrade and is_instance_valid(u):
 			u.queue_free()
@@ -69,6 +75,10 @@ func on_enemy_died() -> void:
 		# Was the room we just cleared a boss room?
 		var was_boss: bool = (rooms_completed % 3 == 2)
 		rooms_completed += 1
+
+		# Tell the opponent we just cleared a boss room
+		if was_boss:
+			GameState.notify_opponent(player_instance.action_prefix, "Opponent Cleared Boss")
 
 		# Move the player to the centre of the room before upgrades appear so
 		# they can't accidentally walk into a pickup that spawns on top of them.
