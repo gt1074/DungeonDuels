@@ -102,15 +102,26 @@ func _handle_wall_hit() -> void:
 	else:
 		queue_free()
 
-## Find the nearest enemy in the scene to home toward.
+## Find the nearest target to home toward.
+## In the dungeon: nearest "enemy"-group node.
+## In the final battle: nearest "player"-group node that isn't the shooter.
 func _find_nearest_enemy(owning_player) -> void:
 	var best_dist := INF
 	var best_node = null
-	for enemy in get_tree().get_nodes_in_group("enemy"):
-		if not is_instance_valid(enemy):
+
+	var candidates: Array = []
+	if GameState.phase == GameState.Phase.FINAL_BATTLE:
+		for p in get_tree().get_nodes_in_group("player"):
+			if p != owning_player:
+				candidates.append(p)
+	else:
+		candidates = get_tree().get_nodes_in_group("enemy")
+
+	for target in candidates:
+		if not is_instance_valid(target):
 			continue
-		var d = global_position.distance_squared_to(enemy.global_position)
+		var d = global_position.distance_squared_to(target.global_position)
 		if d < best_dist:
 			best_dist = d
-			best_node = enemy
+			best_node = target
 	_tracking_target = best_node
