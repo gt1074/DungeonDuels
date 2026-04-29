@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @export var bullet_scene: PackedScene = preload("res://scenes/enemy/enemy_bullet.tscn")
 @export var bullet_speed: float = 120.0
-@export var shoot_interval: float = 2.5
+@export var shoot_interval: float = 1.5
 
 @onready var player_instance: player = get_parent().get_node("Player")
 @onready var shoot_timer: Timer = $ShootTimer
@@ -10,12 +10,12 @@ extends CharacterBody2D
 @onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 const HOP_DURATION: float = 0.35   # seconds of active movement per hop
-const PAUSE_DURATION: float = 0.7  # seconds of rest between hops
-const SPEED: float = 45.0
+const PAUSE_DURATION: float = 0.4  # seconds of rest between hops
+const SPEED: float = 55.0
 
 var room_manager: Node = null
 
-var health: int = 3
+var health: int = 6
 var is_hopping: bool = false
 var is_shooting: bool = false
 

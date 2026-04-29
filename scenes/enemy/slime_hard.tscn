@@ -1,0 +1,115 @@
+[gd_scene format=3 uid="uid://b5ey18hm6xoeq"]
+
+[ext_resource type="Script" uid="uid://chw6iv48ifh3g" path="res://scripts/enemy/slime_hard.gd" id="1_i51ap"]
+[ext_resource type="Texture2D" uid="uid://bxuouykvjdaje" path="res://assets/brackeys_platformer_assets/sprites/slime_purple.png" id="2_i51ap"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u062j"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(0, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mlp8h"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v47kt"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e4qis"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(72, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dj7k0"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(48, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iywaa"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(24, 0, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ejy65"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(0, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bl3n8"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(24, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_54d5j"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(48, 24, 24, 24)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gw7oi"]
+atlas = ExtResource("2_i51ap")
+region = Rect2(72, 24, 24, 24)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sj1wt"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u062j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mlp8h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_v47kt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_e4qis")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dj7k0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iywaa")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ejy65")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bl3n8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_54d5j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gw7oi")
+}],
+"loop": true,
+"name": &"shoot",
+"speed": 8.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_slime"]
+radius = 5.0
+
+[node name="Slime_hard" type="CharacterBody2D" unique_id=525107419 groups=["enemy"]]
+collision_layer = 2
+collision_mask = 15
+script = ExtResource("1_i51ap")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1743721846]
+texture_filter = 1
+position = Vector2(0, -5)
+sprite_frames = SubResource("SpriteFrames_sj1wt")
+animation = &"shoot"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=558887130]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_slime")
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=1684358127]
+wait_time = 0.5
+
+[node name="HopTimer" type="Timer" parent="." unique_id=495802294]
+wait_time = 0.5
+
+[connection signal="timeout" from="ShootTimer" to="." method="_on_shoot_timer_timeout"]
+[connection signal="timeout" from="HopTimer" to="." method="_on_hop_timer_timeout"]

@@ -19,7 +19,7 @@ const ROOM_SCENE       = preload("res://scenes/rooms/room.tscn")
 const BulletUpgradeScript = preload("res://scripts/upgrades/bullet_upgrade.gd")
 
 # ── Room type pools ───────────────────────────────────────────────────────────
-var NORMAL_ROOM_TYPES: Array = [RoomDef2, RoomDef3]
+var NORMAL_ROOM_TYPES: Array = [RoomDef2, RoomDef3, RoomDef4]
 var BOSS_ROOM_TYPE            = RoomDef1
 
 # ── Stat upgrade pool ─────────────────────────────────────────────────────────
