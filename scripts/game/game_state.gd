@@ -7,7 +7,7 @@ var phase: Phase = Phase.DUNGEON
 
 # ── Match timer ───────────────────────────────────────────────────────────────
 
-const MATCH_DURATION := 63.0
+const MATCH_DURATION := 93.0
 var time_remaining: float = MATCH_DURATION
 
 signal timer_tick(seconds_left: int)
@@ -24,25 +24,23 @@ var p2_max_health:  int = 5
 var p2_kills:       int = 0
 var p2_speed:       float = 75.0
 
-# ── Upgrade stats (weapon + shield + bullet mode) ─────────────────────────────
+# ── Upgrade stats (weapon + shield + bullet modes) ────────────────────────────
 
-var p1_fire_rate:               float = 0.3
-var p1_bullet_mode:             String = ""
-var p1_shield_max_health:       int   = 10
-var p1_shield_cooldown_time:    float = 2.2
-var p1_shield_recharge_interval:float = 0.3
-var p1_shield_recharge_delay:   float = 0.5
+var p1_fire_rate:                float = 0.3
+var p1_bullet_modes:             Array[String] = []   # all active bullet modes
+var p1_shield_max_health:        int   = 10
+var p1_shield_cooldown_time:     float = 2.2
+var p1_shield_recharge_interval: float = 0.3
+var p1_shield_recharge_delay:    float = 0.5
 
-var p2_fire_rate:               float = 0.3
-var p2_bullet_mode:             String = ""
-var p2_shield_max_health:       int   = 10
-var p2_shield_cooldown_time:    float = 2.2
-var p2_shield_recharge_interval:float = 0.3
-var p2_shield_recharge_delay:   float = 0.5
+var p2_fire_rate:                float = 0.3
+var p2_bullet_modes:             Array[String] = []
+var p2_shield_max_health:        int   = 10
+var p2_shield_cooldown_time:     float = 2.2
+var p2_shield_recharge_interval: float = 0.3
+var p2_shield_recharge_delay:    float = 0.5
 
 # ── Opponent event ticker ─────────────────────────────────────────────────────
-# Emitted by either RoomManager when something noteworthy happens.
-# from_prefix: "" for P1, "p2_" for P2. The HUD shows it on the OTHER side.
 signal opponent_event(from_prefix: String, message: String)
 
 func notify_opponent(from_prefix: String, message: String) -> void:
@@ -110,10 +108,17 @@ func save_player_stats(p1: CharacterBody2D, p2: CharacterBody2D) -> void:
 
 	if p1.current_weapon != null:
 		p1_fire_rate   = p1.current_weapon.fire_rate
-		p1_bullet_mode = p1.current_weapon.bullet_mode if "bullet_mode" in p1.current_weapon else ""
+		if "bullet_modes" in p1.current_weapon:
+			p1_bullet_modes = p1.current_weapon.bullet_modes.duplicate()
+		else:
+			p1_bullet_modes = []
+
 	if p2.current_weapon != null:
 		p2_fire_rate   = p2.current_weapon.fire_rate
-		p2_bullet_mode = p2.current_weapon.bullet_mode if "bullet_mode" in p2.current_weapon else ""
+		if "bullet_modes" in p2.current_weapon:
+			p2_bullet_modes = p2.current_weapon.bullet_modes.duplicate()
+		else:
+			p2_bullet_modes = []
 
 	var s1: Shield = p1.get_node_or_null("Shield")
 	if s1 != null:

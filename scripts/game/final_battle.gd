@@ -46,17 +46,19 @@ func _spawn_players() -> void:
 	# Wait one frame for equip_weapon (async) to finish.
 	await get_tree().process_frame
 
-	# Restore weapon stats — fire rate, bullet colour, and bullet mode.
-	_p1.current_weapon.fire_rate   = GameState.p1_fire_rate
-	_p1.speed                      = GameState.p1_speed
-	if _p1.current_weapon.has_method("set_bullet_mode"):
-		_p1.current_weapon.set_bullet_mode(GameState.p1_bullet_mode)
+	# Restore weapon stats — fire rate, bullet colour, and bullet modes.
+	_p1.current_weapon.fire_rate = GameState.p1_fire_rate
+	_p1.speed                    = GameState.p1_speed
+	if _p1.current_weapon.has_method("add_bullet_mode"):
+		for mode in GameState.p1_bullet_modes:
+			_p1.current_weapon.add_bullet_mode(mode)
 
 	_p2.current_weapon.fire_rate    = GameState.p2_fire_rate
 	_p2.current_weapon.bullet_color = Color(1.0, 0.25, 0.25)
 	_p2.speed                       = GameState.p2_speed
-	if _p2.current_weapon.has_method("set_bullet_mode"):
-		_p2.current_weapon.set_bullet_mode(GameState.p2_bullet_mode)
+	if _p2.current_weapon.has_method("add_bullet_mode"):
+		for mode in GameState.p2_bullet_modes:
+			_p2.current_weapon.add_bullet_mode(mode)
 
 	# Restore shield stats.
 	var s1: Shield = _p1.get_node("Shield")

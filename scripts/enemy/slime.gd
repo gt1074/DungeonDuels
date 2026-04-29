@@ -14,6 +14,9 @@ const PAUSE_DURATION: float = 0.7  # seconds of rest between hops
 const SPEED: float = 45.0
 
 var room_manager: Node = null
+# Captured from room_manager when this enemy is registered so that on_enemy_died
+# calls made after the room has been replaced are silently discarded.
+var _spawn_generation: int = -1
 
 var health: int = 3
 var is_hopping: bool = false
@@ -30,7 +33,7 @@ func take_damage(amount: int = 1, attacker = null) -> void:
 
 func dies():
 	if room_manager:
-		room_manager.on_enemy_died()
+		room_manager.on_enemy_died(_spawn_generation)
 	queue_free()
 
 func _flash_hit() -> void:
@@ -47,6 +50,9 @@ func _ready() -> void:
 	shoot_timer.start()
 	_start_pause()
 	animated_sprite.play("idle")
+	# Capture the generation after room_manager is set (set by room_def before _ready).
+	if room_manager:
+		_spawn_generation = room_manager._room_generation
 
 func _start_hop() -> void:
 	is_hopping = true
@@ -91,11 +97,9 @@ func _shoot_with_animation() -> void:
 	await animated_sprite.animation_finished
 	if not is_instance_valid(self):
 		return
-	# Hold mouth-open frame so the player can react before the bullet fires
 	await get_tree().create_timer(0.45).timeout
 	if not is_instance_valid(self):
 		return
-	# Grace may have started mid-animation (e.g. final battle transition)
 	if GameState.is_grace:
 		animated_sprite.play("idle")
 		is_shooting = false

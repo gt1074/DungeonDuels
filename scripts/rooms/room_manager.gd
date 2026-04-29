@@ -14,6 +14,7 @@ var loading: bool = false
 # The NEXT room to load is a boss room when rooms_completed % 3 == 2 (0-based).
 # i.e. room sequence: normal(0), normal(1), boss(2), normal(3), normal(4), boss(5) …
 var rooms_completed: int = 0
+var _room_generation: int = 0
 
 const ROOM_SCENE       = preload("res://scenes/rooms/room.tscn")
 const BulletUpgradeScript = preload("res://scripts/upgrades/bullet_upgrade.gd")
@@ -38,6 +39,7 @@ const BULLET_MODES: Array = [
 	["big",      "Big Bullets"],
 	["tracking", "Tracking Bullets"],
 	["cardinal", "Cardinal Shot"],
+	["burst",    "Burst Fire"],
 ]
 
 # ── Public API ────────────────────────────────────────────────────────────────
@@ -63,7 +65,10 @@ func on_upgrade_pickup(picked_upgrade: Upgrade) -> void:
 	upgrade_3 = null
 	_load_next_room.call_deferred()
 
-func on_enemy_died() -> void:
+func on_enemy_died(generation: int = -1) -> void:
+	if generation != -1 and generation != _room_generation:
+		print("Stale on_enemy_died ignored (gen %d, current %d)" % [generation, _room_generation])
+		return
 	if enemies_remaining <= 0:
 		return
 	enemies_remaining -= 1
@@ -97,7 +102,9 @@ func on_enemy_died() -> void:
 		loading = false
 
 func register_room(room: Node, spawn_pos: Vector2, enemy_count: int) -> void:
+	_room_generation += 1
 	enemies_remaining = enemy_count
+	loading = false
 	if player_instance.get_parent():
 		player_instance.get_parent().remove_child(player_instance)
 	player_instance.global_position = spawn_pos
@@ -178,13 +185,17 @@ func _spawn_stat_upgrades() -> void:
 # ── Bullet upgrade (spawned only after a boss room clear) ─────────────────────
 
 func _spawn_bullet_upgrade() -> void:
-	var current_mode: String = ""
-	if player_instance.current_weapon != null and "bullet_mode" in player_instance.current_weapon:
-		current_mode = player_instance.current_weapon.bullet_mode
-
+	# Filter out any mode the player already has active.
 	var bullet_pool: Array = BULLET_MODES.filter(
-		func(entry: Array) -> bool: return entry[0] != current_mode
+		func(entry: Array) -> bool:
+			if player_instance.current_weapon == null:
+				return true
+			if not player_instance.current_weapon.has_method("has_bullet_mode"):
+				return true
+			return not player_instance.current_weapon.has_bullet_mode(entry[0])
 	)
+	if bullet_pool.is_empty():
+		return  # player has every mode already
 	bullet_pool.shuffle()
 	var chosen: Array = bullet_pool[0]
 
@@ -265,4 +276,5 @@ func _mode_color(mode: String) -> Color:
 		"big":      return Color(1.0, 0.5, 0.1)
 		"tracking": return Color(1.0, 0.25, 1.0)
 		"cardinal": return Color(1.0, 0.9, 0.2)
+		"burst":    return Color(1.0, 0.4, 0.7)
 	return Color.WHITE

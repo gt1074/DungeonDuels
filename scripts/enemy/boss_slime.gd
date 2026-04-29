@@ -28,11 +28,12 @@ const RING_BULLET_COUNT: int   = 8
 const BURST_AMOUNT: int        = 3
 const BURST_INTERVAL: float    = 0.15
 
-# Animation names as they exist in boss_slime.tscn
 const ANIM_IDLE  := &"new_animation"
 const ANIM_SHOOT := &"new_animation_1"
 
 var room_manager: Node = null
+var _spawn_generation: int = -1
+
 var health: int = MAX_HEALTH
 var is_hopping: bool = false
 var is_shooting: bool = false
@@ -57,7 +58,7 @@ func take_damage(amount: int = 1, attacker = null) -> void:
 
 func dies() -> void:
 	if room_manager:
-		room_manager.on_enemy_died()
+		room_manager.on_enemy_died(_spawn_generation)
 	queue_free()
 
 func _enter_phase_2() -> void:
@@ -79,6 +80,9 @@ func _ready() -> void:
 	shoot_timer.start()
 
 	_start_pause()
+
+	if room_manager:
+		_spawn_generation = room_manager._room_generation
 
 func _current_speed() -> float:
 	return P2_SPEED if is_enraged else P1_SPEED
