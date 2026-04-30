@@ -65,41 +65,93 @@ func on_upgrade_pickup(picked_upgrade: Upgrade) -> void:
 	upgrade_3 = null
 	_load_next_room.call_deferred()
 
-func on_enemy_died(generation: int = -1) -> void:
-	if generation != -1 and generation != _room_generation:
-		print("Stale on_enemy_died ignored (gen %d, current %d)" % [generation, _room_generation])
+func _on_room_cleared():
+	if not is_inside_tree():
 		return
+	loading = true
+	await get_tree().process_frame
+	await get_tree().create_timer(1.0).timeout
+
+	var was_boss: bool = (rooms_completed % 3 == 2)
+	rooms_completed += 1
+
+	if was_boss:
+		GameState.notify_opponent(player_instance.action_prefix, "Opponent Cleared Boss")
+
+	player_instance.global_position = Vector2(80, 105)
+	player_instance.velocity = Vector2.ZERO
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+
+	_spawn_stat_upgrades()
+	if was_boss:
+		print("Boss cleared — also spawning bullet upgrade")
+		_spawn_bullet_upgrade()
+
+	loading = false
+
+func _check_room_clear():
+	if enemies_remaining > 0:
+		return
+	if loading:
+		return
+	_on_room_cleared()
+
+func _on_enemy_removed():
 	if enemies_remaining <= 0:
 		return
+
 	enemies_remaining -= 1
-	print("Enemy died! %d remaining" % enemies_remaining)
+	call_deferred("_check_room_clear")
+	print("Enemy removed, remaining: ", enemies_remaining)
+
 	if enemies_remaining <= 0 and not loading:
-		loading = true
-		await get_tree().create_timer(1.0).timeout
+		_on_room_cleared()
+
+#func on_enemy_died(generation: int = -1) -> void:
+#	if generation != -1 and generation != _room_generation:
+#		print("Stale on_enemy_died ignored (gen %d, current %d)" % [generation, _room_generation])
+#		return
+#	if enemies_remaining <= 0:
+#		return
+#	enemies_remaining -= 1
+#	print("Enemy died! %d remaining" % enemies_remaining)
+
+#	await get_tree().process_frame  # wait for queue_free to complete
+
+#	var actual_enemies = get_tree().get_nodes_in_group("enemies").size()
+#	print("Actual enemies left: ", actual_enemies)
+
+#	if actual_enemies > 0:
+#		return  # In case of any weird desync between the counter and reality, check the scene tree directly.
+
+#	if enemies_remaining <= 0 and not loading:
+#		loading = true
+#		await get_tree().create_timer(1.0).timeout
 
 		# Was the room we just cleared a boss room?
-		var was_boss: bool = (rooms_completed % 3 == 2)
-		rooms_completed += 1
+#		var was_boss: bool = (rooms_completed % 3 == 2)
+#		rooms_completed += 1
 
 		# Tell the opponent we just cleared a boss room
-		if was_boss:
-			GameState.notify_opponent(player_instance.action_prefix, "Opponent Cleared Boss")
+#		if was_boss:
+#			GameState.notify_opponent(player_instance.action_prefix, "Opponent Cleared Boss")
 
 		# Move the player to the centre of the room before upgrades appear so
 		# they can't accidentally walk into a pickup that spawns on top of them.
 		# Then wait two physics frames so the engine registers the new position
 		# before any pickup collision shape becomes active.
-		player_instance.global_position = Vector2(80, 105)
-		player_instance.velocity = Vector2.ZERO
-		await get_tree().physics_frame
-		await get_tree().physics_frame
+#		player_instance.global_position = Vector2(80, 105)
+#		player_instance.velocity = Vector2.ZERO
+#		await get_tree().physics_frame
+#		await get_tree().physics_frame
 
-		_spawn_stat_upgrades()
-		if was_boss:
-			print("Boss cleared — also spawning bullet upgrade")
-			_spawn_bullet_upgrade()
+#		_spawn_stat_upgrades()
+#		if was_boss:
+#			print("Boss cleared — also spawning bullet upgrade")
+#			_spawn_bullet_upgrade()
 
-		loading = false
+#		loading = false
 
 func register_room(room: Node, spawn_pos: Vector2, enemy_count: int) -> void:
 	_room_generation += 1

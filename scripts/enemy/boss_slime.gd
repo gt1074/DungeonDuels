@@ -57,8 +57,8 @@ func take_damage(amount: int = 1, attacker = null) -> void:
 	_flash_hit()
 
 func dies() -> void:
-	if room_manager:
-		room_manager.on_enemy_died(_spawn_generation)
+	#if room_manager:
+	#	room_manager.on_enemy_died(_spawn_generation)
 	queue_free()
 
 func _enter_phase_2() -> void:
