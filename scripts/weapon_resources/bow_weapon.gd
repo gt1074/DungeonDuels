@@ -23,6 +23,8 @@ extends Weapon
 const BURST_COUNT    := 3
 const BURST_INTERVAL := 0.08   # seconds between each shot in the burst
 
+const MAX_BULLET_MODES := 2
+
 var bullet_modes: Array[String] = []
 var _burst_firing: bool = false   # prevents overlapping bursts
 
@@ -31,8 +33,13 @@ func _ready() -> void:
 	self.fire_rate = 0.3
 
 func add_bullet_mode(mode: String) -> void:
-	if mode not in bullet_modes:
-		bullet_modes.append(mode)
+	if mode in bullet_modes:
+		return
+
+	if bullet_modes.size() >= MAX_BULLET_MODES:
+		bullet_modes.pop_front()  # remove oldest
+
+	bullet_modes.append(mode)
 
 func set_bullet_mode(mode: String) -> void:
 	bullet_modes.clear()
