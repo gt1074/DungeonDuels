@@ -14,6 +14,7 @@ const BURST_AMOUNT = 3
 const BURST_INTERVAL = 0.15
 
 var room_manager: Node = null
+var _spawn_generation: int = -1
 
 var burst_count = 0
 var last_direction = Vector2.RIGHT
@@ -21,7 +22,6 @@ var health: int = 5
 var spiral_angle: float = 0.0
 var speed: float = 5.0
 var patterns = ["triple"]
-#var patterns = ["circle", "fan", "spiral", "line"]
 var current_pattern_index = 0
 
 func _flash_hit() -> void:
@@ -29,7 +29,7 @@ func _flash_hit() -> void:
 	await get_tree().create_timer(0.15).timeout
 	if is_instance_valid(self):
 		animated_sprite.modulate = Color(1, 1, 1)
-		
+
 func take_damage(amount: int = 1, attacker = null) -> void:
 	health -= amount
 	if health <= 0:
@@ -38,10 +38,10 @@ func take_damage(amount: int = 1, attacker = null) -> void:
 		dies()
 		return
 	_flash_hit()
-	
+
 func dies():
-	if room_manager:
-		room_manager.on_enemy_died()
+	#if room_manager:
+	#	room_manager.on_enemy_died(_spawn_generation)
 	queue_free()
 
 func change_pattern() -> void:
@@ -57,6 +57,8 @@ func _ready() -> void:
 	add_to_group("enemy")
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 	safe_margin = 0.08
+	if room_manager:
+		_spawn_generation = room_manager._room_generation
 
 func _process(delta: float) -> void:
 	if GameState.is_grace or player_instance.is_dead:
@@ -75,10 +77,10 @@ func _physics_process(delta: float) -> void:
 	var direction = (player_instance.global_position - global_position).normalized()
 	velocity = velocity.move_toward(direction * speed, 200 * delta)
 
-	# Stop vertical push when colliding from top/bottom
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
-		if collision.get_collider().is_in_group("player"):
+		var collider = collision.get_collider()
+		if collider != null and collider.is_in_group("player"):
 			if abs(collision.get_normal().y) > 0.7:
 				velocity.y = 0
 	move_and_slide()
@@ -149,4 +151,4 @@ func _on_body_entered(body: Node2D) -> void:
 		body.player_hit()
 
 func _on_area_entered(_area: Area2D) -> void:
-	pass  # bat_hit is handled in bullet scripts to avoid double-calling
+	pass
