@@ -6,6 +6,7 @@ extends Control
 func _ready() -> void:
 	# Always reset to DUNGEON so a rematch from the title screen starts clean.
 	GameState.phase = GameState.Phase.DUNGEON
+	MusicManager.play_game_music()
 	var overlay := preload("res://scripts/ui/grace_overlay.gd").new()
 	add_child(overlay)
 	GameState.start_match_timer()

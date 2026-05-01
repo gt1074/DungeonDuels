@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://d3jct2cpuluq3" path="res://scenes/ui/hud.tscn" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bsw0kg07gk5tx" path="res://scenes/game/player2_world.tscn" id="2_yqjtg"]
 [ext_resource type="Script" uid="uid://bpffspj3ow0b" path="res://scripts/game/game.gd" id="4_game1"]
-
 [node name="Game" type="Control" unique_id=698839627]
 clip_contents = true
 layout_mode = 3
@@ -42,13 +41,8 @@ render_target_update_mode = 4
 
 [node name="Player1_World" parent="HBoxContainer/LeftPanel/LeftSubViewportContainer/LeftSubViewport" unique_id=1329128313 instance=ExtResource("1_uwrxv")]
 
-[node name="P1OpponentTicker" type="Label" parent="HBoxContainer/LeftPanel/LeftSubViewportContainer"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 4.0
-offset_bottom = 18.0
-grow_horizontal = 2
+[node name="P1OpponentTicker" type="Label" parent="HBoxContainer/LeftPanel/LeftSubViewportContainer" unique_id=1277807864]
+layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.55, 0.55, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
@@ -80,13 +74,8 @@ render_target_update_mode = 4
 
 [node name="Player2_World" parent="HBoxContainer/RightPanel/RightSubViewportContainer/RightSubViewport" unique_id=1970326021 instance=ExtResource("2_yqjtg")]
 
-[node name="P2OpponentTicker" type="Label" parent="HBoxContainer/RightPanel/RightSubViewportContainer"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_top = 4.0
-offset_bottom = 18.0
-grow_horizontal = 2
+[node name="P2OpponentTicker" type="Label" parent="HBoxContainer/RightPanel/RightSubViewportContainer" unique_id=407107556]
+layout_mode = 2
 theme_override_colors/font_color = Color(0.55, 0.75, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4

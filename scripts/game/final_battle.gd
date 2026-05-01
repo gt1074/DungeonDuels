@@ -119,4 +119,5 @@ func _unhandled_input(event: InputEvent) -> void:
 		and event.keycode == KEY_ESCAPE
 	)
 	if pressed_y or pressed_esc:
+		MusicManager.stop_music()
 		get_tree().change_scene_to_file("res://scenes/ui/title_screen.tscn")
